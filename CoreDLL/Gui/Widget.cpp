@@ -1,4 +1,6 @@
 #include "Widget.h"
+#include "../Bean/Config.h"
+#include "../Bean/Exception.h"
 
 namespace Nk {
 	using namespace std;
@@ -15,5 +17,12 @@ namespace Nk {
 
 
 	Widget::~Widget() {
+
+	}
+
+	EventIndex Widget::GetEventIndex(Events eventType) const {
+		if (eventType < 0 || eventType >= Events::_LAST_) {
+			throw Exception("Invalid eventType");
+		}
 	}
 }
