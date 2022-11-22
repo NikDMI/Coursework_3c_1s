@@ -158,6 +158,7 @@
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
+    <ClCompile Include="OsGui\IWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h" />
@@ -165,6 +166,11 @@
     <ClInclude Include="Core\EventHandler.h" />
     <ClInclude Include="Core\Object.h" />
     <ClInclude Include="Gui\Widget.h" />
+    <ClInclude Include="OsGui\IWindow.h" />
+    <ClInclude Include="OsGui\WindowFactory.h" />
+    <ClInclude Include="OsGui\Windows\WindowWin32.h" />
+    <ClInclude Include="Painter\IPainter.h" />
+    <ClInclude Include="Painter\PainterFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

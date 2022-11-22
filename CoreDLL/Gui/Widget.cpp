@@ -24,5 +24,6 @@ namespace Nk {
 		if (eventType < 0 || eventType >= Events::_LAST_) {
 			throw Exception("Invalid eventType");
 		}
+		return m_correspondingEventIndexes[eventType];
 	}
 }

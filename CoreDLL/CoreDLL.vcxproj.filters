@@ -31,6 +31,27 @@
     <Filter Include="Исходные файлы\Gui">
       <UniqueIdentifier>{d1a6d5e1-2b43-428d-a5be-f354322a7f97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\OsGui">
+      <UniqueIdentifier>{4cc65761-542c-455c-9a0c-53241b2586b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\OsGui\Windows">
+      <UniqueIdentifier>{4584c05c-02d5-4695-a802-fe074de2cbca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\OsGui\Linux">
+      <UniqueIdentifier>{a018b159-a960-402f-adf1-f0b3f9794d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter">
+      <UniqueIdentifier>{ad50eefb-8bc4-43cf-8bbe-66aa23e9bfaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Windows">
+      <UniqueIdentifier>{e0d06734-0c54-4d62-86a8-5666f5c7afbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Linux">
+      <UniqueIdentifier>{821a5c4a-dd1e-42f7-bb82-64f131bd79f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\OsGui">
+      <UniqueIdentifier>{347afd4a-b1b6-4777-baa1-88cdb945c1bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -48,6 +69,9 @@
     <ClCompile Include="Gui\Widget.cpp">
       <Filter>Исходные файлы\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="OsGui\IWindow.cpp">
+      <Filter>Исходные файлы\OsGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -64,6 +88,21 @@
     </ClInclude>
     <ClInclude Include="Gui\Widget.h">
       <Filter>Файлы заголовков\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="OsGui\IWindow.h">
+      <Filter>Файлы заголовков\OsGui</Filter>
+    </ClInclude>
+    <ClInclude Include="OsGui\Windows\WindowWin32.h">
+      <Filter>Файлы заголовков\OsGui\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="OsGui\WindowFactory.h">
+      <Filter>Файлы заголовков\OsGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\IPainter.h">
+      <Filter>Файлы заголовков\Painter</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\PainterFactory.h">
+      <Filter>Файлы заголовков\Painter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
