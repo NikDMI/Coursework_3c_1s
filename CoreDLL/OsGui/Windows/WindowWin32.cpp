@@ -1,3 +1,5 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "WindowWin32.h"
 #include "../../Bean/Exception.h"
 #include "../../Painter/Windows/PainterD2D.h"
@@ -17,7 +19,7 @@ namespace Nk {
 		IWindow{ widget, windowType, painterType, parent }
 	{
 		if (widget == nullptr) {
-			throw Exception{"Can't create window without widghet object"};
+			//throw Exception{"Can't create window without widghet object"};
 		}
 		if (parent != nullptr && !dynamic_cast<WindowWin32*>(parent)) {
 			throw Exception{ "Invalid parent class" };
@@ -31,7 +33,8 @@ namespace Nk {
 		if (m_hWnd == NULL) {
 			throw Exception{ "Can't create window" };
 		}
-		ShowWindow(m_hWnd, SW_HIDE);
+		//ShowWindow(m_hWnd, SW_HIDE);
+		ShowWindow(m_hWnd, SW_SHOW);
 		//Add window to dictionaty
 		m_windowsDictionary.insert({ m_hWnd, widget });
 		//Choose painter
@@ -82,7 +85,10 @@ namespace Nk {
 		static Widget* lastWidget = nullptr;
 		if (lastHwnd != hWnd) {
 			lastHwnd = hWnd;
-			lastWidget = (*WindowWin32::m_windowsDictionary.find(hWnd)).second;
+			auto nkWidget = WindowWin32::m_windowsDictionary.find(hWnd);
+			if (nkWidget != WindowWin32::m_windowsDictionary.end()) {
+				lastWidget = (*nkWidget).second;
+			}
 		}
 		switch (uMsg) {
 			//case WM

@@ -1,3 +1,5 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "IWindow.h"
 
 namespace Nk {

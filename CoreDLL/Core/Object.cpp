@@ -1,4 +1,5 @@
 #define DLL_EXPORT_SIGNATURE
+
 #include "Object.h"
 #include "../Bean/Exception.h"
 #include <vector>

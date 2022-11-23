@@ -1,3 +1,5 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "WindowsSystemManager.h"
 #include <Windows.h>
 
@@ -13,11 +15,16 @@ namespace Nk {
 	}
 
 
-	void WindowsSystemManager::DispatchSystemMessage() {
+	void WindowsSystemManager::DispatchSystemMessage(bool canBlock) {
 		MSG msg;
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+		if (!canBlock) {
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
+		else {
+			GetMessage(&msg, NULL, 0, 0);
 		}
 	}
 }

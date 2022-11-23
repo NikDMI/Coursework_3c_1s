@@ -10,7 +10,7 @@ namespace Nk {
 	public:
 		enum class ManagerType {QUEUE};
 
-		IEventManager* GetEventManager(ManagerType managerType);
+		static IEventManager* GetEventManager(ManagerType managerType);
 
 		EventManagerFactory() = delete;
 	};

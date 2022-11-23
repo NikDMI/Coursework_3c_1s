@@ -82,6 +82,12 @@
     <Filter Include="Исходные файлы\OsGui\Windows">
       <UniqueIdentifier>{1a45fcc5-d808-4154-94a0-20c1fe594a9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Application">
+      <UniqueIdentifier>{731c5c13-374a-4bfc-9729-34f4b55db711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Application">
+      <UniqueIdentifier>{c2399006-1171-4755-a6c5-4b3226278f69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -119,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="OsGui\WindowFactory.cpp">
       <Filter>Исходные файлы\OsGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\NkApplication.cpp">
+      <Filter>Исходные файлы\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\EventManager\EventManagerFactory.cpp">
+      <Filter>Исходные файлы\Core\EventManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="SystemManager\Windows\WindowsSystemManager.h">
       <Filter>Файлы заголовков\SystemManager\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\NkApplication.h">
+      <Filter>Файлы заголовков\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

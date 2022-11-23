@@ -22,7 +22,7 @@ namespace Nk {
 		/*
 		* This function register new class in the class registy (to get access in a C-style programming)
 		*/
-		static __declspec(dllexport) ClassId RegisterNewClass(std::string className);
+		static ClassId RegisterNewClass(std::string className);
 		static ClassId RegisterNewClass(std::string className, FabricMethod fabricMethod);	//For classes outside core
 
 		Object();

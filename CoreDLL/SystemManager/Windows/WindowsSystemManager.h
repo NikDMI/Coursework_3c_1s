@@ -15,7 +15,7 @@ namespace Nk {
 		/*
 		* Monitor system events and dispatches messages to the widghets
 		*/
-		void DispatchSystemMessage() override;
+		void DispatchSystemMessage(bool canBlock) override;
 
 		WindowsSystemManager();
 		~WindowsSystemManager() override;

@@ -7,13 +7,13 @@
 
 namespace Nk {
 
-	class WindowFactory {
+	CLASS_PARAMS class WindowFactory {
 	public:
 
 		/*
 		* Creates phisical window in the system
 		*/
-		static IWindow* CreateWindow(Widget* widget, OsType osType, WindowType windowType,
+		CLASS_METHOD static IWindow* CreateWindow(Widget* widget, OsType osType, WindowType windowType,
 			PainterType painterType, IWindow* parent);
 
 		//сделать очередь созданных окон для удаления в конце программы

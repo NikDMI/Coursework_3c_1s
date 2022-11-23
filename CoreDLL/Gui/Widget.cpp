@@ -1,3 +1,5 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "Widget.h"
 #include "../Bean/Config.h"
 #include "../Bean/Exception.h"

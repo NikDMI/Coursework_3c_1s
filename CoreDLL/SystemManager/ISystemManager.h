@@ -12,7 +12,7 @@ namespace Nk {
 		/*
 		* Monitor system events and dispatches messages to the widghets
 		*/
-		virtual void DispatchSystemMessage() = 0;
+		virtual void DispatchSystemMessage(bool canBlock) = 0;
 
 		virtual ~ISystemManager() {};
 	};
