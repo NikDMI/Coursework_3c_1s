@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="Bean\Exception.cpp" />
     <ClCompile Include="Core\EventHandler.cpp" />
+    <ClCompile Include="Core\EventManager\QueueEventManager.cpp" />
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
@@ -164,6 +165,9 @@
     <ClInclude Include="Bean\Config.h" />
     <ClInclude Include="Bean\Exception.h" />
     <ClInclude Include="Core\EventHandler.h" />
+    <ClInclude Include="Core\EventManager\EventManagerFactory.h" />
+    <ClInclude Include="Core\EventManager\IEventManager.h" />
+    <ClInclude Include="Core\EventManager\QueueEventManager.h" />
     <ClInclude Include="Core\Object.h" />
     <ClInclude Include="Gui\Widget.h" />
     <ClInclude Include="OsGui\IWindow.h" />

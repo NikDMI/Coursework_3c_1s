@@ -52,6 +52,12 @@
     <Filter Include="Исходные файлы\OsGui">
       <UniqueIdentifier>{347afd4a-b1b6-4777-baa1-88cdb945c1bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Core\EventManager">
+      <UniqueIdentifier>{95140822-ea34-40e3-90af-47c3e2c0f321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Core\EventManager">
+      <UniqueIdentifier>{799c7199-c2a6-4a86-82a3-f90f1d78bd78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -71,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="OsGui\IWindow.cpp">
       <Filter>Исходные файлы\OsGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\EventManager\QueueEventManager.cpp">
+      <Filter>Исходные файлы\Core\EventManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="Painter\PainterFactory.h">
       <Filter>Файлы заголовков\Painter</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\EventManager\IEventManager.h">
+      <Filter>Файлы заголовков\Core\EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\EventManager\EventManagerFactory.h">
+      <Filter>Файлы заголовков\Core\EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\EventManager\QueueEventManager.h">
+      <Filter>Файлы заголовков\Core\EventManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
