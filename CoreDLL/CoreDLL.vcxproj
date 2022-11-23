@@ -154,16 +154,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bean\Exception.cpp" />
+    <ClCompile Include="Bean\Settings.cpp" />
     <ClCompile Include="Core\EventHandler.cpp" />
     <ClCompile Include="Core\EventManager\QueueEventManager.cpp" />
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
     <ClCompile Include="OsGui\IWindow.cpp" />
+    <ClCompile Include="Painter\Windows\PainterD2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h" />
     <ClInclude Include="Bean\Exception.h" />
+    <ClInclude Include="Bean\Settings.h" />
     <ClInclude Include="Core\EventHandler.h" />
     <ClInclude Include="Core\EventManager\EventManagerFactory.h" />
     <ClInclude Include="Core\EventManager\IEventManager.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="OsGui\Windows\WindowWin32.h" />
     <ClInclude Include="Painter\IPainter.h" />
     <ClInclude Include="Painter\PainterFactory.h" />
+    <ClInclude Include="Painter\Windows\PainterD2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

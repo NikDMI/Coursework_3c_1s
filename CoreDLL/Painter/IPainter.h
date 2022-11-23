@@ -13,6 +13,7 @@ namespace Nk {
 	*/
 	class IPainter {
 	public:
+		virtual ~IPainter() {};
 		//DrawLine
 		//DrawEllipse
 		//....
