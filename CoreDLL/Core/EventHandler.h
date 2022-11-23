@@ -67,3 +67,5 @@ namespace Nk {
 }
 
 #endif	//#ifndef EVENT_HANDLER_CORE_DLL
+
+//сделать потокобезопасное обращение к очереди сообщений

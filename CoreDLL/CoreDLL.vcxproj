@@ -161,7 +161,10 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
     <ClCompile Include="OsGui\IWindow.cpp" />
+    <ClCompile Include="OsGui\WindowFactory.cpp" />
+    <ClCompile Include="OsGui\Windows\WindowWin32.cpp" />
     <ClCompile Include="Painter\Windows\PainterD2D.cpp" />
+    <ClCompile Include="SystemManager\Windows\WindowsSystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h" />
@@ -179,6 +182,8 @@
     <ClInclude Include="Painter\IPainter.h" />
     <ClInclude Include="Painter\PainterFactory.h" />
     <ClInclude Include="Painter\Windows\PainterD2D.h" />
+    <ClInclude Include="SystemManager\ISystemManager.h" />
+    <ClInclude Include="SystemManager\Windows\WindowsSystemManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

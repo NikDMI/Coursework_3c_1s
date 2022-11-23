@@ -10,7 +10,7 @@ namespace Nk {
 
 	using Microsoft::WRL::ComPtr;
 	
-	class PainterD2D final: IPainter {
+	class PainterD2D final: public IPainter {
 	public:
 		PainterD2D(HWND hWnd);
 		//DrawLine

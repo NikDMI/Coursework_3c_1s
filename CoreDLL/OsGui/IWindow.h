@@ -2,6 +2,7 @@
 #define IWINDOW_OS_GUI_DLL
 
 #include "../Painter/IPainter.h"
+#include "../Gui/Widget.h"
 
 namespace Nk {
 	/*
@@ -16,15 +17,15 @@ namespace Nk {
 	*/
 	class IWindow {
 	public:
-		IWindow(OsType osType, WindowType windowType, PainterType painterType);
+		IWindow(Widget* widget, WindowType windowType, PainterType painterType, IWindow* parent);
 		virtual ~IWindow();
 		//MoveWindows
 		//ShowWindow
 		//....
 	protected:
-		OsType m_osType;
 		WindowType m_windowType;
 		PainterType m_painterType;
+		//IWindow* m_parentWindow;
 	};
 }
 

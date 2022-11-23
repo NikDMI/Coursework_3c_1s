@@ -3,13 +3,20 @@
 
 #include "IWindow.h"
 #include "../Painter/IPainter.h"
+#include "../Gui/Widget.h"
 
 namespace Nk {
 
 	class WindowFactory {
 	public:
 
-		static IWindow* CreateWindow(OsType osType, WindowType windowType, PainterType painterType, IWindow* parent);
+		/*
+		* Creates phisical window in the system
+		*/
+		static IWindow* CreateWindow(Widget* widget, OsType osType, WindowType windowType,
+			PainterType painterType, IWindow* parent);
+
+		//сделать очередь созданных окон для удаления в конце программы
 
 		WindowFactory() = delete;
 	};

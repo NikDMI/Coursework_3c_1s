@@ -67,6 +67,21 @@
     <Filter Include="Исходные файлы\Painter\Windows">
       <UniqueIdentifier>{91f8dc6f-52d5-4acd-91a6-e2e8355b9f4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\SystemManager">
+      <UniqueIdentifier>{df26f567-19ae-45e4-a728-62490b824fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SystemManager">
+      <UniqueIdentifier>{efeb5154-a5ac-44ea-a0af-31ccef68f5ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SystemManager\Windows">
+      <UniqueIdentifier>{d8989af9-7b3d-49ad-b567-2dd88f42cfb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\SystemManager\Windows">
+      <UniqueIdentifier>{1d3273f6-1a97-42a0-9f78-095c86879acc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\OsGui\Windows">
+      <UniqueIdentifier>{1a45fcc5-d808-4154-94a0-20c1fe594a9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -95,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="Bean\Settings.cpp">
       <Filter>Исходные файлы\Bean</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemManager\Windows\WindowsSystemManager.cpp">
+      <Filter>Исходные файлы\SystemManager\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="OsGui\Windows\WindowWin32.cpp">
+      <Filter>Исходные файлы\OsGui\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="OsGui\WindowFactory.cpp">
+      <Filter>Исходные файлы\OsGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="Bean\Settings.h">
       <Filter>Файлы заголовков\Bean</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager\ISystemManager.h">
+      <Filter>Файлы заголовков\SystemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager\Windows\WindowsSystemManager.h">
+      <Filter>Файлы заголовков\SystemManager\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
