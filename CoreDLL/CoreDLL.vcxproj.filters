@@ -88,6 +88,9 @@
     <Filter Include="Исходные файлы\Application">
       <UniqueIdentifier>{c2399006-1171-4755-a6c5-4b3226278f69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Gui\EventStructures">
+      <UniqueIdentifier>{1bc67714-6717-448e-a673-1f9f7b66463f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Application\NkApplication.h">
       <Filter>Файлы заголовков\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\EventStructures\MouseStructure.h">
+      <Filter>Файлы заголовков\Gui\EventStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

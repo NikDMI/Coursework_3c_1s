@@ -10,6 +10,8 @@ namespace Nk {
 	//bool NkApplication::m_isCreated = false;
 	NkApplication* NkApplication::m_nkApplication = nullptr;
 	LONG volatile NkApplication::m_isActiveThread = 0;
+	DWORD NkApplication::m_guiThreadId = 0;
+
 
 
 
@@ -24,6 +26,7 @@ namespace Nk {
 			m_systemManager = new WindowsSystemManager{};
 			//Create gui thread
 			m_isActiveThread = 1;
+			m_guiThreadId = GetCurrentThreadId();
 			//m_guiThread = CreateThread(NULL, 0, GuiThread, NULL, 0, NULL);
 			//if (m_guiThread == INVALID_HANDLE_VALUE) {
 			//	throw Exception{ "Can't craete gui thread" };
@@ -44,6 +47,11 @@ namespace Nk {
 			systemManager->DispatchSystemMessage(true);
 			eventManager->DispatchEvent();
 		}
+	}
+
+
+	void NkApplication::StopLoop() {
+		NkApplication::m_isActiveThread = 0;	//Thread safety(because gui thread only read this data)
 	}
 
 
@@ -68,9 +76,17 @@ namespace Nk {
 	}
 
 
+	bool NkApplication::IsGuiThread() noexcept {
+		if (m_nkApplication && GetCurrentThreadId() == m_guiThreadId) {
+			return true;
+		}
+		return false;
+	}
+
+
 	NkApplication::~NkApplication() {
 		//TerminateThread(m_guiThread, 0);
-		//NkApplication::m_isActiveThread = 0;	//Thread safety(because gui thread only read this data)
+		NkApplication::m_isActiveThread = 0;	//Thread safety(because gui thread only read this data)
 		//WaitForSingleObject(m_guiThread, INFINITE);
 		//CloseHandle(m_guiThread);
 		delete m_eventManager;

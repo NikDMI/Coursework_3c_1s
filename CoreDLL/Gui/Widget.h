@@ -17,11 +17,13 @@ namespace Nk {
 		Widget();
 		virtual ~Widget();
 
-	protected:
 		/*
-		* Returns corresponding EventIndex on some action 
+		* Returns corresponding EventIndex on some action
 		*/
 		EventIndex GetEventIndex(Events eventType) const;
+
+	protected:
+		
 
 	private:
 		const char* EventsNames[Events::_LAST_] = { "Core_OnMouseMove", "Core_OnMouseRDown"};

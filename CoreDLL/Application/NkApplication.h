@@ -9,6 +9,9 @@
 
 namespace Nk {
 
+	/*
+	* Represent configurations of the application
+	*/
 	CLASS_PARAMS class NkApplication {
 	public:
 		/*
@@ -23,7 +26,20 @@ namespace Nk {
 
 		static NkApplication* GetNkApplication();
 
+		/*
+		* Checks if current thread id is owned by gui
+		*/
+		static bool IsGuiThread() noexcept;
+
+		/*
+		* Starts main loop of message process (user must create thread for gui loop by himself)
+		*/
 		CLASS_METHOD void StartLoop();
+
+		/*
+		* Send stop message to the loop
+		*/
+		CLASS_METHOD void StopLoop();
 	private:
 
 		static NkApplication* m_nkApplication;	//Singelton
@@ -32,6 +48,7 @@ namespace Nk {
 		ISystemManager* m_systemManager;
 
 		static volatile LONG m_isActiveThread;
+		static DWORD m_guiThreadId;
 
 		friend DWORD WINAPI GuiThread(LPVOID lpParam);
 	};

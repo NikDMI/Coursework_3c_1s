@@ -178,6 +178,7 @@
     <ClInclude Include="Core\EventManager\IEventManager.h" />
     <ClInclude Include="Core\EventManager\QueueEventManager.h" />
     <ClInclude Include="Core\Object.h" />
+    <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
     <ClInclude Include="Gui\Widget.h" />
     <ClInclude Include="OsGui\IWindow.h" />
     <ClInclude Include="OsGui\WindowFactory.h" />

@@ -31,7 +31,7 @@ namespace Nk {
 		FLOAT m_height = 100;
 
 		IPainter* m_windowPainter;
-		WindowWin32* m_parentWindow;
+		WindowWin32* m_parentWindow = nullptr;
 
 		HWND m_hWnd;
 

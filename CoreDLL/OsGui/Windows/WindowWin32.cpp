@@ -3,6 +3,10 @@
 #include "WindowWin32.h"
 #include "../../Bean/Exception.h"
 #include "../../Painter/Windows/PainterD2D.h"
+#include "../../Core/EventManager/IEventManager.h"
+#include "../../Application/NkApplication.h"
+#include "../../Gui/Widget.h"
+#include "../../Gui/EventStructures/MouseStructure.h"
 
 namespace Nk {
 
@@ -24,6 +28,7 @@ namespace Nk {
 		if (parent != nullptr && !dynamic_cast<WindowWin32*>(parent)) {
 			throw Exception{ "Invalid parent class" };
 		}
+		m_parentWindow = (WindowWin32*)(parent);
 		//Create phisical window
 		RegisterWindowClass();
 		DWORD windowStyle = WS_DLGFRAME;
@@ -33,8 +38,8 @@ namespace Nk {
 		if (m_hWnd == NULL) {
 			throw Exception{ "Can't create window" };
 		}
-		//ShowWindow(m_hWnd, SW_HIDE);
-		ShowWindow(m_hWnd, SW_SHOW);
+		ShowWindow(m_hWnd, SW_HIDE);
+		//ShowWindow(m_hWnd, SW_SHOW);
 		//Add window to dictionaty
 		m_windowsDictionary.insert({ m_hWnd, widget });
 		//Choose painter
@@ -83,6 +88,7 @@ namespace Nk {
 	LRESULT CALLBACK Win32WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		static HWND lastHwnd = 0;
 		static Widget* lastWidget = nullptr;
+		static IEventManager* eventManager = NkApplication::GetEventManager();
 		if (lastHwnd != hWnd) {
 			lastHwnd = hWnd;
 			auto nkWidget = WindowWin32::m_windowsDictionary.find(hWnd);
@@ -90,8 +96,18 @@ namespace Nk {
 				lastWidget = (*nkWidget).second;
 			}
 		}
+
+		//Local vars
+		static MouseStructure mouseStructure;
+
 		switch (uMsg) {
-			//case WM
+
+		case WM_MOUSEMOVE:
+			mouseStructure = { LOWORD(lParam), HIWORD(lParam) };
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), &mouseStructure);
+			//Get address of the static var (it's save, because my gui loop garantee, that after pushing event it wiil be processed)
+			break;
+
 		default:
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
