@@ -1,6 +1,8 @@
 #define DLL_EXPORT_SIGNATURE
 
 #include "IWindow.h"
+#include "../Gui/Widget.h"
+
 
 namespace Nk {
 

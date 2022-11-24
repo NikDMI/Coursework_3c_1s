@@ -2,9 +2,11 @@
 #define IWINDOW_OS_GUI_DLL
 
 #include "../Painter/IPainter.h"
-#include "../Gui/Widget.h"
+
 
 namespace Nk {
+	class Widget;
+
 	/*
 	* Common types of windows
 	*/
@@ -19,6 +21,14 @@ namespace Nk {
 	public:
 		IWindow(Widget* widget, WindowType windowType, PainterType painterType, IWindow* parent);
 		virtual ~IWindow();
+
+		/*
+		* Set size and position of the window in px (1/96 inch)
+		*/
+		virtual void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) = 0;
+
+		virtual void ShowWindow() = 0;
+		virtual void HideWindow() = 0;
 		//MoveWindows
 		//ShowWindow
 		//....

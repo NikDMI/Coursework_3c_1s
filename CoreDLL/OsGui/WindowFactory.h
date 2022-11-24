@@ -7,6 +7,8 @@
 
 namespace Nk {
 
+#undef CreateWindow
+
 	CLASS_PARAMS class WindowFactory {
 	public:
 

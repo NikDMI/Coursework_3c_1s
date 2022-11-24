@@ -13,4 +13,8 @@
 
 	#define PROC_CALL __cdecl
 
+namespace Nk {
+	using Coord_t = float;	//Describes pixels values
+}
+
 #endif	//#ifndef CONFIG_CORE_DLL

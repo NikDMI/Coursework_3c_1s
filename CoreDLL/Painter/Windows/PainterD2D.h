@@ -13,6 +13,8 @@ namespace Nk {
 	class PainterD2D final: public IPainter {
 	public:
 		PainterD2D(HWND hWnd);
+
+		void Resize(UINT32 w, UINT32 h) override;
 		//DrawLine
 		//DrawEllipse
 		//....

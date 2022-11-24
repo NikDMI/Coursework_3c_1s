@@ -22,6 +22,9 @@ namespace Nk {
 	WindowWin32::WindowWin32(Widget* widget, WindowType windowType, PainterType painterType, IWindow* parent):
 		IWindow{ widget, windowType, painterType, parent }
 	{
+		if (!NkApplication::IsGuiThread()) {
+			throw Exception{"Try to create window in not gui thread"};
+		}
 		if (widget == nullptr) {
 			//throw Exception{"Can't create window without widghet object"};
 		}
@@ -38,7 +41,7 @@ namespace Nk {
 		if (m_hWnd == NULL) {
 			throw Exception{ "Can't create window" };
 		}
-		ShowWindow(m_hWnd, SW_HIDE);
+		::ShowWindow(m_hWnd, SW_HIDE);
 		//ShowWindow(m_hWnd, SW_SHOW);
 		//Add window to dictionaty
 		m_windowsDictionary.insert({ m_hWnd, widget });
@@ -60,6 +63,32 @@ namespace Nk {
 
 	HWND WindowWin32::GetHwnd() const {
 		return m_hWnd;
+	}
+
+
+	void WindowWin32::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
+		if (x < 0 || y < 0 || w < 0 || h < 0) {
+			throw Exception{"Bad window geometry"};
+		}
+		m_x = x; m_y = y; m_width = w; m_height = h;
+		MoveWindow(m_hWnd, x, y, w, h, FALSE);
+		m_windowPainter->Resize(w, h);
+	}
+
+
+	void WindowWin32::ShowWindow() {
+		if (!m_isVisible) {
+			::ShowWindow(m_hWnd, SW_SHOW);
+			m_isVisible = true;
+		}
+	}
+
+
+	void WindowWin32::HideWindow() {
+		if (m_isVisible) {
+			::ShowWindow(m_hWnd, SW_HIDE);
+			m_isVisible = false;
+		}
 	}
 
 
@@ -89,7 +118,7 @@ namespace Nk {
 		static HWND lastHwnd = 0;
 		static Widget* lastWidget = nullptr;
 		static IEventManager* eventManager = NkApplication::GetEventManager();
-		if (lastHwnd != hWnd) {
+		if (lastHwnd != hWnd || lastWidget == nullptr) {
 			lastHwnd = hWnd;
 			auto nkWidget = WindowWin32::m_windowsDictionary.find(hWnd);
 			if (nkWidget != WindowWin32::m_windowsDictionary.end()) {

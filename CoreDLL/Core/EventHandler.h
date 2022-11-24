@@ -36,7 +36,7 @@ namespace Nk {
 		/*
 		* Add new event handler to the handler queue
 		*/
-		void AddEventHandler(EventIndex eventIndex, EventHandlerProcInfo eventHandler);
+		CLASS_METHOD void AddEventHandler(EventIndex eventIndex, EventHandlerProcInfo eventHandler);
 
 		/*
 		* Removes handler from queue

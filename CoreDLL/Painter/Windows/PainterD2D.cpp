@@ -33,4 +33,11 @@ namespace Nk {
 			throw Exception{ "Can't create hwnd render target" };
 		}
 	}
+
+
+	void PainterD2D::Resize(UINT32 w, UINT32 h) {
+		if (m_hWndRenderTarget->Resize({ w, h }) != S_OK) {
+			throw Exception{"Can't resize hWndRenderTarget"};
+		}
+	}
 }

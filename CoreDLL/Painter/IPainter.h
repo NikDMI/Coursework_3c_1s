@@ -1,6 +1,8 @@
 #ifndef IPAINTER_OS_GUI_DLL
 #define IPAINTER_OS_GUI_DLL
 
+#include "../Bean/Config.h"
+#include <Windows.h>
 
 namespace Nk {
 	/*
@@ -14,6 +16,8 @@ namespace Nk {
 	class IPainter {
 	public:
 		virtual ~IPainter() {};
+
+		virtual void Resize(UINT32 w, UINT32 h) = 0;
 		//DrawLine
 		//DrawEllipse
 		//....

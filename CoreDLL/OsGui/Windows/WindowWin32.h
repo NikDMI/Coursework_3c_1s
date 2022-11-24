@@ -15,6 +15,10 @@ namespace Nk {
 
 		HWND GetHwnd() const;
 
+		void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) override;
+		void ShowWindow() override;
+		void HideWindow() override;
+
 		~WindowWin32() override;
 	private:
 		void RegisterWindowClass();
@@ -25,10 +29,10 @@ namespace Nk {
 
 		///////Window data//////////////
 		bool m_isVisible = false;
-		FLOAT m_x = 0;
-		FLOAT m_y = 0;
-		FLOAT m_width = 100;
-		FLOAT m_height = 100;
+		Coord_t m_x = 0;
+		Coord_t m_y = 0;
+		Coord_t m_width = 100;
+		Coord_t m_height = 100;
 
 		IPainter* m_windowPainter;
 		WindowWin32* m_parentWindow = nullptr;
