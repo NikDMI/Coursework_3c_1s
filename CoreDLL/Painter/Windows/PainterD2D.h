@@ -29,7 +29,8 @@ namespace Nk {
 		/*
 		* Get the most top parent's render target
 		*/
-		ComPtr<ID2D1HwndRenderTarget> GetRootParentRenderTarget();
+		ComPtr<ID2D1RenderTarget> GetRootParentRenderTarget();
+		//ComPtr<ID2D1BitmapRenderTarget> GetCompatibleRootParentRenderTarget();
 
 		const int DPI_X = 96;
 		const int DPI_Y = 96;
@@ -43,7 +44,7 @@ namespace Nk {
 
 		Coord_t m_xChildOffset;
 		Coord_t m_yChildOffset;
-		ComPtr<ID2D1RenderTarget> m_currentRenderTarget;
+		//ComPtr<ID2D1RenderTarget> m_currentRenderTarget;
 
 	};
 }

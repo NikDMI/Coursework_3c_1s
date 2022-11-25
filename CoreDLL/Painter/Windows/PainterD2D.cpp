@@ -41,8 +41,11 @@ namespace Nk {
 	}
 
 
-	ComPtr<ID2D1HwndRenderTarget> PainterD2D::GetRootParentRenderTarget() {
-		if (m_parentPainter == nullptr) return m_hWndRenderTarget;
+	ComPtr<ID2D1RenderTarget> PainterD2D::GetRootParentRenderTarget() {
+		if (m_parentPainter == nullptr) {
+			CreateBuffer();
+			return m_compatibleBitmapRootRenderTarget;
+		}
 		return m_parentPainter->GetRootParentRenderTarget();
 	}
 
@@ -50,34 +53,32 @@ namespace Nk {
 	void PainterD2D::BeginDraw(Coord_t xOffset, Coord_t yOffset) {
 		m_xChildOffset = xOffset;
 		m_yChildOffset = yOffset;
-		if (m_parentPainter && m_compatibleBitmapRootRenderTarget == nullptr) {
+		if (m_compatibleBitmapRootRenderTarget == nullptr) {
 			CreateBuffer();
 		}
 		//Choose render target
-		if (m_parentPainter != nullptr) {
-			m_currentRenderTarget = m_compatibleBitmapRootRenderTarget;
-		}
-		else {
+		//m_currentRenderTarget = m_compatibleBitmapRootRenderTarget;
+		if (m_parentPainter == nullptr) {
 			::BeginPaint(m_hWnd, &m_paintStructure);
-			m_currentRenderTarget = m_hWndRenderTarget;
 		}
-		m_currentRenderTarget->BeginDraw();
+		m_compatibleBitmapRootRenderTarget->BeginDraw();
 	}
 
 
 	void PainterD2D::EndDraw() {
-		m_currentRenderTarget->EndDraw();
+		m_compatibleBitmapRootRenderTarget->EndDraw();
+		if (m_compatibleBitmapRootRenderTarget->GetBitmap(m_bufferBitmap.GetAddressOf()) != S_OK) {
+			throw Exception{};
+		}
 		if (m_parentPainter) {
-			if (m_bufferBitmap != nullptr) m_bufferBitmap.Reset();
-			if (m_compatibleBitmapRootRenderTarget->GetBitmap(m_bufferBitmap.GetAddressOf()) != S_OK) {
-				throw Exception{};
-			}
 			auto rootRenderTarget = GetRootParentRenderTarget();
-			D2D1_RECT_F destRect = { m_xChildOffset, m_yChildOffset, m_renderTargetSize.width, m_renderTargetSize.height };
+			D2D1_RECT_F destRect = { m_xChildOffset, m_yChildOffset, m_xChildOffset + m_renderTargetSize.width, m_yChildOffset + m_renderTargetSize.height };
 			rootRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect);
-			//rootRenderTarget->EndDraw();
 		}
 		else {
+			m_hWndRenderTarget->BeginDraw();
+			D2D1_RECT_F destRect = { m_xChildOffset, m_yChildOffset, m_xChildOffset + m_renderTargetSize.width, m_yChildOffset + m_renderTargetSize.height };
+			m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect);
 			m_hWndRenderTarget->EndDraw();
 			::EndPaint(m_hWnd, &m_paintStructure);
 		}
@@ -86,7 +87,10 @@ namespace Nk {
 
 
 	void PainterD2D::Resize(UINT32 w, UINT32 h) {
-		D2D1_SIZE_U size = { w, h };
+		RECT windowClientRect;
+		GetClientRect(m_hWnd, &windowClientRect);
+		D2D1_SIZE_U size = { windowClientRect.right - windowClientRect.left, windowClientRect.bottom - windowClientRect.top };
+
 		if (m_parentPainter == nullptr) {//Root window
 			if (m_hWndRenderTarget->Resize(size) != S_OK) {
 				throw Exception{ "Can't resize hWndRenderTarget" };
@@ -103,8 +107,14 @@ namespace Nk {
 
 	void PainterD2D::CreateBuffer() {
 		if (m_compatibleBitmapRootRenderTarget == nullptr) {
-			ComPtr<ID2D1HwndRenderTarget> rootRenderTarget = GetRootParentRenderTarget();
-			D2D_SIZE_F size{ m_renderTargetSize.height, m_renderTargetSize.width };
+			ComPtr<ID2D1RenderTarget> rootRenderTarget;
+			if (m_parentPainter != nullptr) {
+				rootRenderTarget = GetRootParentRenderTarget();
+			}
+			else {
+				rootRenderTarget = m_hWndRenderTarget;
+			}
+			D2D_SIZE_F size{ m_renderTargetSize.width, m_renderTargetSize.height };
 			if (rootRenderTarget->CreateCompatibleRenderTarget(size, m_compatibleBitmapRootRenderTarget.GetAddressOf()) != S_OK) {
 				throw Exception{ "Can't create back buffer" };
 			}
@@ -134,7 +144,7 @@ namespace Nk {
 	///////////////////////////////// GRPHICS METHODS
 
 	void PainterD2D::ClearTarget(const Color_t& color) {
-		m_currentRenderTarget->Clear({color.r, color.g, color.b, color.a});
+		m_compatibleBitmapRootRenderTarget->Clear({color.r, color.g, color.b, color.a});
 	}
 
 }
