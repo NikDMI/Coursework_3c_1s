@@ -161,6 +161,7 @@
     <ClCompile Include="Core\EventManager\QueueEventManager.cpp" />
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Gui\Layout\DefaultLayout.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
     <ClCompile Include="OsGui\IWindow.cpp" />
     <ClCompile Include="OsGui\WindowFactory.cpp" />
@@ -179,6 +180,8 @@
     <ClInclude Include="Core\EventManager\QueueEventManager.h" />
     <ClInclude Include="Core\Object.h" />
     <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
+    <ClInclude Include="Gui\Layout\DefaultLayout.h" />
+    <ClInclude Include="Gui\Layout\ILayout.h" />
     <ClInclude Include="Gui\Widget.h" />
     <ClInclude Include="OsGui\IWindow.h" />
     <ClInclude Include="OsGui\WindowFactory.h" />

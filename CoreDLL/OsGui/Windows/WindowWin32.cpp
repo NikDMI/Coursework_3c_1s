@@ -137,6 +137,13 @@ namespace Nk {
 			//Get address of the static var (it's save, because my gui loop garantee, that after pushing event it wiil be processed)
 			break;
 
+		case WM_PAINT:
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), nullptr);
+			break;
+
+		case WM_ERASEBKGND:
+			break;
+
 		default:
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}

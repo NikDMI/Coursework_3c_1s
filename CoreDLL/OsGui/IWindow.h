@@ -29,9 +29,24 @@ namespace Nk {
 
 		virtual void ShowWindow() = 0;
 		virtual void HideWindow() = 0;
-		//MoveWindows
-		//ShowWindow
-		//....
+		
+		/*
+		* ON_REPAINT evetn
+		* Draw window in special rect(). If we have saved buffer, than draw him
+		* If window draw the first time, then Iwindow send ON_DRAW event to widget (fill window buffer)
+		*/
+		virtual void DrawWindow() = 0;
+
+		/*
+		* Creates new window buffer, wait commands on IPainter
+		*/
+		virtual void BeginDrawWindowBuffer() = 0;
+
+		/*
+		* Save window buffer, redraw window
+		*/
+		virtual void EndDrawWindowBuffer() = 0;
+
 	protected:
 		WindowType m_windowType;
 		PainterType m_painterType;

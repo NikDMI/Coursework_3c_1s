@@ -91,6 +91,12 @@
     <Filter Include="Файлы заголовков\Gui\EventStructures">
       <UniqueIdentifier>{1bc67714-6717-448e-a673-1f9f7b66463f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Gui\Layout">
+      <UniqueIdentifier>{3a114406-0589-494c-987c-9b4655b8d8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Gui\Layout">
+      <UniqueIdentifier>{4ca85b5c-3ca8-4ac0-bcc0-c58571ccf86f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -134,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="Core\EventManager\EventManagerFactory.cpp">
       <Filter>Исходные файлы\Core\EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Layout\DefaultLayout.cpp">
+      <Filter>Исходные файлы\Gui\Layout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="Gui\EventStructures\MouseStructure.h">
       <Filter>Файлы заголовков\Gui\EventStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Layout\ILayout.h">
+      <Filter>Файлы заголовков\Gui\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Layout\DefaultLayout.h">
+      <Filter>Файлы заголовков\Gui\Layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

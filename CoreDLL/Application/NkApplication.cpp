@@ -100,7 +100,10 @@ namespace Nk {
 		IEventManager* eventManager = currentApplication->GetEventManager();
 		while (NkApplication::m_isActiveThread) {
 			systemManager->DispatchSystemMessage(true);
-			eventManager->DispatchEvent();
+			bool hasEvent = true;
+			do {
+				hasEvent = eventManager->DispatchEvent();
+			} while (hasEvent);
 		}
 		return 0;
 	}
