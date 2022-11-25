@@ -34,7 +34,7 @@ namespace Nk {
 		m_parentWindow = (WindowWin32*)(parent);
 		//Create phisical window
 		RegisterWindowClass();
-		DWORD windowStyle = WS_DLGFRAME;
+		DWORD windowStyle = WS_OVERLAPPED;
 		if (parent != nullptr) windowStyle |= WS_CHILD;
 		m_hWnd = CreateWindow(CLASS_NAME.c_str(), L"Window", windowStyle, m_x, m_y, m_width, m_height,
 			(parent == nullptr) ? NULL : m_parentWindow->GetHwnd(), NULL, GetModuleHandle(NULL), 0);
@@ -46,9 +46,11 @@ namespace Nk {
 		//Add window to dictionaty
 		m_windowsDictionary.insert({ m_hWnd, widget });
 		//Choose painter
+		PainterD2D* parentPainter;
 		switch (painterType) {
 		case PainterType::DirectX:
-			m_windowPainter = new PainterD2D{m_hWnd};
+			parentPainter = (m_parentWindow == nullptr) ? nullptr : dynamic_cast<PainterD2D*>(m_parentWindow->m_windowPainter);
+			m_windowPainter = new PainterD2D{m_hWnd, parentPainter};
 			break;
 		default:
 			throw Exception{"Invalid window painter"};
@@ -63,6 +65,22 @@ namespace Nk {
 
 	HWND WindowWin32::GetHwnd() const {
 		return m_hWnd;
+	}
+
+
+	IPainter* WindowWin32::GetPainter() {
+		return m_windowPainter;
+	}
+
+
+	IWindow::RootParentOffset WindowWin32::GetRootOffset() {
+		if (m_parentWindow == nullptr) {
+			return RootParentOffset{ 0, 0 };
+		}
+		RootParentOffset parentOffset = m_parentWindow->GetRootOffset();
+		parentOffset.x += m_x;
+		parentOffset.y += m_y;
+		return parentOffset;
 	}
 
 
@@ -89,6 +107,30 @@ namespace Nk {
 			::ShowWindow(m_hWnd, SW_HIDE);
 			m_isVisible = false;
 		}
+	}
+
+
+	void WindowWin32::DrawWindow() {
+		if (m_windowPainter->IsValidBackBuffer()) {
+			auto parentOffset = this->GetRootOffset();
+			m_windowPainter->DrawBufferBitmap(parentOffset.x, parentOffset.y);
+		}
+		else {
+			m_windowPainter->CreateBuffer();
+			NkApplication::GetEventManager()->PushEvent(m_correspondingWidget, 
+				m_correspondingWidget->GetEventIndex(Widget::Events::ON_DRAW), m_correspondingWidget);
+		}
+	}
+
+
+	void WindowWin32::BeginDrawWindowBuffer() {
+		auto parentOffset = this->GetRootOffset();
+		m_windowPainter->BeginDraw(parentOffset.x, parentOffset.y);
+	}
+
+	
+	void WindowWin32::EndDrawWindowBuffer() {
+		m_windowPainter->EndDraw();
 	}
 
 
@@ -138,7 +180,8 @@ namespace Nk {
 			break;
 
 		case WM_PAINT:
-			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), nullptr);
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), lastWidget);
+			ValidateRect(hWnd, NULL);
 			break;
 
 		case WM_ERASEBKGND:

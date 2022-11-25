@@ -5,6 +5,7 @@
 #include "../Bean/Exception.h"
 #include "../OsGui/WindowFactory.h"
 #include "Layout/DefaultLayout.h"
+#include "../Application/NkApplication.h"
 
 namespace Nk {
 	using namespace std;
@@ -23,6 +24,8 @@ namespace Nk {
 		for (int i = 0; i < Events::_LAST_; ++i) {
 			m_correspondingEventIndexes[i] = Object::m_eventHandler->RegisterEvent(EventsNames[i]);
 		}
+		m_eventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_REPAINT], { OnRepaintWindow, true });
+		m_eventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_DRAW], { OnDrawWindow, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -35,7 +38,7 @@ namespace Nk {
 			PainterType::DirectX, parentWindow);
 	}
 
-	Widget::Widget(Widget* widget = nullptr) :Widget{widget, { 0.7, 0.7, 0.7, 1.0 } } {
+	Widget::Widget(Widget* widget) :Widget{widget, { 0.7, 0.7, 0.7, 1.0 } } {
 
 	}
 
@@ -69,16 +72,17 @@ namespace Nk {
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
 		m_windowOs->SetWindowGeometry(x, y, w, h);
+		m_x = x; m_y = y; m_w = w; m_h = h;
 	}
 
 
 	void Widget::ShowWindow() {
 		if (!m_isVisible) {
 			m_windowOs->ShowWindow();
-			for (auto child : m_childWidgetList) {
-				child->ShowWindow();
-			}
 			m_isVisible = true;
+		}
+		for (auto child : m_childWidgetList) {
+			child->ShowWindow();
 		}
 	}
 
@@ -92,26 +96,35 @@ namespace Nk {
 
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
-	void Widget::OnRepaintWindow(void* params) {
-		m_windowOs->DrawWindow();
+	void Widget::OnRepaintWindow(void* widget) {
+		Widget* senderWidget = (Widget*)widget;
+		if (senderWidget->m_parentWidget == nullptr) {
+			senderWidget->m_windowOs->DrawWindow();
+		}
 	}
 
 
-	void Widget::OnDrawWindow(void* params) {
-		m_windowOs->BeginDrawWindowBuffer();
-		//Call user draw proc
-		m_windowOs->EndDrawWindowBuffer();
+	void Widget::OnDrawWindow(void* widget) {
+		Widget* senderWidget = (Widget*)widget;
+		senderWidget->m_windowOs->BeginDrawWindowBuffer();
+		senderWidget->m_userDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());	//Call user draw proc
+		for (auto child : senderWidget->m_childWidgetList) {
+			child->m_windowOs->BeginDrawWindowBuffer();
+			child->m_userDrawProc(child, child->m_windowOs->GetPainter());
+			child->m_windowOs->EndDrawWindowBuffer();
+		}
+		senderWidget->m_windowOs->EndDrawWindowBuffer();
 	}
 
 
 	void Widget::BasicDrawProc(Widget* widget, IPainter* painter) {
-
+		painter->ClearTarget(widget->m_backgroundColor);
 	}
 
 
 	//Config methods 
 	EventIndex Widget::GetEventIndex(Events eventType) const {
-		if (eventType < 0 || eventType >= Events::_LAST_ || eventType == Events::ON_DRAW) {
+		if (eventType < 0 || eventType >= Events::_LAST_) {
 			throw Exception("Invalid eventType");
 		}
 		return m_correspondingEventIndexes[eventType];

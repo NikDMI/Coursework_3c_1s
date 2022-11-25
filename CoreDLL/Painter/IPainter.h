@@ -17,10 +17,33 @@ namespace Nk {
 	public:
 		virtual ~IPainter() {};
 
+		virtual void ClearTarget(const Color_t& color) = 0;
+
+	protected:
+		/*
+		* Resize render target
+		* Back buffer deleted
+		*/
 		virtual void Resize(UINT32 w, UINT32 h) = 0;
-		//DrawLine
-		//DrawEllipse
-		//....
+
+		/*
+		* Create buffer of the window target
+		*/
+		virtual void CreateBuffer() = 0;
+
+		/*
+		* Checks if back buffer was created
+		*/
+		virtual bool IsValidBackBuffer() = 0;
+
+		virtual void BeginDraw(Coord_t xOffset, Coord_t yOffset) = 0;
+
+		virtual void DrawBufferBitmap(Coord_t xOffset, Coord_t yOffset) = 0;
+
+		virtual void EndDraw() = 0;
+
+		friend class WindowWin32;
+
 	};
 }
 

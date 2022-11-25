@@ -15,9 +15,30 @@ namespace Nk {
 
 		HWND GetHwnd() const;
 
+		IPainter* GetPainter() override;
+
 		void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) override;
 		void ShowWindow() override;
 		void HideWindow() override;
+
+		/*
+		* ON_REPAINT evetn
+		* Draw window in special rect(). If we have saved buffer, than draw him
+		* If window draw the first time, then Iwindow send ON_DRAW event to widget (fill window buffer)
+		*/
+		void DrawWindow() override;
+
+		/*
+		* Creates new window buffer, wait commands on IPainter
+		*/
+		void BeginDrawWindowBuffer() override;
+
+		/*
+		* Save window buffer, redraw window
+		*/
+		void EndDrawWindowBuffer() override;
+
+		RootParentOffset GetRootOffset() override;
 
 		~WindowWin32() override;
 	private:

@@ -34,7 +34,7 @@ namespace Nk {
 		CLASS_METHOD void HideWindow();
 
 
-		CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
+		//CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
 
 		/*
 		* Returns corresponding EventIndex on some action
@@ -66,8 +66,8 @@ namespace Nk {
 		Color_t m_backgroundColor;
 
 		//Event handlers
-		void OnRepaintWindow(void* params);
-		void OnDrawWindow(void* params);
+		static void OnRepaintWindow(void* widget);
+		static void OnDrawWindow(void* widget);
 
 
 		static const char* EventsNames[Events::_LAST_];

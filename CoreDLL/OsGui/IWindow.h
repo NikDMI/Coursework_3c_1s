@@ -19,8 +19,16 @@ namespace Nk {
 	*/
 	class IWindow {
 	public:
+
+		struct RootParentOffset {//Offset throught most parent window
+			Coord_t x; Coord_t y;
+		};
+
+
 		IWindow(Widget* widget, WindowType windowType, PainterType painterType, IWindow* parent);
 		virtual ~IWindow();
+
+		virtual IPainter* GetPainter() = 0;
 
 		/*
 		* Set size and position of the window in px (1/96 inch)
@@ -47,10 +55,17 @@ namespace Nk {
 		*/
 		virtual void EndDrawWindowBuffer() = 0;
 
+		/*
+		* Returns offset from the most parent window
+		*/
+		virtual RootParentOffset GetRootOffset() = 0;
+
 	protected:
 		WindowType m_windowType;
 		PainterType m_painterType;
+		Widget* m_correspondingWidget;
 		//IWindow* m_parentWindow;
+
 	};
 }
 
