@@ -20,10 +20,6 @@ namespace Nk {
 	class IWindow {
 	public:
 
-		struct RootParentOffset {//Offset throught most parent window
-			Coord_t x; Coord_t y;
-		};
-
 
 		IWindow(Widget* widget, WindowType windowType, PainterType painterType, IWindow* parent);
 		virtual ~IWindow();
@@ -58,7 +54,17 @@ namespace Nk {
 		/*
 		* Returns offset from the most parent window
 		*/
-		virtual RootParentOffset GetRootOffset() = 0;
+		virtual Rect_t GetRootClientRect() = 0;
+
+		/*
+		* Returns part of control that seen in parent
+		*/
+		virtual Rect_t GetParentClipRect(Rect_t& rootClipRect) = 0;
+
+		/*
+		* Invalidate rect
+		*/
+		virtual void RefreshWindow() = 0;
 
 	protected:
 		WindowType m_windowType;

@@ -36,9 +36,9 @@ namespace Nk {
 		*/
 		virtual bool IsValidBackBuffer() = 0;
 
-		virtual void BeginDraw(Coord_t xOffset, Coord_t yOffset) = 0;
+		virtual void BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) = 0;
 
-		virtual void DrawBufferBitmap(Coord_t xOffset, Coord_t yOffset) = 0;
+		virtual void DrawBufferBitmap(const Rect_t& rootClientRect, const Rect_t& bitmapRect) = 0;
 
 		virtual void EndDraw() = 0;
 

@@ -20,9 +20,9 @@ namespace Nk {
 		void Resize(UINT32 w, UINT32 h) override;
 		void CreateBuffer() override;
 		bool IsValidBackBuffer() override;
-		void BeginDraw(Coord_t xOffset, Coord_t yOffset) override;
+		void BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) override;
 		void EndDraw() override;
-		void DrawBufferBitmap(Coord_t xOffset, Coord_t yOffset) override;
+		void DrawBufferBitmap(const Rect_t& rootClientRect, const Rect_t& bitmapRect) override;
 
 
 	private:
@@ -43,8 +43,10 @@ namespace Nk {
 		PAINTSTRUCT m_paintStructure;
 		bool m_isBeginCallActive = false;
 
-		Coord_t m_xChildOffset;
-		Coord_t m_yChildOffset;
+		//Coord_t m_xChildOffset;
+		//Coord_t m_yChildOffset;
+		Rect_t m_rootClientRect;
+		Rect_t m_bitmapRect;
 		//ComPtr<ID2D1RenderTarget> m_currentRenderTarget;
 
 	};

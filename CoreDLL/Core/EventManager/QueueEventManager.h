@@ -3,6 +3,7 @@
 
 #include "IEventManager.h"
 #include <list>
+#include <Windows.h>
 
 namespace Nk {
 
@@ -24,6 +25,7 @@ namespace Nk {
 			void* params;
 		};
 		std::list<EventInfo> m_eventQueue;
+		CRITICAL_SECTION m_lockSection;
 	};
 }
 

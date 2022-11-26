@@ -38,7 +38,11 @@ namespace Nk {
 		*/
 		void EndDrawWindowBuffer() override;
 
-		RootParentOffset GetRootOffset() override;
+		void RefreshWindow() override;
+
+		Rect_t GetRootClientRect()  override;
+
+		Rect_t GetParentClipRect(Rect_t& rootClipRect) override;
 
 		~WindowWin32() override;
 	private:

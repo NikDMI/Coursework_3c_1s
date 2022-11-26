@@ -36,6 +36,8 @@ namespace Nk {
 
 		CLASS_METHOD void Repaint();
 
+		CLASS_METHOD void SetBackgroundColor(Color_t bkColor);
+
 		void SendRepaintEvent();
 
 
@@ -58,17 +60,18 @@ namespace Nk {
 		std::list<Widget*> m_childWidgetList;
 		IWindow* m_windowOs;	//phisical windows of OS
 		WindowDrawProc m_userDrawProc;	//Draw proc, that can be replaces by user
-		bool m_isBackBufferActive = false;	//Show, does this widget has back buffer
-		bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
+		volatile bool m_isBackBufferActive = false;	//Show, does this widget has back buffer
+		volatile bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
 
 		//Helper objects
 		ILayout* m_widgetLayout = nullptr;
+		CRITICAL_SECTION m_drawLockObject;
 
 		//Window data
-		Coord_t m_x = 0;	//Coords according to parent window
-		Coord_t m_y = 0;
-		Coord_t m_w = 0;
-		Coord_t m_h = 0;
+		volatile Coord_t m_x = 0;	//Coords according to parent window
+		volatile Coord_t m_y = 0;
+		volatile Coord_t m_w = 0;
+		volatile Coord_t m_h = 0;
 		bool m_isVisible = false;
 		Color_t m_backgroundColor;
 

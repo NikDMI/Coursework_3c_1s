@@ -73,19 +73,64 @@ namespace Nk {
 	}
 
 
-	IWindow::RootParentOffset WindowWin32::GetRootOffset() {
+	Rect_t WindowWin32::GetRootClientRect() {
 		if (m_parentWindow == nullptr) {
-			return RootParentOffset{ 0, 0 };
+			return { 0, 0, m_width, m_height };
 		}
-		RootParentOffset parentOffset = m_parentWindow->GetRootOffset();
-		parentOffset.x += m_x;
-		parentOffset.y += m_y;
-		return parentOffset;
+		Rect_t parentRect = m_parentWindow->GetRootClientRect();
+		/*
+		if (m_x > parentRect.w || m_y > parentRect.h) {
+			return { 0, 0, 0, 0 };
+		}
+		if (m_x > 0) {
+			parentRect.x += m_x;
+			parentRect.w -= m_x;
+		}
+		if (m_y > 0) {
+			parentRect.y += m_y;
+			parentRect.h -= m_y;
+		}
+		if (m_width < parentRect.w) parentRect.w = m_width;
+		if (m_height < parentRect.h) parentRect.h = m_height;
+		*/
+		parentRect.x += m_x;
+		parentRect.y += m_y;
+		parentRect.w = parentRect.x + m_width;
+		parentRect.h = parentRect.y + m_height;
+		return parentRect;
+	}
+
+
+	Rect_t WindowWin32::GetParentClipRect(Rect_t& rootClipRect) {
+		if (m_parentWindow == nullptr) return rootClipRect;
+		if (m_parentWindow->m_width < m_x || m_parentWindow->m_height < m_y) {
+			return { 0, 0, 0, 0 };
+		}
+		Rect_t clipRect = {0, 0, m_width, m_height};
+		if (m_x < 0) {
+			clipRect.x -= m_x;
+			clipRect.w += m_x;
+			rootClipRect.x -= m_x;
+		}
+		if (m_y < 0) {
+			clipRect.y -= m_y;
+			clipRect.h += m_y;
+			rootClipRect.y -= m_y;
+		}
+		if (m_parentWindow->m_width < m_width) {
+			clipRect.w = m_parentWindow->m_width;
+		}
+		if (m_parentWindow->m_height < m_height) {
+			clipRect.h = m_parentWindow->m_height;
+		}
+		rootClipRect.w = clipRect.w;
+		rootClipRect.h = clipRect.h;
+		return clipRect;
 	}
 
 
 	void WindowWin32::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
-		if (x < 0 || y < 0 || w < 0 || h < 0) {
+		if (w < 0 || h < 0) {
 			throw Exception{"Bad window geometry"};
 		}
 		m_x = x; m_y = y; m_width = w; m_height = h;
@@ -110,10 +155,17 @@ namespace Nk {
 	}
 
 
+	void WindowWin32::RefreshWindow() {
+		SendMessage(m_hWnd, WM_PAINT, 0, 0);
+		//InvalidateRect(m_hWnd, NULL, FALSE);
+	}
+
+
 	void WindowWin32::DrawWindow() {
 		if (m_windowPainter->IsValidBackBuffer()) {
-			auto parentOffset = this->GetRootOffset();
-			m_windowPainter->DrawBufferBitmap(parentOffset.x, parentOffset.y);
+			auto clientRect = this->GetRootClientRect();
+			auto bmpRect = this->GetParentClipRect(clientRect);
+			m_windowPainter->DrawBufferBitmap(clientRect, bmpRect);
 		}
 		else {
 			m_windowPainter->CreateBuffer();
@@ -125,8 +177,10 @@ namespace Nk {
 
 
 	void WindowWin32::BeginDrawWindowBuffer() {
-		auto parentOffset = this->GetRootOffset();
-		m_windowPainter->BeginDraw(parentOffset.x, parentOffset.y);
+		auto clientRect = this->GetRootClientRect();
+		auto bmpRect = this->GetParentClipRect(clientRect);
+		//auto parentOffset = this->GetRootOffset();
+		m_windowPainter->BeginDraw(clientRect, bmpRect);
 	}
 
 	
