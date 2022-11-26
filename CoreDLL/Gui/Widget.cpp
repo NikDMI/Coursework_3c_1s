@@ -96,9 +96,9 @@ namespace Nk {
 
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
-	void Widget::OnRepaintWindow(void* widget) {
+	void Widget::OnRepaintWindow(void* widget) {	//Event from the system
 		Widget* senderWidget = (Widget*)widget;
-		if (senderWidget->m_parentWidget == nullptr) {
+		if (senderWidget->m_parentWidget == nullptr) { //Repaint only root elements
 			senderWidget->m_windowOs->DrawWindow();
 		}
 	}
@@ -109,11 +109,35 @@ namespace Nk {
 		senderWidget->m_windowOs->BeginDrawWindowBuffer();
 		senderWidget->m_userDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());	//Call user draw proc
 		for (auto child : senderWidget->m_childWidgetList) {
-			child->m_windowOs->BeginDrawWindowBuffer();
-			child->m_userDrawProc(child, child->m_windowOs->GetPainter());
-			child->m_windowOs->EndDrawWindowBuffer();
+			if (!senderWidget->m_isNeedTotalRedraw && child->m_isBackBufferActive) {
+				child->m_windowOs->DrawWindow();
+			}
+			else {
+				if (senderWidget->m_isNeedTotalRedraw) child->m_isNeedTotalRedraw = true;
+				OnDrawWindow(child);
+			}
 		}
 		senderWidget->m_windowOs->EndDrawWindowBuffer();
+		senderWidget->m_isBackBufferActive = true;	//Note, that back buffer is valid
+		senderWidget->m_isNeedTotalRedraw = false;
+	}
+
+
+	void Widget::Repaint() {
+		m_isNeedTotalRedraw = true;
+		m_isBackBufferActive = false;
+		Widget* currentWidget = this;
+		while (currentWidget->m_parentWidget != nullptr) {
+			currentWidget = currentWidget->m_parentWidget;
+			currentWidget->m_isBackBufferActive = false;
+		}
+		currentWidget->SendRepaintEvent();
+	}
+
+
+	void Widget::SendRepaintEvent() {
+		NkApplication::GetEventManager()->PushEvent(this,
+			this->GetEventIndex(Widget::Events::ON_DRAW), this);
 	}
 
 

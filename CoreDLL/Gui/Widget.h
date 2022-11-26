@@ -31,7 +31,12 @@ namespace Nk {
 		CLASS_METHOD void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h);
 
 		CLASS_METHOD void ShowWindow();
+
 		CLASS_METHOD void HideWindow();
+
+		CLASS_METHOD void Repaint();
+
+		void SendRepaintEvent();
 
 
 		//CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
@@ -53,6 +58,8 @@ namespace Nk {
 		std::list<Widget*> m_childWidgetList;
 		IWindow* m_windowOs;	//phisical windows of OS
 		WindowDrawProc m_userDrawProc;	//Draw proc, that can be replaces by user
+		bool m_isBackBufferActive = false;	//Show, does this widget has back buffer
+		bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
 
 		//Helper objects
 		ILayout* m_widgetLayout = nullptr;

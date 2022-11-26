@@ -117,8 +117,9 @@ namespace Nk {
 		}
 		else {
 			m_windowPainter->CreateBuffer();
-			NkApplication::GetEventManager()->PushEvent(m_correspondingWidget, 
-				m_correspondingWidget->GetEventIndex(Widget::Events::ON_DRAW), m_correspondingWidget);
+			//NkApplication::GetEventManager()->PushEvent(m_correspondingWidget, 
+			//	m_correspondingWidget->GetEventIndex(Widget::Events::ON_DRAW), m_correspondingWidget);
+			m_correspondingWidget->SendRepaintEvent();
 		}
 	}
 

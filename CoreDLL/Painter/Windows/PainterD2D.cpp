@@ -57,11 +57,11 @@ namespace Nk {
 			CreateBuffer();
 		}
 		//Choose render target
-		//m_currentRenderTarget = m_compatibleBitmapRootRenderTarget;
 		if (m_parentPainter == nullptr) {
 			::BeginPaint(m_hWnd, &m_paintStructure);
 		}
 		m_compatibleBitmapRootRenderTarget->BeginDraw();
+		m_isBeginCallActive = true;
 	}
 
 
@@ -70,7 +70,7 @@ namespace Nk {
 		if (m_compatibleBitmapRootRenderTarget->GetBitmap(m_bufferBitmap.GetAddressOf()) != S_OK) {
 			throw Exception{};
 		}
-		if (m_parentPainter) {
+		if (m_parentPainter) {	//Child control
 			auto rootRenderTarget = GetRootParentRenderTarget();
 			D2D1_RECT_F destRect = { m_xChildOffset, m_yChildOffset, m_xChildOffset + m_renderTargetSize.width, m_yChildOffset + m_renderTargetSize.height };
 			rootRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect);
@@ -82,7 +82,7 @@ namespace Nk {
 			m_hWndRenderTarget->EndDraw();
 			::EndPaint(m_hWnd, &m_paintStructure);
 		}
-		
+		m_isBeginCallActive = false;
 	}
 
 
@@ -135,10 +135,21 @@ namespace Nk {
 			throw Exception{ "Back buffer is nullptr" };
 		}
 		auto hWndRenderTarget = this->GetRootParentRenderTarget();
-		hWndRenderTarget->BeginDraw();
+		bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
+		if (!isBeginDrawCalled) hWndRenderTarget->BeginDraw();
 		D2D1_RECT_F bmpRect = { xOffset, yOffset, m_renderTargetSize.width, m_renderTargetSize.height };
 		hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), bmpRect);
-		hWndRenderTarget->EndDraw();
+		if (!isBeginDrawCalled) hWndRenderTarget->EndDraw();
+	}
+
+
+	bool PainterD2D::IsRootBeginDrawCalled() {
+		if (m_parentPainter) {
+			return m_parentPainter->IsRootBeginDrawCalled();
+		}
+		else {
+			return m_isBeginCallActive;
+		}
 	}
 
 	///////////////////////////////// GRPHICS METHODS

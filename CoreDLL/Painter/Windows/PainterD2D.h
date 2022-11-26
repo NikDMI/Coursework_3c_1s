@@ -30,7 +30,7 @@ namespace Nk {
 		* Get the most top parent's render target
 		*/
 		ComPtr<ID2D1RenderTarget> GetRootParentRenderTarget();
-		//ComPtr<ID2D1BitmapRenderTarget> GetCompatibleRootParentRenderTarget();
+		bool IsRootBeginDrawCalled();
 
 		const int DPI_X = 96;
 		const int DPI_Y = 96;
@@ -41,6 +41,7 @@ namespace Nk {
 		ComPtr<ID2D1Bitmap> m_bufferBitmap = nullptr;
 		ComPtr<ID2D1BitmapRenderTarget> m_compatibleBitmapRootRenderTarget;
 		PAINTSTRUCT m_paintStructure;
+		bool m_isBeginCallActive = false;
 
 		Coord_t m_xChildOffset;
 		Coord_t m_yChildOffset;
