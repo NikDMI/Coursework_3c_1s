@@ -90,6 +90,31 @@ namespace Nk {
 	}
 
 
+	bool PainterD2D::IsPainterBrush(IBrush* userBrush) {
+		auto brushIter = std::find(m_createdBrushes.begin(), m_createdBrushes.end(), userBrush);
+		if (brushIter == m_createdBrushes.end()) {
+			throw Exception{"Brush was created by another painter"};
+		}
+	}
+
+	void PainterD2D::SetTextBrush(IBrush* brush) {
+		IsPainterBrush(brush);
+		m_textBrush = (BrushD2D*)brush;
+	}
+
+
+	void PainterD2D::SetBackgroundBrush(IBrush* brush) {
+		IsPainterBrush(brush);
+		m_backgroundBrush = (BrushD2D*)brush;
+	}
+
+
+	void PainterD2D::SetContureBrush(IBrush* brush) {
+		IsPainterBrush(brush);
+		m_contureBrush = (BrushD2D*)brush;
+	}
+
+
 	////////////////////////////////////////////////////  CONFIG DRAWING METHODS
 
 	ComPtr<ID2D1RenderTarget> PainterD2D::GetRootParentRenderTarget() {

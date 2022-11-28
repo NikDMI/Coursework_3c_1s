@@ -27,9 +27,9 @@ namespace Nk {
 		void DrawText(Rect_t textRect, std::wstring text) override;
 
 		IBrush* CreateBrushObject(const Color_t& color) override;
-		void SetTextBrush(IBrush* brush) = 0;
-		void SetBackgroundBrush(IBrush* brush) = 0;
-		void SetContureBrush(IBrush* brush) = 0;
+		void SetTextBrush(IBrush* brush) override;
+		void SetBackgroundBrush(IBrush* brush) override;
+		void SetContureBrush(IBrush* brush) override;
 		
 	protected:
 		void Resize(UINT32 w, UINT32 h) override;
@@ -46,6 +46,11 @@ namespace Nk {
 		*/
 		ComPtr<ID2D1RenderTarget> GetRootParentRenderTarget();
 		bool IsRootBeginDrawCalled();
+
+		/*
+		* Checks if user brush was created by this painter
+		*/
+		bool IsPainterBrush(IBrush* userBrush);
 
 		//Configs
 		const int DPI_X = 96;
