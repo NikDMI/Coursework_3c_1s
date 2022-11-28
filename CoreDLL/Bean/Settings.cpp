@@ -5,6 +5,7 @@
 namespace Nk {
 	bool Settings::m_isComInit = false;
 	ComPtr<ID2D1Factory> Settings::m_d2d1Factory;
+	ComPtr<IDWriteFactory> Settings::m_dWriteFactory;
 
 
 	void Settings::InitComInterfaces() {
@@ -24,6 +25,21 @@ namespace Nk {
 			}
 		}
 		return m_d2d1Factory;
+	}
+
+
+	ComPtr<IDWriteFactory> Settings::GetDWriteFactory() {
+		if (m_dWriteFactory == nullptr) {
+			HRESULT hRes = DWriteCreateFactory(
+				DWRITE_FACTORY_TYPE_SHARED,
+				__uuidof(IDWriteFactory),
+				reinterpret_cast<IUnknown**>(m_dWriteFactory.GetAddressOf())
+			);
+			if (hRes != S_OK) {
+				throw Exception{ "Can't create IDWriteFactory" };
+			}
+		}
+		return m_dWriteFactory;
 	}
 
 

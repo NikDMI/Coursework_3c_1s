@@ -166,6 +166,8 @@
     <ClCompile Include="OsGui\IWindow.cpp" />
     <ClCompile Include="OsGui\WindowFactory.cpp" />
     <ClCompile Include="OsGui\Windows\WindowWin32.cpp" />
+    <ClCompile Include="Painter\Brush\Windows\BrushD2D.cpp" />
+    <ClCompile Include="Painter\Font\Windows\FontD2D.cpp" />
     <ClCompile Include="Painter\Windows\PainterD2D.cpp" />
     <ClCompile Include="SystemManager\Windows\WindowsSystemManager.cpp" />
   </ItemGroup>
@@ -186,6 +188,10 @@
     <ClInclude Include="OsGui\IWindow.h" />
     <ClInclude Include="OsGui\WindowFactory.h" />
     <ClInclude Include="OsGui\Windows\WindowWin32.h" />
+    <ClInclude Include="Painter\Brush\IBrush.h" />
+    <ClInclude Include="Painter\Brush\Windows\BrushD2D.h" />
+    <ClInclude Include="Painter\Font\IFont.h" />
+    <ClInclude Include="Painter\Font\Windows\FontD2D.h" />
     <ClInclude Include="Painter\IPainter.h" />
     <ClInclude Include="Painter\PainterFactory.h" />
     <ClInclude Include="Painter\Windows\PainterD2D.h" />

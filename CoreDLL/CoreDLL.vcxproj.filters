@@ -97,6 +97,30 @@
     <Filter Include="Исходные файлы\Gui\Layout">
       <UniqueIdentifier>{4ca85b5c-3ca8-4ac0-bcc0-c58571ccf86f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Painter\Font">
+      <UniqueIdentifier>{0f2e4000-92e0-4f28-a151-ede5d556485f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Font\Windows">
+      <UniqueIdentifier>{6a9e468e-4c14-4565-98bd-389d98026f16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Font">
+      <UniqueIdentifier>{f6969423-2879-4fed-9898-f78d3ee9d309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Font\Windows">
+      <UniqueIdentifier>{2c50f468-38c9-4241-af59-e628991ffe84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Brush">
+      <UniqueIdentifier>{4ae747a3-335a-4fd8-800b-0c8b30c685d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Brush\Windows">
+      <UniqueIdentifier>{3414ea1d-64bd-4413-b2de-87ca32d28bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Brush">
+      <UniqueIdentifier>{3b9c11ab-cd5f-4164-8c78-8a70d78d49f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Brush\Windows">
+      <UniqueIdentifier>{65251e48-d76a-49a4-9fca-ec1973fd0ec6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -143,6 +167,12 @@
     </ClCompile>
     <ClCompile Include="Gui\Layout\DefaultLayout.cpp">
       <Filter>Исходные файлы\Gui\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Painter\Font\Windows\FontD2D.cpp">
+      <Filter>Исходные файлы\Painter\Font\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Painter\Brush\Windows\BrushD2D.cpp">
+      <Filter>Исходные файлы\Painter\Brush\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="Gui\Layout\DefaultLayout.h">
       <Filter>Файлы заголовков\Gui\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Font\IFont.h">
+      <Filter>Файлы заголовков\Painter\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Font\Windows\FontD2D.h">
+      <Filter>Файлы заголовков\Painter\Font\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Brush\IBrush.h">
+      <Filter>Файлы заголовков\Painter\Brush</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Brush\Windows\BrushD2D.h">
+      <Filter>Файлы заголовков\Painter\Brush\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

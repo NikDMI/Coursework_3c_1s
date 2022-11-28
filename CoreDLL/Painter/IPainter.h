@@ -2,9 +2,14 @@
 #define IPAINTER_OS_GUI_DLL
 
 #include "../Bean/Config.h"
+#include "Font/IFont.h"
+#include "Brush/IBrush.h"
 #include <Windows.h>
 
 namespace Nk {
+
+#undef DrawText
+
 	/*
 	* Types of painters (hardware dependency)
 	*/
@@ -13,11 +18,58 @@ namespace Nk {
 	/*
 	* This interface reperesents abstraction of phisical painter device in different OS
 	*/
-	class IPainter {
+	CLASS_PARAMS class IPainter {
 	public:
 		virtual ~IPainter() {};
 
-		virtual void ClearTarget(const Color_t& color) = 0;
+		CLASS_METHOD virtual void ClearTarget(const Color_t& color) = 0;
+
+		/*
+		* Give pointer of corresponding font interface to user
+		* User mustn't delete this object by delete operator
+		* All created fonts by painter deleted at the end of the program
+		*/
+		CLASS_METHOD virtual IFont* CreateFontObject() = 0;
+
+		/*
+		* Set current font to the painter
+		* Note: user can set only font, that created by this painter
+		*/
+		CLASS_METHOD virtual void SetFont(IFont*) = 0;
+
+		/*
+		* Display text in corresponding recrangle
+		* All text settings was configured in the font object
+		*/
+		CLASS_METHOD virtual void DrawText(Rect_t textRect, std::wstring text) = 0;
+
+
+		/*
+		* Returns pointer to the brush object
+		* User musn't delete this object manually
+		*/
+		CLASS_METHOD virtual IBrush* CreateBrushObject(const Color_t& color) = 0;
+
+
+		/*
+		* Set brush, that can be used when draw text
+		*/
+		CLASS_METHOD virtual void SetTextBrush(IBrush* brush) = 0;
+
+
+		/*
+		* Set brush, that can be used while drawing background layer
+		*/
+		CLASS_METHOD virtual void SetBackgroundBrush(IBrush* brush) = 0;
+
+
+		/*
+		* Set brush, that can be used while drawing conture elements
+		*/
+		CLASS_METHOD virtual void SetContureBrush(IBrush* brush) = 0;
+
+
+
 
 	protected:
 		/*

@@ -3,6 +3,8 @@
 #include "PainterD2D.h"
 #include "../../Bean/Settings.h"
 #include "../../Bean/Exception.h"
+#include "../Font/Windows/FontD2D.h"
+#include <algorithm>
 #include <fstream>
 
 #pragma comment(lib, "d2d1.lib")
@@ -10,6 +12,10 @@
 namespace Nk {
 
 	using namespace Microsoft::WRL;
+
+	FontD2D PainterD2D::m_defaultFontObject;
+	//BrushD2D PainterD2D::m_defaultBrushObject;
+
 
 	PainterD2D::PainterD2D(HWND hWnd, PainterD2D* parentPainter) : m_hWnd{ hWnd }, m_parentPainter{parentPainter} {
 		Settings::InitComInterfaces();
@@ -37,9 +43,54 @@ namespace Nk {
 				m_hWndRenderTarget.GetAddressOf())) != S_OK) {
 				throw Exception{ "Can't create hwnd render target" };
 			}
+			m_currentFont = &this->m_defaultFontObject;
+			//Brushes
+			m_defaultBrushObject = new BrushD2D{ m_hWndRenderTarget, {0,0,0,1} };
+			m_textBrush = m_defaultBrushObject;
+			m_backgroundBrush = m_defaultBrushObject;
+			m_contureBrush = m_defaultBrushObject;
 		}
 	}
 
+
+	PainterD2D::~PainterD2D() {
+		for (IFont* font : m_createdFonts) {
+			if (font != &m_defaultFontObject) delete font;
+		}
+		for (IBrush* brush : m_createdBrushes) {
+			if(brush != m_defaultBrushObject) delete brush;
+		}
+		delete m_defaultBrushObject;
+	}
+
+	////////////////////////////////////////////////////   SYSTEM METHODS
+
+
+	IFont* PainterD2D::CreateFontObject() {
+		FontD2D* newFont = new FontD2D{};
+		m_createdFonts.push_back(newFont);
+		return newFont;
+	}
+
+
+	void PainterD2D::SetFont(IFont* registeredFont) {
+		//Check if this font was registered by this painter
+		auto findIter = std::find(m_createdFonts.begin(), m_createdFonts.end(), registeredFont);
+		if (findIter == m_createdFonts.end()) {
+			throw Exception{"This font is not registered by this painter"};
+		}
+		m_currentFont = (FontD2D*)registeredFont;
+	}
+
+
+	IBrush* PainterD2D::CreateBrushObject(const Color_t& color) {
+		BrushD2D* userBrush = new BrushD2D{ m_hWndRenderTarget, color };
+		m_createdBrushes.push_back(userBrush);
+		return userBrush;
+	}
+
+
+	////////////////////////////////////////////////////  CONFIG DRAWING METHODS
 
 	ComPtr<ID2D1RenderTarget> PainterD2D::GetRootParentRenderTarget() {
 		if (m_parentPainter == nullptr) {
@@ -51,8 +102,6 @@ namespace Nk {
 
 
 	void PainterD2D::BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) {
-		//m_xChildOffset = xOffset;
-		//m_yChildOffset = yOffset;
 		m_rootClientRect = rootClientRect;
 		m_bitmapRect = bitmapRect;
 		if (m_compatibleBitmapRootRenderTarget == nullptr) {
@@ -164,6 +213,14 @@ namespace Nk {
 
 	void PainterD2D::ClearTarget(const Color_t& color) {
 		m_compatibleBitmapRootRenderTarget->Clear({color.r, color.g, color.b, color.a});
+	}
+
+#undef DrawText;
+
+	void PainterD2D::DrawText(Rect_t textRect, std::wstring text) {
+		auto textLayout = m_currentFont->GetFormattedTextLayout(text, {textRect.x, textRect.y, textRect.x + textRect.w, textRect.y + textRect.h});
+		//ID2D1Brush* br = 
+		m_compatibleBitmapRootRenderTarget->DrawTextLayout({ textRect.x, textRect.y }, textLayout.Get(), nullptr);
 	}
 
 }

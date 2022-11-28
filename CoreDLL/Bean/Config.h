@@ -16,7 +16,13 @@
 namespace Nk {
 	using Coord_t = float;	//Describes pixels values
 	using Rect_t = struct { Coord_t x; Coord_t y; Coord_t w; Coord_t h; };
-	using Color_t = struct { float r; float g; float b; float a; };
+	using Color_t = struct { 
+		float r; float g; float b; float a;
+		bool operator==(const Color_t& color) {
+			//return color.r == r;
+			return false;
+		}
+	};
 }
 
 #endif	//#ifndef CONFIG_CORE_DLL

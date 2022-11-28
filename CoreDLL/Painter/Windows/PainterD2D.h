@@ -2,9 +2,12 @@
 #define PAINTER_D2D_OS_GUI_DLL
 
 #include "../IPainter.h"
+#include "../Font/Windows/FontD2D.h"
+#include "../Brush/Windows/BrushD2D.h"
 #include <Windows.h>
 #include <wrl.h>
 #include <d2d1.h>
+#include <vector>
 
 namespace Nk {
 
@@ -13,8 +16,20 @@ namespace Nk {
 	class PainterD2D final: public IPainter {
 	public:
 		PainterD2D(HWND hWnd, PainterD2D* parentPainter);
+		~PainterD2D() override;
 
 		void ClearTarget(const Color_t& color) override;
+
+		IFont* CreateFontObject() override;
+
+		void SetFont(IFont*) override;
+
+		void DrawText(Rect_t textRect, std::wstring text) override;
+
+		IBrush* CreateBrushObject(const Color_t& color) override;
+		void SetTextBrush(IBrush* brush) = 0;
+		void SetBackgroundBrush(IBrush* brush) = 0;
+		void SetContureBrush(IBrush* brush) = 0;
 		
 	protected:
 		void Resize(UINT32 w, UINT32 h) override;
@@ -32,6 +47,7 @@ namespace Nk {
 		ComPtr<ID2D1RenderTarget> GetRootParentRenderTarget();
 		bool IsRootBeginDrawCalled();
 
+		//Configs
 		const int DPI_X = 96;
 		const int DPI_Y = 96;
 		HWND m_hWnd;
@@ -43,12 +59,20 @@ namespace Nk {
 		PAINTSTRUCT m_paintStructure;
 		bool m_isBeginCallActive = false;
 
-		//Coord_t m_xChildOffset;
-		//Coord_t m_yChildOffset;
+		//Drawing configs
 		Rect_t m_rootClientRect;
 		Rect_t m_bitmapRect;
-		//ComPtr<ID2D1RenderTarget> m_currentRenderTarget;
 
+		std::vector<FontD2D*> m_createdFonts;
+		static FontD2D m_defaultFontObject;
+		std::vector<BrushD2D*> m_createdBrushes;
+		BrushD2D* m_defaultBrushObject;
+
+		//Drawing tools
+		FontD2D* m_currentFont;
+		BrushD2D* m_textBrush;
+		BrushD2D* m_backgroundBrush;
+		BrushD2D* m_contureBrush;
 	};
 }
 
