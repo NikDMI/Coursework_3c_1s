@@ -6,6 +6,7 @@ namespace Nk {
 	bool Settings::m_isComInit = false;
 	ComPtr<ID2D1Factory> Settings::m_d2d1Factory;
 	ComPtr<IDWriteFactory> Settings::m_dWriteFactory;
+	ComPtr<IWICImagingFactory> Settings::m_wicImagingFactory;
 
 
 	void Settings::InitComInterfaces() {
@@ -40,6 +41,17 @@ namespace Nk {
 			}
 		}
 		return m_dWriteFactory;
+	}
+
+
+	ComPtr<IWICImagingFactory> Settings::GetWicImagingFactory() {
+		if (m_wicImagingFactory == nullptr) {
+			HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(m_wicImagingFactory.GetAddressOf()));
+			if (!SUCCEEDED(hr)) {
+				throw Exception{ "WICFactory: bad alloc" };
+			}
+		}
+		return m_wicImagingFactory;
 	}
 
 

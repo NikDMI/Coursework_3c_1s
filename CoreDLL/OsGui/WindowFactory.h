@@ -15,8 +15,7 @@ namespace Nk {
 		/*
 		* Creates phisical window in the system
 		*/
-		CLASS_METHOD static IWindow* CreateWindow(Widget* widget, OsType osType, WindowType windowType,
-			PainterType painterType, IWindow* parent);
+		CLASS_METHOD static IWindow* CreateWindow(Widget* widget, WindowType windowType, IWindow* parent);
 
 		//сделать очередь созданных окон для удаления в конце программы
 

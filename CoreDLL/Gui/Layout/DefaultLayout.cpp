@@ -19,14 +19,24 @@ namespace Nk {
 	}
 
 
+	void DefaultLayout::RemoveWidget(Widget* widget) {
+		auto iterWidget = std::find(m_layoutWidgets.begin(), m_layoutWidgets.end(), widget);
+		if (iterWidget == m_layoutWidgets.end()) {
+			throw Exception{"Layout doesn't contain this widget"};
+		}
+		m_layoutWidgets.erase(iterWidget);
+	}
+
+
 	void DefaultLayout::ClearLayout() {
 		m_layoutWidgets.clear();
 	}
 
 
-	void DefaultLayout::DrawLayout() {
+	void DefaultLayout::ComputeWidgetsPositions() {
 
 	}
+
 
 
 	DefaultLayout::~DefaultLayout() {

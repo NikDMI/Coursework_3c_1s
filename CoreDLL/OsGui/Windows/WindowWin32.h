@@ -56,8 +56,8 @@ namespace Nk {
 		bool m_isVisible = false;
 		Coord_t m_x = 0;
 		Coord_t m_y = 0;
-		Coord_t m_width = 100;
-		Coord_t m_height = 100;
+		Coord_t m_width = 0;
+		Coord_t m_height = 0;
 
 		IPainter* m_windowPainter;
 		WindowWin32* m_parentWindow = nullptr;

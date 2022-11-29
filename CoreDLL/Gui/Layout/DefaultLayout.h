@@ -9,13 +9,15 @@ namespace Nk {
 	/*
 	* Itrerface of widgets layout
 	*/
-	class DefaultLayout:public ILayout {
+	class DefaultLayout: public ILayout {
 	public:
 		/*
 		* Add widget to the layout
 		*/
 		void AddWidget(Widget* widget) override;
 		void AddWidgets(const std::list<Widget*>& widgets) override;
+
+		void RemoveWidget(Widget* widget) override;
 
 		/*
 		* Erase all controlled widgets of layout
@@ -25,7 +27,8 @@ namespace Nk {
 		/*
 		* Draw layout widgets
 		*/
-		void DrawLayout() override;
+		void ComputeWidgetsPositions() override;
+
 
 		~DefaultLayout() override;
 

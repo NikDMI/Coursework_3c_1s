@@ -4,6 +4,8 @@
 #include <d2d1.h>
 #include <wrl.h>
 #include <dwrite.h>
+#include <wincodec.h>
+
 
 namespace Nk {
 
@@ -24,12 +26,15 @@ namespace Nk {
 
 		static ComPtr<IDWriteFactory> GetDWriteFactory();
 
+		static ComPtr<IWICImagingFactory> GetWicImagingFactory();
+
 		static void Dispose();
 
 	private:
 		static bool m_isComInit;
 		static ComPtr<ID2D1Factory> m_d2d1Factory;
 		static ComPtr<IDWriteFactory> m_dWriteFactory;
+		static ComPtr<IWICImagingFactory> m_wicImagingFactory;
 	};
 }
 

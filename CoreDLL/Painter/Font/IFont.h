@@ -13,11 +13,14 @@ namespace Nk {
 
 		virtual ~IFont() {};
 
-		virtual void SetSizeInPt(int sizeInPt) = 0;
-		virtual void SetSizeInPixels(int sizeInPixels) = 0;
-		virtual void SetFamily(std::wstring familyName) = 0;
-		virtual void SetHorizontalAlignment(HorizontalAlignment alignment) = 0;
-		virtual void SetVerticalAlignment(VerticalAlignment alignment) = 0;
+		/*
+		* <return>Themself to use pattern Builder</return>
+		*/
+		virtual IFont* SetSizeInPt(int sizeInPt) = 0;
+		virtual IFont* SetSizeInPixels(int sizeInPixels) = 0;
+		virtual IFont* SetFamily(std::wstring familyName) = 0;
+		virtual IFont* SetHorizontalAlignment(HorizontalAlignment alignment) = 0;
+		virtual IFont* SetVerticalAlignment(VerticalAlignment alignment) = 0;
 		
 
 		//virtual FLOAT GetTextMaxHeight(const std::wstring& text, FLOAT maxWidth) = 0;

@@ -5,15 +5,15 @@
 #include "Font/IFont.h"
 #include "Brush/IBrush.h"
 #include <Windows.h>
+#include "../Application/NkApplication.h"
+#include "../Tools/Bitmap/IBitmap.h"
 
 namespace Nk {
 
 #undef DrawText
 
-	/*
-	* Types of painters (hardware dependency)
-	*/
-	enum class PainterType { Common, DirectX };
+	
+	//enum class PainterType 
 
 	/*
 	* This interface reperesents abstraction of phisical painter device in different OS
@@ -41,7 +41,7 @@ namespace Nk {
 		* Display text in corresponding recrangle
 		* All text settings was configured in the font object
 		*/
-		CLASS_METHOD virtual void DrawText(Rect_t textRect, std::wstring text) = 0;
+		CLASS_METHOD virtual void DrawText(Rect_t textRect, const std::wstring& text) = 0;
 
 
 		/*
@@ -69,6 +69,11 @@ namespace Nk {
 		CLASS_METHOD virtual void SetContureBrush(IBrush* brush) = 0;
 
 
+		/*
+		* This method create corresponding version of IBitmap
+		* Can be used by CORE elements
+		*/
+		virtual IBitmap* CreateBitmapObject() = 0;
 
 
 	protected:

@@ -4,6 +4,7 @@
 #include "../../Bean/Settings.h"
 #include "../../Bean/Exception.h"
 #include "../Font/Windows/FontD2D.h"
+#include "../../Tools/Bitmap/Windows/WicBitmap.h"
 #include <algorithm>
 #include <fstream>
 
@@ -43,13 +44,16 @@ namespace Nk {
 				m_hWndRenderTarget.GetAddressOf())) != S_OK) {
 				throw Exception{ "Can't create hwnd render target" };
 			}
-			m_currentFont = &this->m_defaultFontObject;
-			//Brushes
-			m_defaultBrushObject = new BrushD2D{ m_hWndRenderTarget, {0,0,0,1} };
-			m_textBrush = m_defaultBrushObject;
-			m_backgroundBrush = m_defaultBrushObject;
-			m_contureBrush = m_defaultBrushObject;
 		}
+		else {
+			m_hWndRenderTarget = parentPainter->m_hWndRenderTarget;
+		}
+		m_currentFont = &this->m_defaultFontObject;
+		//Brushes
+		m_defaultBrushObject = new BrushD2D{ m_hWndRenderTarget, {0,0,0,1} };
+		m_textBrush = m_defaultBrushObject;
+		m_backgroundBrush = m_defaultBrushObject;
+		m_contureBrush = m_defaultBrushObject;
 	}
 
 
@@ -64,6 +68,10 @@ namespace Nk {
 	}
 
 	////////////////////////////////////////////////////   SYSTEM METHODS
+
+	IBitmap* PainterD2D::CreateBitmapObject() {
+		return new WicBitmap{ m_hWndRenderTarget };
+	}
 
 
 	IFont* PainterD2D::CreateFontObject() {
@@ -155,9 +163,12 @@ namespace Nk {
 		else {
 			m_hWndRenderTarget->BeginDraw();
 			//D2D1_RECT_F destRect = { m_clipRect.x, m_clipRect.y, m_clipRect.w, m_clipRect.h };
-			D2D1_RECT_F destRect = { m_rootClientRect.x, m_rootClientRect.y, m_rootClientRect.x + m_rootClientRect.w, m_rootClientRect.y + m_rootClientRect.h };
-			D2D1_RECT_F bmpRect = { m_bitmapRect.x, m_bitmapRect.y, m_bitmapRect.x + m_bitmapRect.w, m_bitmapRect.y + m_bitmapRect.h };
-			m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
+			D2D1_SIZE_F bufSize = m_bufferBitmap->GetSize();
+			D2D1_RECT_F bufRect = { 0, 0, bufSize.width, bufSize.height };
+			//D2D1_RECT_F destRect = { m_rootClientRect.x, m_rootClientRect.y, m_rootClientRect.x + m_rootClientRect.w, m_rootClientRect.y + m_rootClientRect.h };
+			//D2D1_RECT_F bmpRect = { m_bitmapRect.x, m_bitmapRect.y, m_bitmapRect.x + m_bitmapRect.w, m_bitmapRect.y + m_bitmapRect.h };
+			//m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
+			m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), bufRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bufRect);
 			m_hWndRenderTarget->EndDraw();
 			::EndPaint(m_hWnd, &m_paintStructure);
 		}
@@ -242,10 +253,10 @@ namespace Nk {
 
 #undef DrawText;
 
-	void PainterD2D::DrawText(Rect_t textRect, std::wstring text) {
+	void PainterD2D::DrawText(Rect_t textRect, const std::wstring& text) {
 		auto textLayout = m_currentFont->GetFormattedTextLayout(text, {textRect.x, textRect.y, textRect.x + textRect.w, textRect.y + textRect.h});
 		//ID2D1Brush* br = 
-		m_compatibleBitmapRootRenderTarget->DrawTextLayout({ textRect.x, textRect.y }, textLayout.Get(), nullptr);
+		m_compatibleBitmapRootRenderTarget->DrawTextLayout({ textRect.x, textRect.y }, textLayout.Get(), m_textBrush->GetD2D1Brush().Get());
 	}
 
 }

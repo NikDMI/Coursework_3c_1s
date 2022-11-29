@@ -121,6 +121,36 @@
     <Filter Include="Файлы заголовков\Painter\Brush\Windows">
       <UniqueIdentifier>{65251e48-d76a-49a4-9fca-ec1973fd0ec6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls">
+      <UniqueIdentifier>{bd0290a6-904a-440f-9003-e7ae51ae9482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls\Label">
+      <UniqueIdentifier>{df91e4c6-e9a9-43f9-832b-5bda65911855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls">
+      <UniqueIdentifier>{5a5ff128-147b-4d7f-9369-9759a3e080a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls\Label">
+      <UniqueIdentifier>{089edb6d-84ac-443e-8ddd-e4be3fb6f123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tools">
+      <UniqueIdentifier>{bc67ad25-5ba3-4b4a-9244-1b1d6a8f1755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tools\Bitmap">
+      <UniqueIdentifier>{546bacb2-3ee5-4c01-9c8a-bd71f088dff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tools\Bitmap\Windows">
+      <UniqueIdentifier>{a9c50bef-0a3e-4215-a42d-4076ac374068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools">
+      <UniqueIdentifier>{ad86cd00-08b7-4c61-87bc-8d335f61fbdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools\Bitmap">
+      <UniqueIdentifier>{a4d98805-7a91-4017-8701-6be23943624f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools\Bitmap\Windows">
+      <UniqueIdentifier>{58dbafd3-5c74-4619-9b0e-8d0d49f9475c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -173,6 +203,18 @@
     </ClCompile>
     <ClCompile Include="Painter\Brush\Windows\BrushD2D.cpp">
       <Filter>Исходные файлы\Painter\Brush\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Label\ILabel.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Label\Label.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Bitmap\IBitmap.cpp">
+      <Filter>Исходные файлы\Tools\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Bitmap\Windows\WicBitmap.cpp">
+      <Filter>Исходные файлы\Tools\Bitmap\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +292,21 @@
     </ClInclude>
     <ClInclude Include="Painter\Brush\Windows\BrushD2D.h">
       <Filter>Файлы заголовков\Painter\Brush\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Label\ILabel.h">
+      <Filter>Файлы заголовков\Gui\Controls\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Label\Label.h">
+      <Filter>Файлы заголовков\Gui\Controls\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\ITextElement.h">
+      <Filter>Файлы заголовков\Gui\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Bitmap\IBitmap.h">
+      <Filter>Файлы заголовков\Tools\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Bitmap\Windows\WicBitmap.h">
+      <Filter>Файлы заголовков\Tools\Bitmap\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

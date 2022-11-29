@@ -7,7 +7,16 @@
 #include "../Bean/Config.h"
 
 
+
 namespace Nk {
+
+	/*
+	* Types of painters (hardware dependency)
+	*/
+	enum class PainterType { Common, DirectX };
+
+	enum class OsType { Windows, Linux };;
+
 
 	/*
 	* Represent configurations of the application
@@ -40,12 +49,21 @@ namespace Nk {
 		* Send stop message to the loop
 		*/
 		CLASS_METHOD void StopLoop();
+
+		OsType GetOsType();
+
+		PainterType GetPainterType();
+
 	private:
 
 		static NkApplication* m_nkApplication;	//Singelton
 		HANDLE m_guiThread;	//Gui thread (for message queue)
 		IEventManager* m_eventManager;
 		ISystemManager* m_systemManager;
+
+		//Config params
+		OsType m_osType;
+		PainterType m_painterType;
 
 		static volatile LONG m_isActiveThread;
 		static DWORD m_guiThreadId;

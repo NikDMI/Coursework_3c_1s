@@ -35,8 +35,9 @@ namespace Nk {
 		m_widgetLayout = new DefaultLayout{};
 		//Create window
 		IWindow* parentWindow = parent == nullptr ? nullptr : parent->m_windowOs;
-		m_windowOs = WindowFactory::CreateWindow(this, OsType::Windows, WindowType::OVERLAPPED_WINDOW, 
-			PainterType::DirectX, parentWindow);
+		m_windowOs = WindowFactory::CreateWindow(this, WindowType::OVERLAPPED_WINDOW, parentWindow);
+		m_defaultLayout = new DefaultLayout{};
+		m_widgetLayout = m_defaultLayout;
 	}
 
 	Widget::Widget(Widget* widget) :Widget{widget, { 0.7, 0.7, 0.7, 1.0 } } {
@@ -51,6 +52,7 @@ namespace Nk {
 		}
 		delete m_windowOs;
 		delete m_widgetLayout;
+		delete m_defaultLayout;
 		DeleteCriticalSection(&m_drawLockObject);
 	}
 
@@ -59,6 +61,9 @@ namespace Nk {
 			throw Exception{"Can't register child window twice"};
 		}
 		m_childWidgetList.push_back(childWidget);
+		if (m_widgetLayout == m_defaultLayout) {
+			m_widgetLayout->AddWidget(childWidget);
+		}
 	}
 
 
@@ -68,23 +73,50 @@ namespace Nk {
 			throw Exception{ "No such child widget" };
 		}
 		m_childWidgetList.erase(childWidgetIter);
+		if (m_widgetLayout == m_defaultLayout) {
+			m_widgetLayout->RemoveWidget(childWidget);
+		}
+	}
+
+
+	void Widget::SetWindowDrawProc(WindowDrawProc drawProc) {
+		if (drawProc == nullptr) {
+			throw Exception {"Nullptr argument"};
+		}
+		EnterCriticalSection(&m_drawLockObject);
+		m_userDrawProc = drawProc;
+		LeaveCriticalSection(&m_drawLockObject);
+	}
+
+
+	IPainter* Widget::GetPainter() {
+		return m_windowOs->GetPainter();
+	}
+
+
+	Rect_t Widget::GetWidgetClientRect() {
+		return { m_x, m_y, m_w, m_h };
 	}
 
 	/////////////////////////////////////////////////////////////Graphics methods
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
-		m_windowOs->SetWindowGeometry(x, y, w, h);
 		EnterCriticalSection(&m_drawLockObject);
+		m_windowOs->SetWindowGeometry(x, y, w, h);
 		m_x = x; m_y = y; m_w = w; m_h = h;
+		m_isBackBufferActive = false;
+		m_isNeedTotalRedraw = true;
 		LeaveCriticalSection(&m_drawLockObject);
-		this->Repaint();
+		//this->Repaint();
 	}
 
 
 	void Widget::ShowWindow() {
 		if (!m_isVisible) {
+			EnterCriticalSection(&m_drawLockObject);
 			m_windowOs->ShowWindow();
 			m_isVisible = true;
+			LeaveCriticalSection(&m_drawLockObject);
 			this->Repaint();
 		}
 		for (auto child : m_childWidgetList) {
@@ -95,39 +127,49 @@ namespace Nk {
 
 	void Widget::HideWindow() {
 		if (m_isVisible) {
+			EnterCriticalSection(&m_drawLockObject);
 			m_windowOs->HideWindow();
 			m_isVisible = false;
+			LeaveCriticalSection(&m_drawLockObject);
 			this->Repaint();
 		}
 	}
 
 
 	void Widget::SetBackgroundColor(Color_t bkColor) {
+		EnterCriticalSection(&m_drawLockObject);
 		m_backgroundColor = bkColor;
+		LeaveCriticalSection(&m_drawLockObject);
 	}
 
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
 	void Widget::OnRepaintWindow(void* widget) {	//Event from the system (like WM_PAINT) - try redraw buffer
 		Widget* senderWidget = (Widget*)widget;
+		EnterCriticalSection(&senderWidget->m_drawLockObject);
 		if (senderWidget->m_parentWidget == nullptr) { //Repaint only root elements
 			senderWidget->m_windowOs->DrawWindow();
 		}
+		LeaveCriticalSection(&senderWidget->m_drawLockObject);
 	}
 
 
 	void Widget::OnDrawWindow(void* widget) {	//Need redraw the window
 		Widget* senderWidget = (Widget*)widget;
 		EnterCriticalSection(&senderWidget->m_drawLockObject);
+		senderWidget->m_widgetLayout->ComputeWidgetsPositions();
 		senderWidget->m_windowOs->BeginDrawWindowBuffer();
 		senderWidget->m_userDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());	//Call user draw proc
 		for (auto child : senderWidget->m_childWidgetList) {
 			if (child->m_isVisible) {
+				EnterCriticalSection(&child->m_drawLockObject);
 				if (!senderWidget->m_isNeedTotalRedraw && child->m_isBackBufferActive) {
 					child->m_windowOs->DrawWindow();
+					LeaveCriticalSection(&child->m_drawLockObject);
 				}
 				else {
 					if (senderWidget->m_isNeedTotalRedraw) child->m_isNeedTotalRedraw = true;
+					LeaveCriticalSection(&child->m_drawLockObject);
 					OnDrawWindow(child);
 				}
 			}
@@ -140,18 +182,24 @@ namespace Nk {
 
 
 	void Widget::Repaint() {
-		EnterCriticalSection(&m_drawLockObject);
-		m_isNeedTotalRedraw = true;
-		m_isBackBufferActive = false;
+		//this vector can help avoid deadlocks
+		vector<Widget*> widgetChain{ this };
 		Widget* currentWidget = this;
 		while (currentWidget->m_parentWidget != nullptr) {
 			currentWidget = currentWidget->m_parentWidget;
-			EnterCriticalSection(&currentWidget->m_drawLockObject);
-			currentWidget->m_isBackBufferActive = false;
-			LeaveCriticalSection(&currentWidget->m_drawLockObject);
+			widgetChain.push_back(currentWidget);
 		}
-		LeaveCriticalSection(&m_drawLockObject);
-		//currentWidget->SendRepaintEvent();
+		EnterCriticalSection(&currentWidget->m_drawLockObject);
+		currentWidget->m_isBackBufferActive = false;
+		if (currentWidget == this) currentWidget->m_isNeedTotalRedraw = true;
+		auto iter = widgetChain.rbegin();
+		while (++iter != widgetChain.rend()) {
+			EnterCriticalSection(&(*iter)->m_drawLockObject);
+			(*iter)->m_isBackBufferActive = false;
+			if (*iter == this) (*iter)->m_isNeedTotalRedraw = true;
+			LeaveCriticalSection(&(*iter)->m_drawLockObject);
+		}
+		LeaveCriticalSection(&currentWidget->m_drawLockObject);
 		OnDrawWindow(currentWidget);
 	}
 

@@ -4,6 +4,9 @@
 #include "../Bean/Exception.h"
 #include "../Core/EventManager/EventManagerFactory.h"
 #include "../SystemManager/Windows/WindowsSystemManager.h"
+#include "../Painter/IPainter.h"
+#include "../OsGui/IWindow.h"
+#include "../Tools/Bitmap/IBitmap.h"
 
 namespace Nk {
 
@@ -27,6 +30,10 @@ namespace Nk {
 			//Create gui thread
 			m_isActiveThread = 1;
 			m_guiThreadId = GetCurrentThreadId();
+
+			m_osType = OsType::Windows;//*****NOW THIS VALUES GET DEFAULT *******
+			m_painterType = PainterType::DirectX;
+
 			//m_guiThread = CreateThread(NULL, 0, GuiThread, NULL, 0, NULL);
 			//if (m_guiThread == INVALID_HANDLE_VALUE) {
 			//	throw Exception{ "Can't craete gui thread" };
@@ -87,6 +94,16 @@ namespace Nk {
 	}
 
 
+	OsType NkApplication::GetOsType() {
+		return m_osType;
+	}
+
+
+	PainterType NkApplication::GetPainterType() {
+		return m_painterType;
+	}
+
+
 	NkApplication::~NkApplication() {
 		//TerminateThread(m_guiThread, 0);
 		NkApplication::m_isActiveThread = 0;	//Thread safety(because gui thread only read this data)
@@ -94,6 +111,7 @@ namespace Nk {
 		//CloseHandle(m_guiThread);
 		delete m_eventManager;
 		delete m_systemManager;
+		IBitmap::FreeBitmaps();
 	}
 
 

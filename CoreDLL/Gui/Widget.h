@@ -4,12 +4,14 @@
 #include "../Core/Object.h"
 #include "../Bean/Config.h"
 #include "../OsGui/IWindow.h"
+//#include "Layout/DefaultLayout.h"
 #include <vector>
 #include <list>
 
 namespace Nk {
 
 	class ILayout;
+	class DefaultLayout;
 
 	using WindowDrawProc = void (PROC_CALL*)(Widget* widget, IPainter* painter);
 
@@ -38,6 +40,13 @@ namespace Nk {
 
 		CLASS_METHOD void SetBackgroundColor(Color_t bkColor);
 
+		CLASS_METHOD void SetWindowDrawProc(WindowDrawProc drawProc);
+
+		CLASS_METHOD IPainter* GetPainter();
+
+		CLASS_METHOD Rect_t GetWidgetClientRect();
+
+
 		void SendRepaintEvent();
 
 
@@ -48,8 +57,10 @@ namespace Nk {
 		*/
 		CLASS_METHOD EventIndex GetEventIndex(Events eventType) const;
 
-	protected:
-		static void BasicDrawProc(Widget* widget, IPainter* painter);
+		/*
+		* Basic options of drawing (can be used in user draw proc)
+		*/
+		CLASS_METHOD static void BasicDrawProc(Widget* widget, IPainter* painter);
 
 	private:
 		void AddChildWidget(Widget* childWidget);
@@ -64,6 +75,8 @@ namespace Nk {
 		volatile bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
 
 		//Helper objects
+		
+		DefaultLayout* m_defaultLayout = nullptr;
 		ILayout* m_widgetLayout = nullptr;
 		CRITICAL_SECTION m_drawLockObject;
 

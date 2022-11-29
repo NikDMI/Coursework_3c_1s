@@ -18,11 +18,11 @@ namespace Nk {
 		FontD2D(const std::wstring& fontFamily, FLOAT fontSize);
 		FontD2D();
 
-		void SetSizeInPt(int sizeInPt) override;
-		void SetSizeInPixels(int sizeInPixels) override;
-		void SetFamily(std::wstring familyName) override;
-		void SetHorizontalAlignment(HorizontalAlignment alignment) override;
-		void SetVerticalAlignment(VerticalAlignment alignment) override;
+		IFont* SetSizeInPt(int sizeInPt) override;
+		IFont* SetSizeInPixels(int sizeInPixels) override;
+		IFont* SetFamily(std::wstring familyName) override;
+		IFont* SetHorizontalAlignment(HorizontalAlignment alignment) override;
+		IFont* SetVerticalAlignment(VerticalAlignment alignment) override;
 
 		//FLOAT GetTextMaxHeight(const std::wstring& text, FLOAT maxWidth) override;
 

@@ -33,34 +33,37 @@ namespace Nk {
 			DWORD errCode = GetLastError();
 			throw Exception{"Can't crete text format"};
 		}
-		m_textFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_EMERGENCY_BREAK); //Breaks big words
+		m_textFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WHOLE_WORD); //Breaks big words
 		m_textFormat->SetTextAlignment(m_textAlignment);
 		m_textFormat->SetParagraphAlignment(m_textVerticalAlignment);
 	}
 
 
-	void FontD2D::SetSizeInPt(int sizeInPt) {
+	IFont* FontD2D::SetSizeInPt(int sizeInPt) {
 		//m_textFormat->
+		return this;
 	}
 
 
-	void FontD2D::SetSizeInPixels(int sizeInPixels) {
+	IFont* FontD2D::SetSizeInPixels(int sizeInPixels) {
 		if (m_fontSize != sizeInPixels) {
 			m_fontSize = sizeInPixels;
 			m_changedFontStates |= StateFontFlags::fontSize;
 		}
+		return this;
 	}
 
 
-	void FontD2D::SetFamily(std::wstring familyName) {
+	IFont* FontD2D::SetFamily(std::wstring familyName) {
 		if (familyName != m_fontFamily) {
 			m_fontFamily = familyName;
 			m_changedFontStates |= StateFontFlags::fontFamily;
 		}
+		return this;
 	}
 
 
-	void FontD2D::SetHorizontalAlignment(HorizontalAlignment alignment) {
+	IFont* FontD2D::SetHorizontalAlignment(HorizontalAlignment alignment) {
 		DWRITE_TEXT_ALIGNMENT userAlignment;
 		switch (alignment) {
 		case HorizontalAlignment::TRAILING:
@@ -79,10 +82,11 @@ namespace Nk {
 			m_textAlignment = userAlignment;
 			m_textFormat->SetTextAlignment(userAlignment);
 		}
+		return this;
 	}
 
 
-	void FontD2D::SetVerticalAlignment(VerticalAlignment alignment) {
+	IFont* FontD2D::SetVerticalAlignment(VerticalAlignment alignment) {
 		DWRITE_PARAGRAPH_ALIGNMENT userVerticalAlignment;
 		switch (alignment) {
 		case VerticalAlignment::TOP:
@@ -101,6 +105,7 @@ namespace Nk {
 			m_textVerticalAlignment = userVerticalAlignment;
 			m_textFormat->SetParagraphAlignment(userVerticalAlignment);
 		}
+		return this;
 	}
 
 

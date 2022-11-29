@@ -24,7 +24,9 @@ namespace Nk {
 
 		void SetFont(IFont*) override;
 
-		void DrawText(Rect_t textRect, std::wstring text) override;
+		void DrawText(Rect_t textRect, const std::wstring& text) override;
+
+		IBitmap* CreateBitmapObject() override;
 
 		IBrush* CreateBrushObject(const Color_t& color) override;
 		void SetTextBrush(IBrush* brush) override;

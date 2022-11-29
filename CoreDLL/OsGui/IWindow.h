@@ -12,7 +12,7 @@ namespace Nk {
 	*/
 	enum class WindowType {PLAIN_WINDOW, OVERLAPPED_WINDOW};
 
-	enum class OsType { Windows, Linux };
+	//enum class OsType { Windows, Linux };
 
 	/*
 	* This interface reperesents abstraction of phisical windows in different OS

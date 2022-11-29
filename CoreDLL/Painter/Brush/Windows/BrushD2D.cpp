@@ -26,4 +26,9 @@ namespace Nk {
 	void BrushD2D::SetColor(Color_t color) {
 		CreateColorBrush(color);
 	}
+
+
+	ComPtr<ID2D1Brush> BrushD2D::GetD2D1Brush() {
+		return m_currentBrush;
+	}
 }

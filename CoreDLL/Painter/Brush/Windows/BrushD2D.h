@@ -16,6 +16,8 @@ namespace Nk {
 		~BrushD2D() override;
 		void SetColor(Color_t color) override;
 
+		ComPtr<ID2D1Brush> GetD2D1Brush();
+
 	private:
 		void CreateColorBrush(Color_t color);
 
