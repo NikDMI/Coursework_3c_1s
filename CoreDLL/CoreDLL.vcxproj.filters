@@ -151,6 +151,18 @@
     <Filter Include="Исходные файлы\Tools\Bitmap\Windows">
       <UniqueIdentifier>{58dbafd3-5c74-4619-9b0e-8d0d49f9475c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Tools\Cursor">
+      <UniqueIdentifier>{70ed4ab6-415c-4700-8d8b-43a17accf07d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools\Cursor">
+      <UniqueIdentifier>{45b80927-3288-41dc-aa7e-9bcc272fab20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls\Caption">
+      <UniqueIdentifier>{86b8a390-dfbb-4f9d-ac3b-81c6c2735e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls\Caption">
+      <UniqueIdentifier>{1033453d-4407-4edd-a3ad-d2ce7e51f8ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -215,6 +227,15 @@
     </ClCompile>
     <ClCompile Include="Tools\Bitmap\Windows\WicBitmap.cpp">
       <Filter>Исходные файлы\Tools\Bitmap\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Cursor\ICursor.cpp">
+      <Filter>Исходные файлы\Tools\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Caption</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Caption\ICaption.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Caption</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +328,15 @@
     </ClInclude>
     <ClInclude Include="Tools\Bitmap\Windows\WicBitmap.h">
       <Filter>Файлы заголовков\Tools\Bitmap\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Cursor\ICursor.h">
+      <Filter>Файлы заголовков\Tools\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Caption\ICaption.h">
+      <Filter>Файлы заголовков\Gui\Controls\Caption</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Caption\MainCaption.h">
+      <Filter>Файлы заголовков\Gui\Controls\Caption</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

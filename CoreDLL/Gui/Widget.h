@@ -21,7 +21,7 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class Widget: public Object {
 	public:
-		enum Events: int {ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_RDOWN, _LAST_};
+		enum Events: int {ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_};
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -31,6 +31,9 @@ namespace Nk {
 		* Set size and position of the window
 		*/
 		CLASS_METHOD void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h);
+
+		CLASS_METHOD void OffsetWindow(Coord_t dx, Coord_t dy);
+
 
 		CLASS_METHOD void ShowWindow();
 
@@ -46,8 +49,18 @@ namespace Nk {
 
 		CLASS_METHOD Rect_t GetWidgetClientRect();
 
+		/*
+		* All mouse events go throught this control
+		*/
+		CLASS_METHOD void SetMouseCapture();
+
+		CLASS_METHOD void ReleaseMouseCapture();
+
+		CLASS_METHOD Widget* GetParentWidget();
+
 
 		void SendRepaintEvent();
+
 
 
 		//CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
@@ -75,7 +88,6 @@ namespace Nk {
 		volatile bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
 
 		//Helper objects
-		
 		DefaultLayout* m_defaultLayout = nullptr;
 		ILayout* m_widgetLayout = nullptr;
 		CRITICAL_SECTION m_drawLockObject;
@@ -100,6 +112,9 @@ namespace Nk {
 
 		//event indexes on basic gui events
 		std::vector<EventIndex> m_correspondingEventIndexes;
+
+		//global data
+		static Widget* m_captureWidget;
 	};
 }
 

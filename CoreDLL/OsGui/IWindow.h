@@ -66,6 +66,10 @@ namespace Nk {
 		*/
 		virtual void RefreshWindow() = 0;
 
+		virtual void SetMouseCapture() = 0;
+
+		virtual void ReleaseMouseCapture() = 0;
+
 	protected:
 		WindowType m_windowType;
 		PainterType m_painterType;

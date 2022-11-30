@@ -45,6 +45,11 @@ namespace Nk {
 		Rect_t GetParentClipRect(Rect_t& rootClipRect) override;
 
 		~WindowWin32() override;
+
+		void SetMouseCapture() override;
+
+		void ReleaseMouseCapture() override;
+
 	private:
 		void RegisterWindowClass();
 

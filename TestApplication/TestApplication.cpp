@@ -9,10 +9,14 @@
 #include "../CoreDLL/OsGui/Windows/WindowWin32.h"
 #include "../CoreDLL/Gui/Controls/Label/Label.h"
 #include "../CoreDLL/Tools/Bitmap/IBitmap.h"
+#include "../CoreDLL/Tools/Cursor/ICursor.h"
+#include "../CoreDLL/Gui/Controls/Caption/MainCaption.h"
 
 #include <string>
 
 #pragma comment(lib,"CoreDLL.lib")
+
+void PROC_CALL OnMouseMove2(void* params);
 
 using namespace Nk;
 
@@ -24,6 +28,7 @@ Widget* widget = nullptr;
 Widget* widget3 = nullptr;
 Label* lbl;
 IBitmap* bmp;
+MainCaption* caption;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -43,6 +48,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	lbl->SetWindowGeometry(200, 200, 300, 300);
 	bmp = IBitmap::LoadBitmap(L"1.jpg");
 	lbl->ShowWindow();
+	lbl->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove2 });
+	caption = new MainCaption{widget, L"Hello"};
+	caption->SetBackgroundColor({ 0.5, 0.3, 0.6, 1.0 });
+	caption->GetElementFont()->SetSizeInPixels(20);
+	caption->ShowWindow();
+
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
@@ -83,4 +94,22 @@ void PROC_CALL OnMouseMove(void* params) {
 	lbl->SetText(L"Coords: x = " + std::to_wstring(ms->xCoord_Px) + L" y = " + std::to_wstring(ms->xCoord_Px));
 	lbl->Repaint();
 	widget3->Repaint();
+}
+
+static Point_t lastGlobalCoord;
+bool isCapture = false;
+
+void PROC_CALL OnMouseMove2(void* params) {
+	MouseStructure* ms = (MouseStructure*)params;
+	if (!isCapture) {
+		isCapture = true;
+		lbl->SetMouseCapture();
+		lastGlobalCoord = ICursor::GetGlobalMouseCoord();
+	}
+	else {
+		Point_t p = ICursor::GetGlobalMouseCoord();
+		Coord_t dx = p.x - lastGlobalCoord.x;
+		Coord_t dy = p.y - lastGlobalCoord.y;
+		lastGlobalCoord = p;
+	}
 }

@@ -10,9 +10,12 @@
 namespace Nk {
 	using namespace std;
 
+	Widget* Widget::m_captureWidget = nullptr;
+
+
 	const ClassId Widget::m_classId = Object::RegisterNewClass("Gui::Widget");
 	const char* Widget::EventsNames[Events::_LAST_] = { "Core_Repaint_Window_Buffer", "Core_Draw_Window_Buffer",
-		"Core_OnMouseMove", "Core_OnMouseRDown"};
+		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp" };
 
 
 
@@ -98,6 +101,31 @@ namespace Nk {
 		return { m_x, m_y, m_w, m_h };
 	}
 
+
+	void Widget::SetMouseCapture() {
+		if (m_captureWidget == nullptr) {
+			m_captureWidget = this;
+			m_windowOs->SetMouseCapture();
+		}
+		else {
+			throw Exception{"Only one window can be captured"};
+		}
+	}
+
+
+	void Widget::ReleaseMouseCapture() {
+		if (m_captureWidget == nullptr) {
+			throw Exception{ "There is no captured window" };
+		}
+		m_captureWidget = nullptr;
+		m_windowOs->ReleaseMouseCapture();
+	}
+
+
+	Widget* Widget::GetParentWidget() {
+		return m_parentWidget;
+	}
+
 	/////////////////////////////////////////////////////////////Graphics methods
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
@@ -108,6 +136,15 @@ namespace Nk {
 		m_isNeedTotalRedraw = true;
 		LeaveCriticalSection(&m_drawLockObject);
 		//this->Repaint();
+	}
+
+
+	void Widget::OffsetWindow(Coord_t dx, Coord_t dy) {
+		EnterCriticalSection(&m_drawLockObject);
+		m_x += dx;
+		m_y += dy;
+		m_windowOs->SetWindowGeometry(m_x, m_y, m_w, m_h);
+		LeaveCriticalSection(&m_drawLockObject);
 	}
 
 

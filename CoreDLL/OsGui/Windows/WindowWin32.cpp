@@ -78,21 +78,6 @@ namespace Nk {
 			return { 0, 0, m_width, m_height };
 		}
 		Rect_t parentRect = m_parentWindow->GetRootClientRect();
-		/*
-		if (m_x > parentRect.w || m_y > parentRect.h) {
-			return { 0, 0, 0, 0 };
-		}
-		if (m_x > 0) {
-			parentRect.x += m_x;
-			parentRect.w -= m_x;
-		}
-		if (m_y > 0) {
-			parentRect.y += m_y;
-			parentRect.h -= m_y;
-		}
-		if (m_width < parentRect.w) parentRect.w = m_width;
-		if (m_height < parentRect.h) parentRect.h = m_height;
-		*/
 		parentRect.x += m_x;
 		parentRect.y += m_y;
 		parentRect.w = parentRect.x + m_width;
@@ -189,6 +174,16 @@ namespace Nk {
 	}
 
 
+	void WindowWin32::SetMouseCapture() {
+		SetCapture(m_hWnd);
+	}
+
+
+	void WindowWin32::ReleaseMouseCapture() {
+		ReleaseCapture();
+	}
+
+
 	void WindowWin32::RegisterWindowClass() {
 		if (!m_isRegisterWindowClass) {
 			static WNDCLASSEX wc;
@@ -229,9 +224,19 @@ namespace Nk {
 		switch (uMsg) {
 
 		case WM_MOUSEMOVE:
-			mouseStructure = { LOWORD(lParam), HIWORD(lParam) };
+			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
 			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), &mouseStructure);
 			//Get address of the static var (it's save, because my gui loop garantee, that after pushing event it wiil be processed)
+			break;
+
+		case WM_LBUTTONDOWN:
+			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_LDOWN), &mouseStructure);
+			break;
+
+		case WM_LBUTTONUP:
+			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_LUP), &mouseStructure);
 			break;
 
 		case WM_PAINT:

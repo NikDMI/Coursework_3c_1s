@@ -3,12 +3,14 @@
 
 #include <numeric>
 #include <Windows.h>
+#include "../Widget.h"
 
 namespace Nk {
 
 	struct MouseStructure {
 		int32_t xCoord_Px;
 		int32_t yCoord_Px;
+		Widget* sender;
 	};
 }
 

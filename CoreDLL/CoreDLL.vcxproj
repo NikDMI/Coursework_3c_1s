@@ -161,6 +161,8 @@
     <ClCompile Include="Core\EventManager\QueueEventManager.cpp" />
     <ClCompile Include="Core\Object.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Gui\Controls\Caption\ICaption.cpp" />
+    <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
     <ClCompile Include="Gui\Layout\DefaultLayout.cpp" />
@@ -174,6 +176,7 @@
     <ClCompile Include="SystemManager\Windows\WindowsSystemManager.cpp" />
     <ClCompile Include="Tools\Bitmap\IBitmap.cpp" />
     <ClCompile Include="Tools\Bitmap\Windows\WicBitmap.cpp" />
+    <ClCompile Include="Tools\Cursor\ICursor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\NkApplication.h" />
@@ -185,6 +188,8 @@
     <ClInclude Include="Core\EventManager\IEventManager.h" />
     <ClInclude Include="Core\EventManager\QueueEventManager.h" />
     <ClInclude Include="Core\Object.h" />
+    <ClInclude Include="Gui\Controls\Caption\ICaption.h" />
+    <ClInclude Include="Gui\Controls\Caption\MainCaption.h" />
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />
@@ -206,6 +211,7 @@
     <ClInclude Include="SystemManager\Windows\WindowsSystemManager.h" />
     <ClInclude Include="Tools\Bitmap\IBitmap.h" />
     <ClInclude Include="Tools\Bitmap\Windows\WicBitmap.h" />
+    <ClInclude Include="Tools\Cursor\ICursor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
