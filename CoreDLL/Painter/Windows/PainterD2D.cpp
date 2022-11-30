@@ -69,10 +69,6 @@ namespace Nk {
 
 	////////////////////////////////////////////////////   SYSTEM METHODS
 
-	IBitmap* PainterD2D::CreateBitmapObject() {
-		return new WicBitmap{ m_hWndRenderTarget };
-	}
-
 
 	IFont* PainterD2D::CreateFontObject() {
 		FontD2D* newFont = new FontD2D{};
@@ -151,7 +147,7 @@ namespace Nk {
 
 	void PainterD2D::EndDraw() {
 		m_compatibleBitmapRootRenderTarget->EndDraw();
-		if (m_compatibleBitmapRootRenderTarget->GetBitmap(m_bufferBitmap.GetAddressOf()) != S_OK) {
+		if (m_compatibleBitmapRootRenderTarget->GetBitmap(m_bufferBitmap.ReleaseAndGetAddressOf()) != S_OK) {
 			throw Exception{};
 		}
 		if (m_parentPainter) {	//Child control
@@ -205,7 +201,7 @@ namespace Nk {
 				rootRenderTarget = m_hWndRenderTarget;
 			}
 			D2D_SIZE_F size{ m_renderTargetSize.width, m_renderTargetSize.height };
-			if (rootRenderTarget->CreateCompatibleRenderTarget(size, m_compatibleBitmapRootRenderTarget.GetAddressOf()) != S_OK) {
+			if (rootRenderTarget->CreateCompatibleRenderTarget(size, m_compatibleBitmapRootRenderTarget.ReleaseAndGetAddressOf()) != S_OK) {
 				throw Exception{ "Can't create back buffer" };
 			}
 		}
@@ -257,6 +253,15 @@ namespace Nk {
 		auto textLayout = m_currentFont->GetFormattedTextLayout(text, {textRect.x, textRect.y, textRect.x + textRect.w, textRect.y + textRect.h});
 		//ID2D1Brush* br = 
 		m_compatibleBitmapRootRenderTarget->DrawTextLayout({ textRect.x, textRect.y }, textLayout.Get(), m_textBrush->GetD2D1Brush().Get());
+	}
+
+
+	void PainterD2D::DrawBitmap(IBitmap* bitmap, Rect_t destRect) {
+		//IBitmap will be 100% WicBitmap type
+		WicBitmap* wicBitmap = (WicBitmap*)bitmap;
+		ComPtr<ID2D1Bitmap> d2d1Bitmap = wicBitmap->GetID2D1Bitmap(m_compatibleBitmapRootRenderTarget);//???
+		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
+		m_compatibleBitmapRootRenderTarget->DrawBitmap(d2d1Bitmap.Get(), destRectD2D);
 	}
 
 }

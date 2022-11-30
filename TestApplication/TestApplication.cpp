@@ -8,6 +8,7 @@
 #include "../CoreDLL/Gui/EventStructures/MouseStructure.h"
 #include "../CoreDLL/OsGui/Windows/WindowWin32.h"
 #include "../CoreDLL/Gui/Controls/Label/Label.h"
+#include "../CoreDLL/Tools/Bitmap/IBitmap.h"
 
 #include <string>
 
@@ -22,6 +23,7 @@ DWORD WINAPI LogicThread(LPVOID);
 Widget* widget = nullptr;
 Widget* widget3 = nullptr;
 Label* lbl;
+IBitmap* bmp;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -35,9 +37,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	widget->ShowWindow();
 	widget->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
 	lbl = new Label(L"Test text", widget);
-	lbl->GetElementFont()->SetSizeInPixels(30);
+	lbl->GetElementFont()->SetSizeInPixels(30)->SetHorizontalAlignment(IFont::HorizontalAlignment::CENTER)->
+		SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 	lbl->SetBackgroundColor({ 0.7, 0.4, 0.6, 1.0 });
 	lbl->SetWindowGeometry(200, 200, 300, 300);
+	bmp = IBitmap::LoadBitmap(L"1.jpg");
 	lbl->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
@@ -67,6 +71,7 @@ int y = 0;
 void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter) {
 	Widget::BasicDrawProc(widget, painter);
 	painter->DrawText({ 0,0,100,100 }, L"x = " + std::to_wstring(x)+L" y = "+std::to_wstring(y));
+	painter->DrawBitmap(bmp, { 20,20,50,50 });
 }
 
 void PROC_CALL OnMouseMove(void* params) {

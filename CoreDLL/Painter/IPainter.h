@@ -70,10 +70,9 @@ namespace Nk {
 
 
 		/*
-		* This method create corresponding version of IBitmap
-		* Can be used by CORE elements
+		* Draws specialized bitmap in the rectangle
 		*/
-		virtual IBitmap* CreateBitmapObject() = 0;
+		CLASS_METHOD virtual void DrawBitmap(IBitmap* bitmap, Rect_t destRect) = 0;
 
 
 	protected:

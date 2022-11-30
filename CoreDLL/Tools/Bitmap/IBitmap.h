@@ -6,6 +6,7 @@
 #include <string>
 
 namespace Nk {
+#undef LoadBitmap
 
 	/*
 	* Represent abstraction of bitmaps in different formats
@@ -14,7 +15,6 @@ namespace Nk {
 	CLASS_PARAMS class IBitmap {
 	public:
 
-		IBitmap();
 
 		virtual ~IBitmap() {};
 
@@ -23,14 +23,15 @@ namespace Nk {
 		*/
 		CLASS_METHOD static IBitmap* LoadBitmap(const std::wstring& imagePath);
 
-		static void FreeBitmaps();
-
-	protected:
-
 		/*
 		* Innter method of different bitmap loaders
 		*/
-		virtual void LoadBitmapFromFile_(const std::wstring& fileName) = 0;
+		CLASS_METHOD virtual void LoadBitmapFromFile (const std::wstring& fileName) = 0;
+
+		static void FreeBitmaps();
+
+	protected:
+		IBitmap();
 
 	private:
 		static std::vector<IBitmap*> m_loadedBitmaps;

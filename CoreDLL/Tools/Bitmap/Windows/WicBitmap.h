@@ -6,6 +6,7 @@
 #include <wrl.h>
 #include <string>
 #include <wincodec.h>
+#include <map>
 
 
 namespace Nk {
@@ -16,9 +17,12 @@ namespace Nk {
 
 		~WicBitmap() override;
 
-	protected:
+		/*
+		* Returns bitmap to correspondence d2d1RenderTarget
+		*/
+		Microsoft::WRL::ComPtr<ID2D1Bitmap> GetID2D1Bitmap(Microsoft::WRL::ComPtr<ID2D1RenderTarget> renderTarget);
 
-		void LoadBitmapFromFile_(const std::wstring& fileName) override;
+		CLASS_METHOD void LoadBitmapFromFile (const std::wstring& fileName) override;
 
 	private:
 
@@ -31,6 +35,11 @@ namespace Nk {
 		Microsoft::WRL::ComPtr<IWICBitmapDecoder> m_bitmapDecoder;
 		Microsoft::WRL::ComPtr<ID2D1Bitmap> m_bitmapD2D;
 		std::wstring m_pictureFileName;
+
+		/*
+		* This map create correspondece between render target and phisical bitmap
+		*/
+		std::map<ID2D1RenderTarget*, Microsoft::WRL::ComPtr<ID2D1Bitmap>> m_correspondenceBitmaps;
 
 	};
 }

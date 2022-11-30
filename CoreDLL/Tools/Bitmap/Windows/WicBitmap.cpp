@@ -10,7 +10,7 @@ namespace Nk {
 
 
 	WicBitmap::WicBitmap(ComPtr<ID2D1RenderTarget> renderTarget) : m_renderTarget{renderTarget} {
-
+		//LoadBitmapFromFile(fileName);
 	}
 
 	WicBitmap::~WicBitmap() {
@@ -18,18 +18,43 @@ namespace Nk {
 	}
 
 
-	void WicBitmap::LoadBitmapFromFile_(const std::wstring& fileName) {
+	void WicBitmap::LoadBitmapFromFile(const std::wstring& fileName) {
 		if (fileName == m_pictureFileName) {
 			return;
 		}
+		m_bitmapD2D = nullptr;
+		m_correspondenceBitmaps.clear();	//clear cache of bitmaps
 		ComPtr<IWICImagingFactory> imagingFactory = Settings::GetWicImagingFactory();
-		//ComPtr<IWICBitmapDecoder> bmpDecoder;
 		//Create image decoder
 		HRESULT hr = imagingFactory->CreateDecoderFromFilename(fileName.c_str(), NULL, GENERIC_READ,
 			WICDecodeMetadataCacheOnLoad, m_bitmapDecoder.GetAddressOf());
 		if (!SUCCEEDED(hr)) {
 			throw Exception {"Can't create image decoder"};
 		}
+	}
+
+
+	ComPtr<ID2D1Bitmap> WicBitmap::GetID2D1Bitmap(ComPtr<ID2D1RenderTarget> renderTarget) {
+		if (m_renderTarget == renderTarget && m_bitmapD2D != nullptr) {
+			return m_bitmapD2D;
+		}
+		m_renderTarget = renderTarget;
+		if (m_bitmapD2D == nullptr) {//If render targert wasn't set later
+			CreatePhisicalBitmap();
+			m_correspondenceBitmaps.insert({ renderTarget.Get(), m_bitmapD2D });
+		}
+		else {
+			//Try get bitmap from cache
+			auto iterBitmap = m_correspondenceBitmaps.find(renderTarget.Get());
+			if (iterBitmap != m_correspondenceBitmaps.end()) {
+				m_bitmapD2D = (*iterBitmap).second;
+			}
+			else {
+				CreatePhisicalBitmap();
+				m_correspondenceBitmaps.insert({ renderTarget.Get(), m_bitmapD2D });
+			}
+		}
+		return m_bitmapD2D;
 	}
 
 

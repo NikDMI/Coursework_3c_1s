@@ -14,11 +14,13 @@ namespace Nk {
 	}
 
 	IBitmap* IBitmap::LoadBitmap(const std::wstring& imagePath) {
+		IBitmap* createdBitmap = nullptr;
 		switch (NkApplication::GetNkApplication()->GetPainterType()) {
 		case PainterType::DirectX:
-			return new WicBitmap{};
+			createdBitmap = new WicBitmap{};
 		}
-		return nullptr;
+		createdBitmap->LoadBitmapFromFile(imagePath);
+		return createdBitmap;
 	}
 
 
