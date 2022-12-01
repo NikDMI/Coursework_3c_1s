@@ -12,8 +12,6 @@ namespace Nk {
 	public:
 		CLASS_METHOD MainCaption(Widget* parent, const std::wstring& caption);
 
-		CLASS_METHOD IFont* GetElementFont() override;
-
 		~MainCaption() override {};
 
 	private:
@@ -23,7 +21,6 @@ namespace Nk {
 		Coord_t m_xTextOffset = 20;
 		Coord_t m_yTextOffset = 10;
 		Widget* m_parentWidget;
-		IFont* m_Font;
 
 		Point_t m_lastCursorPosition;
 		bool m_isCaptured = false;

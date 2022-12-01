@@ -163,6 +163,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Controls\Caption\ICaption.cpp" />
     <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp" />
+    <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
     <ClCompile Include="Gui\Layout\DefaultLayout.cpp" />

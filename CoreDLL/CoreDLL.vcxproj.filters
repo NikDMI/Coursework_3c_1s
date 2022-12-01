@@ -237,6 +237,9 @@
     <ClCompile Include="Gui\Controls\Caption\ICaption.cpp">
       <Filter>Исходные файлы\Gui\Controls\Caption</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\ITextElement.cpp">
+      <Filter>Исходные файлы\Gui\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">

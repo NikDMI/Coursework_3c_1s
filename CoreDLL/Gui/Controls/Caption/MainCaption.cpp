@@ -14,9 +14,7 @@ namespace Nk {
 		//Basic configs
 		int width = m_parentWidget == nullptr ? DEFAULT_CAPTION_WIDTH : m_parentWidget->GetWidgetClientRect().w;
 		this->SetWindowGeometry(0, 0, width, DEFAULT_CAPTION_HEIGHT);
-		m_Font = GetPainter()->CreateFontObject();
-		m_Font->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
-		GetPainter()->SetFont(m_Font);
+		m_elementFont->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 		this->SetWindowDrawProc(CaptionDrawProc);
 		//Events
 		m_eventHandler->AddEventHandler(GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
@@ -24,10 +22,6 @@ namespace Nk {
 		m_eventHandler->AddEventHandler(GetEventIndex(Widget::Events::ON_MOUSE_LUP), { OnMouseUp });
 	}
 
-
-	IFont* MainCaption::GetElementFont() {
-		return m_Font;
-	}
 
 
 	void PROC_CALL OnMouseDown(void* params) {
@@ -69,6 +63,6 @@ namespace Nk {
 		Rect_t capRect = caption->GetWidgetClientRect();
 		capRect.x = caption->m_xTextOffset;
 		//labelRect.y = caption->m_yTextOffset;
-		painter->DrawText(capRect, caption->m_captionText);
+		painter->DrawText(capRect, caption->m_elementText);
 	}
 }

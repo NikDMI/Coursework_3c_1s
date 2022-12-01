@@ -2,12 +2,8 @@
 
 namespace Nk {
 
-	ILabel::ILabel(Widget* parent) :Widget{parent} {
+	ILabel::ILabel(Widget* parent) :Widget{ parent }, ITextElement{ this } {
 
-	}
-
-	void ILabel::SetText(const std::wstring& userText) noexcept {
-		m_labelText = userText;
 	}
 
 }

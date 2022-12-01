@@ -2,14 +2,7 @@
 
 namespace Nk {
 
-	ICaption::ICaption(Widget* parent, const std::wstring& text) :Widget{parent} {
-		//Widget* parent = 
-		this->SetText(text);
-	}
-
-
-	void ICaption::SetText(const std::wstring& caption) noexcept {
-		this->m_captionText = caption;
+	ICaption::ICaption(Widget* parent, const std::wstring& text) :Widget{ parent }, ITextElement{this, text} {
 	}
 
 }

@@ -15,13 +15,12 @@ namespace Nk {
 		CLASS_METHOD Label(const std::wstring& labelText = {});
 
 
-		IFont* GetElementFont() override;
+		//IFont* GetElementFont() override;
 
 		~Label() override;
 
 	private:
 		IPainter* m_widgetPainter;
-		IFont* m_labelFont;
 
 		friend void LabelDrawProc(Widget* widget, IPainter* painter);
 	};

@@ -12,16 +12,9 @@ namespace Nk {
 	public:
 		ILabel(Widget* parent);
 
-		/*
-		* Sets text to label
-		*/
-		CLASS_METHOD void SetText(const std::wstring&) noexcept;
-
-
 		virtual ~ILabel() {};
 
 	protected:
-		std::wstring m_labelText;
 	};
 	
 }
