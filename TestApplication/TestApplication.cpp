@@ -35,9 +35,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	widget = new Widget{ nullptr, {0.8, 0.8, 0.8, 1.0} };
 	widget->SetWindowGeometry(300, 300, 1000, 500);
 	//widget->ShowWindow();
-	Widget* widget2 = new Widget(widget, {0.3, 0.4, 0.5, 0.6});
+	Widget* widget2 = new Widget(widget, {0.3, 0.4, 0.5, 0.5});
 	widget2->SetWindowGeometry(10, 10, 200, 200);
-	widget3 = new Widget(widget2, { 0.5, 0.9, 0.5, 0.0 });
+	widget3 = new Widget(widget2, { 0.5, 0.9, 0.5, 1.0 });
 	widget3->SetWindowGeometry(-50, -50, 100, 100);
 	widget->ShowWindow();
 	widget->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 		SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 	lbl->SetBackgroundColor({ 0.7, 0.4, 0.6, 1.0 });
 	lbl->SetWindowGeometry(200, 200, 300, 300);
-	bmp = IBitmap::LoadBitmap(L"1.jpg");
+	bmp = IBitmap::LoadBitmap(L"Picture.png");
 	lbl->ShowWindow();
 	lbl->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove2 });
 	caption = new MainCaption{widget, L"Hello"};
@@ -100,6 +100,7 @@ static Point_t lastGlobalCoord;
 bool isCapture = false;
 
 void PROC_CALL OnMouseMove2(void* params) {
+	/*
 	MouseStructure* ms = (MouseStructure*)params;
 	if (!isCapture) {
 		isCapture = true;
@@ -112,4 +113,5 @@ void PROC_CALL OnMouseMove2(void* params) {
 		Coord_t dy = p.y - lastGlobalCoord.y;
 		lastGlobalCoord = p;
 	}
+	*/
 }

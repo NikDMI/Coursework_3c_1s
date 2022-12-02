@@ -37,9 +37,10 @@ namespace Nk {
 		void Resize(UINT32 w, UINT32 h) override;
 		void CreateBuffer() override;
 		bool IsValidBackBuffer() override;
-		void BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) override;
+		//void BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) override;
+		void BeginDraw(const Rect_t& clientRect) override;
 		void EndDraw() override;
-		void DrawBufferBitmap(const Rect_t& rootClientRect, const Rect_t& bitmapRect) override;
+		void DrawBufferBitmap(const Rect_t& clientRect) override;
 
 
 	private:
@@ -47,6 +48,7 @@ namespace Nk {
 		* Get the most top parent's render target
 		*/
 		ComPtr<ID2D1RenderTarget> GetRootParentRenderTarget();
+		ComPtr<ID2D1RenderTarget> GetParentRenderTarget();
 		bool IsRootBeginDrawCalled();
 
 		/*
@@ -67,8 +69,9 @@ namespace Nk {
 		bool m_isBeginCallActive = false;
 
 		//Drawing configs
-		Rect_t m_rootClientRect;
-		Rect_t m_bitmapRect;
+		//Rect_t m_rootClientRect;
+		Rect_t m_clientRect;
+		//Rect_t m_bitmapRect;
 
 		std::vector<FontD2D*> m_createdFonts;
 		static FontD2D m_defaultFontObject;

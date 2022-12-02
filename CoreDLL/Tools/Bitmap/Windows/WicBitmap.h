@@ -24,6 +24,11 @@ namespace Nk {
 
 		CLASS_METHOD void LoadBitmapFromFile (const std::wstring& fileName) override;
 
+		/*
+		* Load bitmap from buffer stream
+		*/
+		void LoadBitmapFromStream(void* imageStream, long streamSize) override;
+
 	private:
 
 		/*

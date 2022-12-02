@@ -24,12 +24,36 @@ namespace Nk {
 		}
 		m_bitmapD2D = nullptr;
 		m_correspondenceBitmaps.clear();	//clear cache of bitmaps
+		m_pictureFileName = fileName;
 		ComPtr<IWICImagingFactory> imagingFactory = Settings::GetWicImagingFactory();
 		//Create image decoder
 		HRESULT hr = imagingFactory->CreateDecoderFromFilename(fileName.c_str(), NULL, GENERIC_READ,
 			WICDecodeMetadataCacheOnLoad, m_bitmapDecoder.GetAddressOf());
 		if (!SUCCEEDED(hr)) {
 			throw Exception {"Can't create image decoder"};
+		}
+	}
+
+
+	void WicBitmap::LoadBitmapFromStream(void* imageStream, long streamSize) {
+		m_pictureFileName = L"";
+		m_bitmapD2D = nullptr;
+		m_correspondenceBitmaps.clear();	//clear cache of bitmaps
+		//Create wicStream
+		ComPtr<IWICImagingFactory> wicFactory = Settings::GetWicImagingFactory();
+		ComPtr<IWICStream> wicStream;
+		HRESULT hr = wicFactory->CreateStream(wicStream.GetAddressOf());
+		if (!SUCCEEDED(hr)) {
+			throw Exception {"Can't create wicStream"};
+		}
+		//Init stream from memory
+		hr = wicStream->InitializeFromMemory((WICInProcPointer)imageStream, streamSize);
+		if (!SUCCEEDED(hr)) {
+			throw Exception{ "Can't read image stream" };
+		}
+		hr = wicFactory->CreateDecoderFromStream(wicStream.Get(), NULL, WICDecodeMetadataCacheOnLoad, m_bitmapDecoder.GetAddressOf());
+		if (!SUCCEEDED(hr)) {
+			throw Exception{ "Can't create bitmap decoder" };
 		}
 	}
 

@@ -150,7 +150,8 @@ namespace Nk {
 		if (m_windowPainter->IsValidBackBuffer()) {
 			auto clientRect = this->GetRootClientRect();
 			auto bmpRect = this->GetParentClipRect(clientRect);
-			m_windowPainter->DrawBufferBitmap(clientRect, bmpRect);
+			//m_windowPainter->DrawBufferBitmap(clientRect, bmpRect);
+			m_windowPainter->DrawBufferBitmap({ m_x, m_y, m_width, m_height });
 		}
 		else {
 			m_windowPainter->CreateBuffer();
@@ -165,7 +166,8 @@ namespace Nk {
 		auto clientRect = this->GetRootClientRect();
 		auto bmpRect = this->GetParentClipRect(clientRect);
 		//auto parentOffset = this->GetRootOffset();
-		m_windowPainter->BeginDraw(clientRect, bmpRect);
+		//m_windowPainter->BeginDraw(clientRect, bmpRect);
+		m_windowPainter->BeginDraw({m_x, m_y, m_width, m_height});
 	}
 
 	
@@ -199,6 +201,8 @@ namespace Nk {
 			wc.style = CS_HREDRAW | CS_VREDRAW;
 			RegisterClassEx(&wc);
 			m_isRegisterWindowClass = true;
+
+			
 		}
 	}
 
