@@ -27,6 +27,8 @@ namespace Nk {
 		void DrawText(Rect_t textRect, const std::wstring& text) override;
 
 		void DrawBitmap(IBitmap* bitmap, Rect_t destRect) override;
+		void FillRectangle(Rect_t destRect) override;
+
 
 		IBrush* CreateBrushObject(const Color_t& color) override;
 		void SetTextBrush(IBrush* brush) override;

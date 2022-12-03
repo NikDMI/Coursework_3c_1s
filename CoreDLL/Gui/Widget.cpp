@@ -6,6 +6,7 @@
 #include "../OsGui/WindowFactory.h"
 #include "Layout/DefaultLayout.h"
 #include "../Application/NkApplication.h"
+#include "EventStructures/MouseStructure.h"
 
 namespace Nk {
 	using namespace std;
@@ -24,12 +25,17 @@ namespace Nk {
 	{
 		InitializeCriticalSectionAndSpinCount(&m_drawLockObject, 2000);
 		//Register basic gui events
+		EventHandler* widgetEventHandler = GetEventHandler();
 		m_correspondingEventIndexes.resize((int)Events::_LAST_);
 		for (int i = 0; i < Events::_LAST_; ++i) {
-			m_correspondingEventIndexes[i] = Object::m_eventHandler->RegisterEvent(EventsNames[i]);
+			m_correspondingEventIndexes[i] = widgetEventHandler->RegisterEvent(EventsNames[i]);
 		}
-		m_eventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_REPAINT], { OnRepaintWindow, true });
-		m_eventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_DRAW], { OnDrawWindow, true });
+		//Set core events proc (user can't override this proc)
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_REPAINT], { OnRepaintWindow, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_DRAW], { OnDrawWindow, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_MOVE], { WidgetOnMouseMove, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LDOWN], { WidgetOnLMouseDown, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LUP], { WidgetOnLMouseUp, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -58,6 +64,7 @@ namespace Nk {
 		delete m_defaultLayout;
 		DeleteCriticalSection(&m_drawLockObject);
 	}
+
 
 	void Widget::AddChildWidget(Widget* childWidget) {
 		if (find(m_childWidgetList.cbegin(), m_childWidgetList.cend(), childWidget) != m_childWidgetList.end()) {
@@ -282,10 +289,13 @@ namespace Nk {
 	void Widget::SendRepaintEvent() {
 		m_windowOs->RefreshWindow();
 		NkApplication::GetEventManager()->PushEvent(this,
-			this->GetEventIndex(Widget::Events::ON_DRAW), this);
+			m_correspondingEventIndexes[Widget::Events::ON_DRAW], this);
 	}
 
 
+	/*
+	* Set configs at the start of the drawing
+	*/
 	void Widget::BeginBasicDrawProc(Widget* widget, IPainter* painter) {
 		painter->ClearTarget(widget->m_backgroundColor);
 		//Get viewport coord
@@ -325,4 +335,47 @@ namespace Nk {
 		}
 		return m_correspondingEventIndexes[eventType];
 	}
+
+	void Widget::SetCustomEvent(CustomEvents eventType, EventHandlerProc callback) {
+		if ((int)eventType < 0 || eventType >= CustomEvents::_LAST_) {
+			throw Exception { "Invalid event type" };
+		}
+		m_userEventCallbacks[(int)eventType] = callback;
+	}
+
+
+	////////////////////////////////////////////   BASIC EVENT HANDLERS
+
+	void PROC_CALL Widget::WidgetOnMouseMove(void* params) {
+		MouseStructure* mouseStructure = (MouseStructure*)params;
+		Widget* senderWidget = mouseStructure->sender;
+		//Call user callback function
+		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_MOVE];
+		if (userCallback) {
+			userCallback(params);
+		}
+	}
+
+
+	void PROC_CALL Widget::WidgetOnLMouseDown(void* params) {
+		MouseStructure* mouseStructure = (MouseStructure*)params;
+		Widget* senderWidget = mouseStructure->sender;
+		//Call user callback function
+		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LDOWN];
+		if (userCallback) {
+			userCallback(params);
+		}
+	}
+
+
+	void PROC_CALL Widget::WidgetOnLMouseUp(void* params) {
+		MouseStructure* mouseStructure = (MouseStructure*)params;
+		Widget* senderWidget = mouseStructure->sender;
+		//Call user callback function
+		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LUP];
+		if (userCallback) {
+			userCallback(params);
+		}
+	}
+
 }

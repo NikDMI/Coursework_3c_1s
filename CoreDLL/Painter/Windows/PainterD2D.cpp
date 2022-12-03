@@ -293,7 +293,6 @@ namespace Nk {
 
 	void PainterD2D::DrawText(Rect_t textRect, const std::wstring& text) {
 		auto textLayout = m_currentFont->GetFormattedTextLayout(text, {textRect.x, textRect.y, textRect.x + textRect.w, textRect.y + textRect.h});
-		//ID2D1Brush* br = 
 		m_compatibleBitmapRootRenderTarget->DrawTextLayout({ textRect.x, textRect.y }, textLayout.Get(), m_textBrush->GetD2D1Brush().Get());
 	}
 
@@ -304,6 +303,11 @@ namespace Nk {
 		ComPtr<ID2D1Bitmap> d2d1Bitmap = wicBitmap->GetID2D1Bitmap(m_compatibleBitmapRootRenderTarget);//???
 		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
 		m_compatibleBitmapRootRenderTarget->DrawBitmap(d2d1Bitmap.Get(), destRectD2D);
+	}
+
+	void PainterD2D::FillRectangle(Rect_t destRect) {
+		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
+		m_compatibleBitmapRootRenderTarget->FillRectangle(destRectD2D, m_backgroundBrush->GetD2D1Brush().Get());
 	}
 
 }

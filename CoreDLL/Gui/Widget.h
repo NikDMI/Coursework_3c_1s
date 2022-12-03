@@ -21,7 +21,8 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class Widget: public Object {
 	public:
-		enum Events: int {ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_};
+		//Represents events, that user can override
+		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_ };
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -71,14 +72,16 @@ namespace Nk {
 
 		//CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
 
-		/*
-		* Returns corresponding EventIndex on some action
-		*/
-		CLASS_METHOD EventIndex GetEventIndex(Events eventType) const;
+		//CLASS_METHOD EventHandler* GetEventHandler() override;
 
-		
+		/*
+		* Set user's callback to specialized event 
+		*/
+		CLASS_METHOD void SetCustomEvent(CustomEvents eventType, EventHandlerProc callback);
 
 	private:
+		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_ };
+
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
 
@@ -89,6 +92,11 @@ namespace Nk {
 		static void EndBasicDrawProc(Widget* widget, IPainter* painter);
 		static void CheckIsHeaderWidget(Widget* widget);
 		static void ResumeIfHeaderWidget(Widget* widget);
+
+		//Basic event functions
+		static void PROC_CALL WidgetOnMouseMove(void* params);
+		static void PROC_CALL WidgetOnLMouseDown(void* params);
+		static void PROC_CALL WidgetOnLMouseUp(void* params);
 
 		//Basic data
 		Widget* m_parentWidget;
@@ -127,9 +135,17 @@ namespace Nk {
 
 		//event indexes on basic gui events
 		std::vector<EventIndex> m_correspondingEventIndexes;
+		std::vector<EventHandlerProc> m_userEventCallbacks { (int)CustomEvents::_LAST_};
 
 		//global data
 		static Widget* m_captureWidget;
+
+		/*
+		* Returns corresponding EventIndex on some action
+		*/
+		CLASS_METHOD EventIndex GetEventIndex(Events eventType) const;
+
+		friend LRESULT CALLBACK Win32WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};
 }
 

@@ -11,6 +11,7 @@
 #include "../CoreDLL/Tools/Bitmap/IBitmap.h"
 #include "../CoreDLL/Tools/Cursor/ICursor.h"
 #include "../CoreDLL/Gui/Controls/Caption/MainCaption.h"
+#include "../CoreDLL/Painter/Brush/IBrush.h"
 
 #include <string>
 
@@ -39,7 +40,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	widget2->SetWindowGeometry(10, 10, 200, 200);
 	widget3 = new Widget(widget2, { 0.5, 0.9, 0.5, 1.0 });
 	widget3->SetWindowGeometry(-50, -50, 100, 100);
-	widget->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
+	widget->SetCustomEvent(Widget::CustomEvents::ON_MOUSE_MOVE, OnMouseMove);
 	lbl = new Label(L"Test text", widget);
 	lbl->GetElementFont()->SetSizeInPixels(30)->SetHorizontalAlignment(IFont::HorizontalAlignment::CENTER)->
 		SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
@@ -47,7 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	lbl->SetWindowGeometry(200, 200, 300, 300);
 	bmp = IBitmap::LoadBitmap(L"Picture.png");
 	lbl->ShowWindow();
-	lbl->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove2 });
+	lbl->SetCustomEvent(Widget::CustomEvents::ON_MOUSE_MOVE, OnMouseMove2);
 	caption = new MainCaption{widget, L"Hello"};
 	caption->SetBackgroundColor({ 0.5, 0.3, 0.6, 1.0 });
 	caption->GetElementFont()->SetSizeInPixels(20);
@@ -80,9 +81,14 @@ int x = 0;
 int y = 0;
 
 void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter) {
-	//Widget::BasicDrawProc(widget, painter);
+	static IBrush* bkBrush = painter->CreateBrushObject({ 0.5,0,0,1 });
 	painter->DrawText({ 0,0,100,100 }, L"x = " + std::to_wstring(x)+L" y = "+std::to_wstring(y));
 	painter->DrawBitmap(bmp, { 20,20,50,50 });
+	painter->SetBackgroundBrush(bkBrush);
+	bkBrush->SetColor({ 0.5,0,0,1 });
+	painter->FillRectangle({ 60,60,30,30 });
+	bkBrush->SetColor({ 0,0.5,0,1 });
+	painter->FillRectangle({ 80,80,30,30 });
 }
 
 void PROC_CALL OnMouseMove(void* params) {

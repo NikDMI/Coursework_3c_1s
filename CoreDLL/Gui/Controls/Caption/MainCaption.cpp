@@ -17,9 +17,9 @@ namespace Nk {
 		m_elementFont->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 		this->SetWindowDrawProc(CaptionDrawProc);
 		//Events
-		m_eventHandler->AddEventHandler(GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
-		m_eventHandler->AddEventHandler(GetEventIndex(Widget::Events::ON_MOUSE_LDOWN), { OnMouseDown });
-		m_eventHandler->AddEventHandler(GetEventIndex(Widget::Events::ON_MOUSE_LUP), { OnMouseUp });
+		SetCustomEvent(CustomEvents::ON_MOUSE_MOVE, OnMouseMove);
+		SetCustomEvent(CustomEvents::ON_MOUSE_LDOWN, OnMouseDown);
+		SetCustomEvent(CustomEvents::ON_MOUSE_LUP, OnMouseUp);
 	}
 
 

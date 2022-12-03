@@ -55,4 +55,9 @@ namespace Nk {
 		return m_currentFreeClassId++;
 	}
 
+
+	EventHandler* Object::GetEventHandler() {
+		return m_eventHandler;
+	}
+
 }

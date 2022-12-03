@@ -74,6 +74,13 @@ namespace Nk {
 		*/
 		CLASS_METHOD virtual void DrawBitmap(IBitmap* bitmap, Rect_t destRect) = 0;
 
+
+		/*
+		* Draws specialized rectangle
+		*/
+		CLASS_METHOD virtual void FillRectangle(Rect_t destRect) = 0;
+
+
 		/*
 		* Set the logical (0;0) point for user drawing
 		*/

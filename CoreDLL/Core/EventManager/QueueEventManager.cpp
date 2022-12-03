@@ -25,7 +25,7 @@ namespace Nk {
 		if (eventCount) {
 			EventInfo eventInfo = m_eventQueue.front();
 			m_eventQueue.pop_front();
-			eventInfo.reciever->m_eventHandler->ExecuteEvent(eventInfo.eventIndex, eventInfo.params);
+			eventInfo.reciever->GetEventHandler()->ExecuteEvent(eventInfo.eventIndex, eventInfo.params);
 			LeaveCriticalSection(&m_lockSection);
 			return eventCount - 1;
 		}

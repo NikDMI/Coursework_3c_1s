@@ -28,9 +28,18 @@ namespace Nk {
 		Object();
 		virtual ~Object();
 
+		/*
+		* Returns eventHandler
+		* Note: direved classes can override this method and throw exception (such as Widget)
+		*/
+		CLASS_METHOD EventHandler* GetEventHandler();
+
+	protected:
+		
+	private:
 		//EventHandler
 		EventHandler* m_eventHandler;
-	private:
+
 		//Registered classes in Object hierarcy
 		static std::unordered_map<std::string, ClassId> m_registeredClasses;
 		static ClassId m_currentFreeClassId;
