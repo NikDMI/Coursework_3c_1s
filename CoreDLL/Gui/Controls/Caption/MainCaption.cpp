@@ -32,12 +32,14 @@ namespace Nk {
 		caption->m_lastCursorPosition = ICursor::GetGlobalMouseCoord();
 	}
 
+
 	void PROC_CALL OnMouseUp(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		MainCaption* caption = (MainCaption*)mouseStructure->sender;
 		caption->ReleaseMouseCapture();
 		caption->m_isCaptured = false;
 	}
+
 
 	void PROC_CALL OnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;

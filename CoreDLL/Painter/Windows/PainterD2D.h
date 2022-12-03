@@ -28,6 +28,7 @@ namespace Nk {
 
 		void DrawBitmap(IBitmap* bitmap, Rect_t destRect) override;
 		void DrawGeometry(IGeometry* geometry) override;
+		void DrawRectangle(Rect_t destRect) override;
 		void FillRectangle(Rect_t destRect) override;
 
 
@@ -46,7 +47,7 @@ namespace Nk {
 		void BeginDraw(const Rect_t& clientRect) override;
 		void EndDraw() override;
 		void DrawBufferBitmap(const Rect_t& clientRect) override;
-
+		void SetPenWidth(float width) override;
 
 	private:
 		/*
@@ -95,6 +96,7 @@ namespace Nk {
 		BrushD2D* m_textBrush;
 		BrushD2D* m_backgroundBrush;
 		BrushD2D* m_contureBrush;
+		float m_penWidth = 1;
 	};
 }
 

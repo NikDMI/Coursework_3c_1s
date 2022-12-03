@@ -129,6 +129,14 @@ namespace Nk {
 	}
 
 
+	void PainterD2D::SetPenWidth(float width) {
+		if (width < 0) {
+			throw Exception{"Negative width value"};
+		}
+		m_penWidth = width;
+	}
+
+
 	void PainterD2D::SetNewAffineTransform() {
 		XMMATRIX transformMatrix;
 		transformMatrix = XMMatrixTranslation(m_viewportPoint.x, m_viewportPoint.y, 0);
@@ -309,6 +317,13 @@ namespace Nk {
 	void PainterD2D::FillRectangle(Rect_t destRect) {
 		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
 		m_compatibleBitmapRootRenderTarget->FillRectangle(destRectD2D, m_backgroundBrush->GetD2D1Brush().Get());
+	}
+
+
+	void PainterD2D::DrawRectangle(Rect_t destRect) {
+		FillRectangle(destRect);
+		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
+		m_compatibleBitmapRootRenderTarget->DrawRectangle(destRectD2D, m_contureBrush->GetD2D1Brush().Get(), m_penWidth);
 	}
 
 

@@ -16,7 +16,7 @@ namespace Nk {
 	void BrushD2D::CreateColorBrush(Color_t color){
 		if (!(m_currentColor == color)) {
 			D2D1_COLOR_F d2dColor{ color.r, color.g, color.b, color.a };
-			m_renderTarget->CreateSolidColorBrush(d2dColor, m_colorBrush.GetAddressOf());
+			m_renderTarget->CreateSolidColorBrush(d2dColor, m_colorBrush.ReleaseAndGetAddressOf());
 			m_currentColor = color;
 		}
 		m_currentBrush = m_colorBrush;

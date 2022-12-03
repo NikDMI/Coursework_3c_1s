@@ -81,6 +81,11 @@ namespace Nk {
 		*/
 		CLASS_METHOD virtual void FillRectangle(Rect_t destRect) = 0;
 
+		/*
+		* Draws specialized rectangle
+		*/
+		CLASS_METHOD virtual void DrawRectangle(Rect_t destRect) = 0;
+
 
 		/*
 		* Set the logical (0;0) point for user drawing
@@ -92,6 +97,9 @@ namespace Nk {
 		* Draws specialized bitmap in the rectangle
 		*/
 		CLASS_METHOD virtual void DrawGeometry(IGeometry* geometry) = 0;
+
+		CLASS_METHOD virtual void SetPenWidth(float width) = 0;
+
 
 		//SetTranslation()
 		//SetScaling()

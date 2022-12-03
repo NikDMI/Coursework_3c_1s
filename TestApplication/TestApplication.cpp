@@ -83,13 +83,16 @@ int y = 0;
 
 void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter) {
 	static IBrush* bkBrush = painter->CreateBrushObject({ 0.5,0,0,1 });
+	static IBrush* contureBrush = painter->CreateBrushObject({ 0.3,0.8,0.9,1 });
 	painter->DrawText({ 0,0,100,100 }, L"x = " + std::to_wstring(x)+L" y = "+std::to_wstring(y));
 	painter->DrawBitmap(bmp, { 20,20,50,50 });
 	painter->SetBackgroundBrush(bkBrush);
 	bkBrush->SetColor({ 0.5,0,0,1 });
 	painter->FillRectangle({ 60,60,30,30 });
 	bkBrush->SetColor({ 0,0.5,0,1 });
-	painter->FillRectangle({ 80,80,30,30 });
+	painter->SetContureBrush(contureBrush);
+	painter->SetPenWidth(3);
+	painter->DrawRectangle({ 80,80,30,30 });
 	static IGeometry* geometry = IGeometry::CreateGeometry();
 	bkBrush->SetColor({ 0,0.5,0.8,1 });
 	geometry->SetPolygone({ {30,30}, {40,40}, {40, 10}, {70,50} });
@@ -102,7 +105,7 @@ void PROC_CALL OnMouseMove(void* params) {
 	y = ms->yCoord_Px;
 	//widget3->SetWindowGeometry(00, 00, ms->xCoord_Px % 200, ms->yCoord_Px % 200);
 	widget->SetWindowGeometry(300, 300, ms->xCoord_Px + 100, ms->yCoord_Px + 100);
-	lbl->SetText(L"Coords: x = " + std::to_wstring(ms->xCoord_Px) + L" y = " + std::to_wstring(ms->xCoord_Px));
+	lbl->SetText(L"Coords: x = " + std::to_wstring(ms->xCoord_Px) + L" y = " + std::to_wstring(ms->yCoord_Px));
 	lbl->Repaint();
 	widget3->Repaint();
 }

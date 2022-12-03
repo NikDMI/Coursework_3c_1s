@@ -178,6 +178,18 @@
     <Filter Include="Файлы заголовков\Tools\IGeometry\Windows">
       <UniqueIdentifier>{f083a4b8-1cd7-43f1-b287-1d7836eca101}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Painter\Pen">
+      <UniqueIdentifier>{613e3d96-bbc0-4d34-bd62-ac8d1812a1f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Painter\Pen\Windows">
+      <UniqueIdentifier>{d6b8607a-e7fb-4e95-8829-8c27862061d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Pen">
+      <UniqueIdentifier>{5de7fa6f-a792-4597-9a4c-2496d9826eb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Painter\Pen\Windows">
+      <UniqueIdentifier>{822d2277-5207-4add-b174-9e8ec02159b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -260,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="Tools\IGeometry\Windows\GeometryD2D.cpp">
       <Filter>Исходные файлы\Tools\IGeometry\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Painter\Pen\Windows\PenD2D.cpp">
+      <Filter>Исходные файлы\Painter\Pen\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +385,12 @@
     </ClInclude>
     <ClInclude Include="Tools\IGeometry\Windows\GeometryD2D.h">
       <Filter>Файлы заголовков\Tools\IGeometry\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Pen\IPen.h">
+      <Filter>Файлы заголовков\Painter\Pen</Filter>
+    </ClInclude>
+    <ClInclude Include="Painter\Pen\Windows\PenD2D.h">
+      <Filter>Файлы заголовков\Painter\Pen\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
