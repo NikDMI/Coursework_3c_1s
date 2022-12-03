@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <DirectXMath.h>
+#include "../../Tools/IGeometry/Windows/GeometryD2D.h"
 
 #pragma comment(lib, "d2d1.lib")
 
@@ -308,6 +309,12 @@ namespace Nk {
 	void PainterD2D::FillRectangle(Rect_t destRect) {
 		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
 		m_compatibleBitmapRootRenderTarget->FillRectangle(destRectD2D, m_backgroundBrush->GetD2D1Brush().Get());
+	}
+
+
+	void PainterD2D::DrawGeometry(IGeometry* geometry) {
+		GeometryD2D* geometryD2D = (GeometryD2D*)geometry;
+		m_compatibleBitmapRootRenderTarget->FillGeometry(geometryD2D->GetGeometryD2D1().Get(), m_backgroundBrush->GetD2D1Brush().Get());
 	}
 
 }

@@ -163,6 +163,21 @@
     <Filter Include="Исходные файлы\Gui\Controls\Caption">
       <UniqueIdentifier>{1033453d-4407-4edd-a3ad-d2ce7e51f8ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Gui\Border">
+      <UniqueIdentifier>{450dfa20-5573-4f12-9223-1cf005cc0c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tools\IGeometry">
+      <UniqueIdentifier>{78658fb9-b42f-4073-8fa7-10319dd9d7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools\IGeometry">
+      <UniqueIdentifier>{b715371c-9aa4-4530-b2ce-8ca4bbc97d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Tools\IGeometry\Windows">
+      <UniqueIdentifier>{3f11d8ea-f202-41e6-a49b-f1e0bf78784f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tools\IGeometry\Windows">
+      <UniqueIdentifier>{f083a4b8-1cd7-43f1-b287-1d7836eca101}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -239,6 +254,12 @@
     </ClCompile>
     <ClCompile Include="Gui\Controls\ITextElement.cpp">
       <Filter>Исходные файлы\Gui\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\IGeometry\IGeometry.cpp">
+      <Filter>Исходные файлы\Tools\IGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\IGeometry\Windows\GeometryD2D.cpp">
+      <Filter>Исходные файлы\Tools\IGeometry\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +361,15 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\Caption\MainCaption.h">
       <Filter>Файлы заголовков\Gui\Controls\Caption</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Border\IBorder.h">
+      <Filter>Файлы заголовков\Gui\Border</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\IGeometry\IGeometry.h">
+      <Filter>Файлы заголовков\Tools\IGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\IGeometry\Windows\GeometryD2D.h">
+      <Filter>Файлы заголовков\Tools\IGeometry\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

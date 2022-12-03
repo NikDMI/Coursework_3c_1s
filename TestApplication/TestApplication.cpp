@@ -12,6 +12,7 @@
 #include "../CoreDLL/Tools/Cursor/ICursor.h"
 #include "../CoreDLL/Gui/Controls/Caption/MainCaption.h"
 #include "../CoreDLL/Painter/Brush/IBrush.h"
+#include "../CoreDLL/Tools/IGeometry/IGeometry.h"
 
 #include <string>
 
@@ -89,6 +90,10 @@ void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter) {
 	painter->FillRectangle({ 60,60,30,30 });
 	bkBrush->SetColor({ 0,0.5,0,1 });
 	painter->FillRectangle({ 80,80,30,30 });
+	static IGeometry* geometry = IGeometry::CreateGeometry();
+	bkBrush->SetColor({ 0,0.5,0.8,1 });
+	geometry->SetPolygone({ {30,30}, {40,40}, {40, 10}, {70,50} });
+	painter->DrawGeometry(geometry);
 }
 
 void PROC_CALL OnMouseMove(void* params) {

@@ -178,6 +178,8 @@
     <ClCompile Include="Tools\Bitmap\IBitmap.cpp" />
     <ClCompile Include="Tools\Bitmap\Windows\WicBitmap.cpp" />
     <ClCompile Include="Tools\Cursor\ICursor.cpp" />
+    <ClCompile Include="Tools\IGeometry\IGeometry.cpp" />
+    <ClCompile Include="Tools\IGeometry\Windows\GeometryD2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\NkApplication.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="Core\EventManager\IEventManager.h" />
     <ClInclude Include="Core\EventManager\QueueEventManager.h" />
     <ClInclude Include="Core\Object.h" />
+    <ClInclude Include="Gui\Border\IBorder.h" />
     <ClInclude Include="Gui\Controls\Caption\ICaption.h" />
     <ClInclude Include="Gui\Controls\Caption\MainCaption.h" />
     <ClInclude Include="Gui\Controls\ITextElement.h" />
@@ -213,6 +216,8 @@
     <ClInclude Include="Tools\Bitmap\IBitmap.h" />
     <ClInclude Include="Tools\Bitmap\Windows\WicBitmap.h" />
     <ClInclude Include="Tools\Cursor\ICursor.h" />
+    <ClInclude Include="Tools\IGeometry\IGeometry.h" />
+    <ClInclude Include="Tools\IGeometry\Windows\GeometryD2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include "../Application/NkApplication.h"
 #include "../Tools/Bitmap/IBitmap.h"
+#include "../Tools/IGeometry/IGeometry.h"
 
 namespace Nk {
 
@@ -85,6 +86,12 @@ namespace Nk {
 		* Set the logical (0;0) point for user drawing
 		*/
 		virtual void SetStartViewportPoint(Point_t viewportPoint) = 0;
+
+
+		/*
+		* Draws specialized bitmap in the rectangle
+		*/
+		CLASS_METHOD virtual void DrawGeometry(IGeometry* geometry) = 0;
 
 		//SetTranslation()
 		//SetScaling()
