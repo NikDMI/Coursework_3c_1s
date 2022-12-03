@@ -39,7 +39,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	widget2->SetWindowGeometry(10, 10, 200, 200);
 	widget3 = new Widget(widget2, { 0.5, 0.9, 0.5, 1.0 });
 	widget3->SetWindowGeometry(-50, -50, 100, 100);
-	widget->ShowWindow();
 	widget->m_eventHandler->AddEventHandler(widget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), { OnMouseMove });
 	lbl = new Label(L"Test text", widget);
 	lbl->GetElementFont()->SetSizeInPixels(30)->SetHorizontalAlignment(IFont::HorizontalAlignment::CENTER)->
@@ -53,7 +52,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	caption->SetBackgroundColor({ 0.5, 0.3, 0.6, 1.0 });
 	caption->GetElementFont()->SetSizeInPixels(20);
 	caption->ShowWindow();
-
+	widget->SetHeaderWidget(caption);
+	widget->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
@@ -80,7 +80,7 @@ int x = 0;
 int y = 0;
 
 void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter) {
-	Widget::BasicDrawProc(widget, painter);
+	//Widget::BasicDrawProc(widget, painter);
 	painter->DrawText({ 0,0,100,100 }, L"x = " + std::to_wstring(x)+L" y = "+std::to_wstring(y));
 	painter->DrawBitmap(bmp, { 20,20,50,50 });
 }

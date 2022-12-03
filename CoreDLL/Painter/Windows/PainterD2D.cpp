@@ -7,12 +7,14 @@
 #include "../../Tools/Bitmap/Windows/WicBitmap.h"
 #include <algorithm>
 #include <fstream>
+#include <DirectXMath.h>
 
 #pragma comment(lib, "d2d1.lib")
 
 namespace Nk {
 
 	using namespace Microsoft::WRL;
+	using namespace DirectX;
 
 	FontD2D PainterD2D::m_defaultFontObject;
 	//BrushD2D PainterD2D::m_defaultBrushObject;
@@ -120,6 +122,25 @@ namespace Nk {
 	}
 
 
+	void PainterD2D::SetStartViewportPoint(Point_t viewportPoint) {
+		m_viewportPoint = viewportPoint;
+		SetNewAffineTransform();
+	}
+
+
+	void PainterD2D::SetNewAffineTransform() {
+		XMMATRIX transformMatrix;
+		transformMatrix = XMMatrixTranslation(m_viewportPoint.x, m_viewportPoint.y, 0);
+		m_affineTransformationMatrix.m11 = transformMatrix.r[0].m128_f32[0];
+		m_affineTransformationMatrix.m12 = transformMatrix.r[0].m128_f32[1];
+		m_affineTransformationMatrix.m21 = transformMatrix.r[1].m128_f32[0];
+		m_affineTransformationMatrix.m22 = transformMatrix.r[1].m128_f32[1];
+		m_affineTransformationMatrix.dx = transformMatrix.r[3].m128_f32[0];
+		m_affineTransformationMatrix.dy = transformMatrix.r[3].m128_f32[1];
+		m_compatibleBitmapRootRenderTarget->SetTransform(m_affineTransformationMatrix);
+	}
+
+
 	////////////////////////////////////////////////////  CONFIG DRAWING METHODS
 
 	ComPtr<ID2D1RenderTarget> PainterD2D::GetRootParentRenderTarget() {
@@ -135,22 +156,6 @@ namespace Nk {
 		return m_parentPainter->m_compatibleBitmapRootRenderTarget;
 	}
 
-
-	/*
-	void PainterD2D::BeginDraw(const Rect_t& rootClientRect, const Rect_t& bitmapRect) {
-		m_rootClientRect = rootClientRect;
-		m_bitmapRect = bitmapRect;
-		if (m_compatibleBitmapRootRenderTarget == nullptr) {
-			CreateBuffer();
-		}
-		//Choose render target
-		if (m_parentPainter == nullptr) {
-			::BeginPaint(m_hWnd, &m_paintStructure);
-		}
-		m_compatibleBitmapRootRenderTarget->BeginDraw();
-		m_isBeginCallActive = true;
-	}
-	*/
 
 	void PainterD2D::BeginDraw(const Rect_t& clientRect) {
 		m_clientRect = clientRect;
@@ -172,22 +177,15 @@ namespace Nk {
 			throw Exception{};
 		}
 		if (m_parentPainter) {	//Child control
-			//auto rootRenderTarget = GetRootParentRenderTarget();
 			auto rootRenderTarget = GetParentRenderTarget();
-			//D2D1_RECT_F destRect = { m_rootClientRect.x, m_rootClientRect.y, m_rootClientRect.x + m_rootClientRect.w, m_rootClientRect.y + m_rootClientRect.h };
 			D2D1_RECT_F destRect = { m_clientRect.x, m_clientRect.y, m_clientRect.x + m_clientRect.w, m_clientRect.y + m_clientRect.h };
 			D2D1_RECT_F bmpRect = { 0, 0, m_renderTargetSize.width, m_renderTargetSize.height };
-			//D2D1_RECT_F bmpRect = { m_bitmapRect.x, m_bitmapRect.y, m_bitmapRect.x + m_bitmapRect.w, m_bitmapRect.y + m_bitmapRect.h };
 			rootRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
 		}
 		else {
 			m_hWndRenderTarget->BeginDraw();
-			//D2D1_RECT_F destRect = { m_clipRect.x, m_clipRect.y, m_clipRect.w, m_clipRect.h };
 			D2D1_SIZE_F bufSize = m_bufferBitmap->GetSize();
 			D2D1_RECT_F bufRect = { 0, 0, bufSize.width, bufSize.height };
-			//D2D1_RECT_F destRect = { m_rootClientRect.x, m_rootClientRect.y, m_rootClientRect.x + m_rootClientRect.w, m_rootClientRect.y + m_rootClientRect.h };
-			//D2D1_RECT_F bmpRect = { m_bitmapRect.x, m_bitmapRect.y, m_bitmapRect.x + m_bitmapRect.w, m_bitmapRect.y + m_bitmapRect.h };
-			//m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
 			m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), bufRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bufRect);
 			m_hWndRenderTarget->EndDraw();
 			::EndPaint(m_hWnd, &m_paintStructure);
@@ -266,11 +264,9 @@ namespace Nk {
 		auto hWndRenderTarget = this->GetRootParentRenderTarget();
 		bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
 		if (!isBeginDrawCalled) hWndRenderTarget->BeginDraw();
-		//D2D1_RECT_F bmpRect = { clipRect.x, clipRect.y, clipRect.w, clipRect.h };
+		//Draw buffer
 		D2D1_RECT_F destRect = { clientRect.x, clientRect.y, clientRect.x + clientRect.w, clientRect.y + clientRect.h };
 		D2D1_RECT_F bmpRect = { 0, 0, m_renderTargetSize.width, m_renderTargetSize.height };
-		//D2D1_RECT_F bmpRect = { m_bitmapRect.x, m_bitmapRect.y, m_bitmapRect.x + m_bitmapRect.w, m_bitmapRect.y + m_bitmapRect.h };
-		//hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), bmpRect);
 		hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
 		if (!isBeginDrawCalled) hWndRenderTarget->EndDraw();
 	}

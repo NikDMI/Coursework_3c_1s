@@ -74,6 +74,14 @@ namespace Nk {
 		*/
 		CLASS_METHOD virtual void DrawBitmap(IBitmap* bitmap, Rect_t destRect) = 0;
 
+		/*
+		* Set the logical (0;0) point for user drawing
+		*/
+		virtual void SetStartViewportPoint(Point_t viewportPoint) = 0;
+
+		//SetTranslation()
+		//SetScaling()
+		//SetRotation() - for user transformations
 
 	protected:
 		/*
@@ -99,6 +107,7 @@ namespace Nk {
 		virtual void DrawBufferBitmap(const Rect_t& clientRect) = 0;
 
 		virtual void EndDraw() = 0;
+
 
 		friend class WindowWin32;
 

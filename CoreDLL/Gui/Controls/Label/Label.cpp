@@ -21,7 +21,7 @@ namespace Nk {
 
 
 	void PROC_CALL LabelDrawProc(Widget* widget, IPainter* painter) {
-		Widget::BasicDrawProc(widget, painter);
+		//Widget::BasicDrawProc(widget, painter);
 		Label* label = (Label*)widget;
 		Rect_t labelRect = label->GetWidgetClientRect();
 		labelRect.x = 0; labelRect.y = 0;

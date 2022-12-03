@@ -32,6 +32,8 @@ namespace Nk {
 		void SetTextBrush(IBrush* brush) override;
 		void SetBackgroundBrush(IBrush* brush) override;
 		void SetContureBrush(IBrush* brush) override;
+
+		void SetStartViewportPoint(Point_t viewportPoint) override;
 		
 	protected:
 		void Resize(UINT32 w, UINT32 h) override;
@@ -56,6 +58,11 @@ namespace Nk {
 		*/
 		bool IsPainterBrush(IBrush* userBrush);
 
+		/*
+		* Sets affine transformation to render target
+		*/
+		void SetNewAffineTransform();
+
 		//Configs
 		const int DPI_X = 96;
 		const int DPI_Y = 96;
@@ -69,9 +76,11 @@ namespace Nk {
 		bool m_isBeginCallActive = false;
 
 		//Drawing configs
-		//Rect_t m_rootClientRect;
 		Rect_t m_clientRect;
-		//Rect_t m_bitmapRect;
+
+		//AffineTransform + viewPort (logical zero)
+		Point_t m_viewportPoint = {0, 0};
+		D2D1_MATRIX_3X2_F m_affineTransformationMatrix;
 
 		std::vector<FontD2D*> m_createdFonts;
 		static FontD2D m_defaultFontObject;

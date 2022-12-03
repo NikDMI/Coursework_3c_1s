@@ -58,7 +58,7 @@ namespace Nk {
 
 
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter) {
-		Widget::BasicDrawProc(widget, painter);
+		//Widget::BasicDrawProc(widget, painter);
 		MainCaption* caption = (MainCaption*)widget;
 		Rect_t capRect = caption->GetWidgetClientRect();
 		capRect.x = caption->m_xTextOffset;

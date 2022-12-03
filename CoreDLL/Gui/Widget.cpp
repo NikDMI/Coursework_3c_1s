@@ -19,7 +19,7 @@ namespace Nk {
 
 
 
-	Widget::Widget(Widget* parent, Color_t backgroundColor) :m_parentWidget{ parent }, m_userDrawProc{this->BasicDrawProc},
+	Widget::Widget(Widget* parent, Color_t backgroundColor) :m_parentWidget{ parent }, m_userDrawProc{nullptr},
 		m_backgroundColor{backgroundColor}
 	{
 		InitializeCriticalSectionAndSpinCount(&m_drawLockObject, 2000);
@@ -126,6 +126,15 @@ namespace Nk {
 		return m_parentWidget;
 	}
 
+
+	void Widget::SetHeaderWidget(Widget* headerWidget) {
+		auto iterWidget = std::find(m_childWidgetList.cbegin(), m_childWidgetList.cend(), headerWidget);
+		if (iterWidget == m_childWidgetList.cend()) {
+			throw Exception{ "Can't set header widget that is not a child" };
+		}
+		m_headerWidget = headerWidget;
+	}
+
 	/////////////////////////////////////////////////////////////Graphics methods
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
@@ -191,27 +200,55 @@ namespace Nk {
 	}
 
 
+	void Widget::CheckIsHeaderWidget(Widget* widget) {
+		Widget* parent = widget->m_parentWidget;
+		if (parent && widget == parent->m_headerWidget) {
+			static Point_t staticViewport = {};
+			parent->GetPainter()->SetStartViewportPoint(staticViewport);
+		}
+	}
+
+
+	void Widget::ResumeIfHeaderWidget(Widget* widget) {
+		Widget* parent = widget->m_parentWidget;
+		if (widget == parent->m_headerWidget) {
+			parent->GetPainter()->SetStartViewportPoint(parent->m_viewportPoint);
+		}
+	}
+
+
 	void Widget::OnDrawWindow(void* widget) {	//Need redraw the window
 		Widget* senderWidget = (Widget*)widget;
 		EnterCriticalSection(&senderWidget->m_drawLockObject);
 		senderWidget->m_widgetLayout->ComputeWidgetsPositions();
 		senderWidget->m_windowOs->BeginDrawWindowBuffer();
-		senderWidget->m_userDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());	//Call user draw proc
+		//DrawingProcess
+		BeginBasicDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());
+		if (senderWidget->m_userDrawProc) senderWidget->m_userDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());	//Call user draw proc
 		for (auto child : senderWidget->m_childWidgetList) {
 			if (child->m_isVisible) {
 				EnterCriticalSection(&child->m_drawLockObject);
 				if (!senderWidget->m_isNeedTotalRedraw && child->m_isBackBufferActive) {
+					//Check if this is header control of the parent (return static viewport)
+					CheckIsHeaderWidget(child);
 					child->m_windowOs->DrawWindow();
+					//Return viewport
+					ResumeIfHeaderWidget(child);
 					LeaveCriticalSection(&child->m_drawLockObject);
 				}
 				else {
 					if (senderWidget->m_isNeedTotalRedraw) child->m_isNeedTotalRedraw = true;
 					LeaveCriticalSection(&child->m_drawLockObject);
+					//Check if this is header control of the parent (return static viewport)
+					CheckIsHeaderWidget(child);
 					OnDrawWindow(child);
+					//Return viewport
+					ResumeIfHeaderWidget(child);
 				}
 			}
 		}
 		senderWidget->m_windowOs->EndDrawWindowBuffer();
+		EndBasicDrawProc(senderWidget, senderWidget->m_windowOs->GetPainter());
 		senderWidget->m_isBackBufferActive = true;	//Note, that back buffer is valid
 		senderWidget->m_isNeedTotalRedraw = false;
 		LeaveCriticalSection(&senderWidget->m_drawLockObject);
@@ -248,8 +285,35 @@ namespace Nk {
 	}
 
 
-	void Widget::BasicDrawProc(Widget* widget, IPainter* painter) {
+	void Widget::BeginBasicDrawProc(Widget* widget, IPainter* painter) {
 		painter->ClearTarget(widget->m_backgroundColor);
+		//Get viewport coord
+		Point_t viewportPoint{};
+		if (widget->m_headerWidget != nullptr) {
+			Rect_t headerWidgetRect = widget->m_headerWidget->GetWidgetClientRect();
+			viewportPoint.y += headerWidgetRect.h;
+		}
+		painter->SetStartViewportPoint(viewportPoint);
+		widget->m_viewportPoint = viewportPoint;
+		//Check if this is header control of the parent (return static viewport)
+		if (widget->m_parentWidget != nullptr && widget == widget->m_parentWidget->m_headerWidget) {
+			static Point_t staticViewport = {};
+			widget->m_parentWidget->GetPainter()->SetStartViewportPoint(staticViewport);
+		}
+	}
+
+
+	void Widget::EndBasicDrawProc(Widget* widget, IPainter* painter) {
+		//return viewport
+		Point_t viewportPoint{};
+		if (widget->m_headerWidget != nullptr) {
+			painter->SetStartViewportPoint(viewportPoint);
+			widget->m_viewportPoint = viewportPoint;
+		}
+		//Check if this is header control of the parent (return static viewport)
+		if (widget->m_parentWidget != nullptr && widget == widget->m_parentWidget->m_headerWidget) {
+			widget->m_parentWidget->GetPainter()->SetStartViewportPoint(widget->m_parentWidget->m_viewportPoint);
+		}
 	}
 
 

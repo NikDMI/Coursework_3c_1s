@@ -34,7 +34,6 @@ namespace Nk {
 
 		CLASS_METHOD void OffsetWindow(Coord_t dx, Coord_t dy);
 
-
 		CLASS_METHOD void ShowWindow();
 
 		CLASS_METHOD void HideWindow();
@@ -58,6 +57,13 @@ namespace Nk {
 
 		CLASS_METHOD Widget* GetParentWidget();
 
+		/*
+		* Set widget as header(offset vieport at the height value)
+		* virtual: some classes can restrict setting of header widgets and throw exception
+		*/
+		CLASS_METHOD virtual void SetHeaderWidget(Widget* headerWidget);
+
+
 
 		void SendRepaintEvent();
 
@@ -70,14 +76,19 @@ namespace Nk {
 		*/
 		CLASS_METHOD EventIndex GetEventIndex(Events eventType) const;
 
-		/*
-		* Basic options of drawing (can be used in user draw proc)
-		*/
-		CLASS_METHOD static void BasicDrawProc(Widget* widget, IPainter* painter);
+		
 
 	private:
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
+
+		/*
+		* Basic options of drawing ()
+		*/
+		static void BeginBasicDrawProc(Widget* widget, IPainter* painter);
+		static void EndBasicDrawProc(Widget* widget, IPainter* painter);
+		static void CheckIsHeaderWidget(Widget* widget);
+		static void ResumeIfHeaderWidget(Widget* widget);
 
 		//Basic data
 		Widget* m_parentWidget;
@@ -86,6 +97,10 @@ namespace Nk {
 		WindowDrawProc m_userDrawProc;	//Draw proc, that can be replaces by user
 		volatile bool m_isBackBufferActive = false;	//Show, does this widget has back buffer
 		volatile bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
+
+		//Layout objects
+		Widget* m_headerWidget;	//Caption box, tool bar, menu (this element can't be included in calculetion of coords)
+		Point_t m_viewportPoint;
 
 		//Helper objects
 		DefaultLayout* m_defaultLayout = nullptr;

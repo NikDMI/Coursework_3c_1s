@@ -35,14 +35,18 @@ namespace Nk {
 		//Create phisical window
 		RegisterWindowClass();
 		DWORD windowStyle = WS_OVERLAPPED;
-		if (parent != nullptr) windowStyle |= WS_CHILD;
+		if (parent == nullptr) {
+			windowStyle = WS_POPUP;
+		}
+		else {
+			windowStyle |= WS_CHILD;
+		}
 		m_hWnd = CreateWindow(CLASS_NAME.c_str(), L"Window", windowStyle, m_x, m_y, m_width, m_height,
 			(parent == nullptr) ? NULL : m_parentWindow->GetHwnd(), NULL, GetModuleHandle(NULL), 0);
 		if (m_hWnd == NULL) {
 			throw Exception{ "Can't create window" };
 		}
 		::ShowWindow(m_hWnd, SW_HIDE);
-		//ShowWindow(m_hWnd, SW_SHOW);
 		//Add window to dictionaty
 		m_windowsDictionary.insert({ m_hWnd, widget });
 		//Choose painter
