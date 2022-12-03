@@ -169,8 +169,6 @@ namespace Nk {
 	void WindowWin32::BeginDrawWindowBuffer() {
 		auto clientRect = this->GetRootClientRect();
 		auto bmpRect = this->GetParentClipRect(clientRect);
-		//auto parentOffset = this->GetRootOffset();
-		//m_windowPainter->BeginDraw(clientRect, bmpRect);
 		m_windowPainter->BeginDraw({m_x, m_y, m_width, m_height});
 	}
 

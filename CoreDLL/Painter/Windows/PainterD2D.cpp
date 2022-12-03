@@ -167,6 +167,7 @@ namespace Nk {
 			::BeginPaint(m_hWnd, &m_paintStructure);
 		}
 		m_compatibleBitmapRootRenderTarget->BeginDraw();
+		m_compatibleBitmapRootRenderTarget->Clear({ 0, 0, 0, 0 });
 		m_isBeginCallActive = true;
 	}
 
@@ -186,6 +187,7 @@ namespace Nk {
 			m_hWndRenderTarget->BeginDraw();
 			D2D1_SIZE_F bufSize = m_bufferBitmap->GetSize();
 			D2D1_RECT_F bufRect = { 0, 0, bufSize.width, bufSize.height };
+			m_hWndRenderTarget->Clear({ 0, 0, 0, 0 });
 			m_hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), bufRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bufRect);
 			m_hWndRenderTarget->EndDraw();
 			::EndPaint(m_hWnd, &m_paintStructure);

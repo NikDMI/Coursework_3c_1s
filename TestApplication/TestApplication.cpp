@@ -32,10 +32,10 @@ MainCaption* caption;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
-	widget = new Widget{ nullptr, {0.8, 0.8, 0.8, 1.0} };
+	widget = new Widget{ nullptr, {0.8, 0.8, 0.8, 0.1} };
 	widget->SetWindowGeometry(300, 300, 1000, 500);
 	//widget->ShowWindow();
-	Widget* widget2 = new Widget(widget, {0.3, 0.4, 0.5, 0.5});
+	Widget* widget2 = new Widget(widget, {0.3, 0.4, 0.5, 0.1});
 	widget2->SetWindowGeometry(10, 10, 200, 200);
 	widget3 = new Widget(widget2, { 0.5, 0.9, 0.5, 1.0 });
 	widget3->SetWindowGeometry(-50, -50, 100, 100);
@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	lbl = new Label(L"Test text", widget);
 	lbl->GetElementFont()->SetSizeInPixels(30)->SetHorizontalAlignment(IFont::HorizontalAlignment::CENTER)->
 		SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
-	lbl->SetBackgroundColor({ 0.7, 0.4, 0.6, 1.0 });
+	lbl->SetBackgroundColor({ 0.7, 0.4, 0.6, 0.5 });
 	lbl->SetWindowGeometry(200, 200, 300, 300);
 	bmp = IBitmap::LoadBitmap(L"Picture.png");
 	lbl->ShowWindow();

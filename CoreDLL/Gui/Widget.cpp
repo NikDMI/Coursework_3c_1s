@@ -194,6 +194,7 @@ namespace Nk {
 		Widget* senderWidget = (Widget*)widget;
 		EnterCriticalSection(&senderWidget->m_drawLockObject);
 		if (senderWidget->m_parentWidget == nullptr) { //Repaint only root elements
+			senderWidget->m_windowOs->GetPainter()->ClearTarget({ 0,0,0,0 });
 			senderWidget->m_windowOs->DrawWindow();
 		}
 		LeaveCriticalSection(&senderWidget->m_drawLockObject);
