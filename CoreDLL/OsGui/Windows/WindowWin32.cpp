@@ -230,7 +230,7 @@ namespace Nk {
 		switch (uMsg) {
 
 		case WM_MOUSEMOVE:
-			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
+			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget};
 			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), &mouseStructure);
 			//Get address of the static var (it's save, because my gui loop garantee, that after pushing event it wiil be processed)
 			break;

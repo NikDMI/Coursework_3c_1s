@@ -190,6 +190,9 @@
     <Filter Include="Исходные файлы\Painter\Pen\Windows">
       <UniqueIdentifier>{822d2277-5207-4add-b174-9e8ec02159b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Gui\Border">
+      <UniqueIdentifier>{dd645be7-1fbe-4aba-a0e8-f216f951f858}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -275,6 +278,12 @@
     </ClCompile>
     <ClCompile Include="Painter\Pen\Windows\PenD2D.cpp">
       <Filter>Исходные файлы\Painter\Pen\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Border\AngleBorder.cpp">
+      <Filter>Исходные файлы\Gui\Border</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Border\IBorder.cpp">
+      <Filter>Исходные файлы\Gui\Border</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +400,12 @@
     </ClInclude>
     <ClInclude Include="Painter\Pen\Windows\PenD2D.h">
       <Filter>Файлы заголовков\Painter\Pen\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Border\AngleBorder.h">
+      <Filter>Файлы заголовков\Gui\Border</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\EventStructures\BasicWidgetStructure.h">
+      <Filter>Файлы заголовков\Gui\EventStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,6 +7,8 @@
 #include "Layout/DefaultLayout.h"
 #include "../Application/NkApplication.h"
 #include "EventStructures/MouseStructure.h"
+#include "EventStructures/BasicWidgetStructure.h"
+#include "Border/IBorder.h"
 
 namespace Nk {
 	using namespace std;
@@ -105,7 +107,33 @@ namespace Nk {
 
 
 	Rect_t Widget::GetWidgetClientRect() {
+		Rect_t clientRect { 0, 0, m_w, m_h };
+		if (m_headerWidget != nullptr) {
+			auto headerRect = m_headerWidget->GetWidgetRect();
+			clientRect.h -= headerRect.h;
+			clientRect.y += headerRect.y;
+		}
+		return clientRect;
+	}
+
+
+	Rect_t Widget::GetWidgetRect() {
 		return { m_x, m_y, m_w, m_h };
+	}
+
+
+	Rect_t Widget::ComputeHeaderRect() {
+		if (m_headerWidget == nullptr) {
+			throw Exception{"No header widget"};
+		}
+		//Rect_t headerRect = m_headerWidget->GetWidgetRect();
+		Rect_t headerRect = this->GetWidgetRect();
+		headerRect.x = (m_leftBorder != nullptr) ? (m_leftBorder->GetBorderWidth()) : 0;
+		headerRect.y = (m_topBorder != nullptr) ? m_topBorder->GetBorderWidth() : 0;
+		//Compute width of the header
+		headerRect.w -= (m_leftBorder != nullptr) ? (m_leftBorder->GetBorderWidth()) : 0;
+		headerRect.w -= (m_rightBorder != nullptr) ? (m_rightBorder->GetBorderWidth()) : 0;
+		return headerRect;
 	}
 
 
@@ -142,6 +170,21 @@ namespace Nk {
 		m_headerWidget = headerWidget;
 	}
 
+
+	void Widget::SetParentNotification() {
+		m_isNeedParentEventsMessages = true;
+	}
+
+
+	void Widget::NotifyChilds(CustomEvents eventType, BasicWidgetStructure* params) {
+		for (auto child : m_childWidgetList) {
+			if (child->m_isNeedParentEventsMessages) {
+				params->sender = child;
+				CallUserCallback(child, eventType, params);
+			}
+		}
+	}
+
 	/////////////////////////////////////////////////////////////Graphics methods
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
@@ -150,6 +193,8 @@ namespace Nk {
 		m_x = x; m_y = y; m_w = w; m_h = h;
 		m_isBackBufferActive = false;
 		m_isNeedTotalRedraw = true;
+		BasicWidgetStructure bs;
+		NotifyChilds(CustomEvents::ON_PARENT_RESIZE, &bs);
 		LeaveCriticalSection(&m_drawLockObject);
 		//this->Repaint();
 	}
@@ -195,6 +240,33 @@ namespace Nk {
 		LeaveCriticalSection(&m_drawLockObject);
 	}
 
+
+	void Widget::SetBorder(IBorder* border) {
+		switch (border->GetBorderType()) {
+
+		case IBorder::BorderType::BOTTOM:
+			m_bottomBorder = border;
+			break;
+
+		case IBorder::BorderType::TOP:
+			m_topBorder = border;
+			break;
+
+		case IBorder::BorderType::LEFT:
+			m_leftBorder = border;
+			break;
+
+		case IBorder::BorderType::RIGHT:
+			m_rightBorder = border;
+			break;
+		}
+		if (m_headerWidget) {
+			//Send event to header control to change size
+			BasicWidgetStructure bs; bs.sender = m_headerWidget;
+			CallUserCallback(m_headerWidget, CustomEvents::ON_PARENT_RESIZE, &bs);
+		}
+	}
+
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
 	void Widget::OnRepaintWindow(void* widget) {	//Event from the system (like WM_PAINT) - try redraw buffer
@@ -210,7 +282,8 @@ namespace Nk {
 
 	void Widget::CheckIsHeaderWidget(Widget* widget) {
 		Widget* parent = widget->m_parentWidget;
-		if (parent && widget == parent->m_headerWidget) {
+		if (parent && (widget == parent->m_headerWidget || widget == parent->m_topBorder ||
+			widget == parent->m_bottomBorder || widget == parent->m_leftBorder || widget == parent->m_rightBorder)) {
 			static Point_t staticViewport = {};
 			parent->GetPainter()->SetStartViewportPoint(staticViewport);
 		}
@@ -248,10 +321,10 @@ namespace Nk {
 					if (senderWidget->m_isNeedTotalRedraw) child->m_isNeedTotalRedraw = true;
 					LeaveCriticalSection(&child->m_drawLockObject);
 					//Check if this is header control of the parent (return static viewport)
-					CheckIsHeaderWidget(child);
+					//CheckIsHeaderWidget(child);
 					OnDrawWindow(child);
 					//Return viewport
-					ResumeIfHeaderWidget(child);
+					//ResumeIfHeaderWidget(child);
 				}
 			}
 		}
@@ -301,15 +374,17 @@ namespace Nk {
 		//Get viewport coord
 		Point_t viewportPoint{};
 		if (widget->m_headerWidget != nullptr) {
-			Rect_t headerWidgetRect = widget->m_headerWidget->GetWidgetClientRect();
+			Rect_t headerWidgetRect = widget->m_headerWidget->GetWidgetRect();
 			viewportPoint.y += headerWidgetRect.h;
 		}
 		painter->SetStartViewportPoint(viewportPoint);
 		widget->m_viewportPoint = viewportPoint;
 		//Check if this is header control of the parent (return static viewport)
-		if (widget->m_parentWidget != nullptr && widget == widget->m_parentWidget->m_headerWidget) {
+		Widget* parent = widget->m_parentWidget;
+		if (parent != nullptr && (widget == parent->m_headerWidget || widget == parent->m_topBorder ||
+			widget == parent->m_bottomBorder || widget == parent->m_leftBorder || widget == parent->m_rightBorder)) {
 			static Point_t staticViewport = {};
-			widget->m_parentWidget->GetPainter()->SetStartViewportPoint(staticViewport);
+			parent->GetPainter()->SetStartViewportPoint(staticViewport);
 		}
 	}
 
@@ -322,8 +397,11 @@ namespace Nk {
 			widget->m_viewportPoint = viewportPoint;
 		}
 		//Check if this is header control of the parent (return static viewport)
-		if (widget->m_parentWidget != nullptr && widget == widget->m_parentWidget->m_headerWidget) {
-			widget->m_parentWidget->GetPainter()->SetStartViewportPoint(widget->m_parentWidget->m_viewportPoint);
+		Widget* parent = widget->m_parentWidget;
+		if (parent != nullptr && (widget == parent->m_headerWidget || widget == parent->m_topBorder ||
+			widget == parent->m_bottomBorder || widget == parent->m_leftBorder || widget == parent->m_rightBorder)) {
+			//Set last viewport
+			parent->GetPainter()->SetStartViewportPoint(widget->m_parentWidget->m_viewportPoint);
 		}
 	}
 
@@ -344,16 +422,27 @@ namespace Nk {
 	}
 
 
+	inline void Widget::CallUserCallback(Widget* senderWidget, CustomEvents customEvent, void* params) {
+		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)customEvent];
+		if (userCallback) {
+			userCallback(params);
+		}
+	}
+
+
 	////////////////////////////////////////////   BASIC EVENT HANDLERS
 
 	void PROC_CALL Widget::WidgetOnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
+		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_MOVE, params);
+		/*
 		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_MOVE];
 		if (userCallback) {
 			userCallback(params);
 		}
+		*/
 	}
 
 
@@ -361,10 +450,13 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
+		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LDOWN, params);
+		/*
 		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LDOWN];
 		if (userCallback) {
 			userCallback(params);
 		}
+		*/
 	}
 
 
@@ -372,10 +464,13 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
+		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LUP, params);
+		/*
 		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LUP];
 		if (userCallback) {
 			userCallback(params);
 		}
+		*/
 	}
 
 }

@@ -13,6 +13,8 @@
 #include "../CoreDLL/Gui/Controls/Caption/MainCaption.h"
 #include "../CoreDLL/Painter/Brush/IBrush.h"
 #include "../CoreDLL/Tools/IGeometry/IGeometry.h"
+#include "../CoreDLL/Gui/Border/IBorder.h"
+#include "../CoreDLL/Gui/Border/AngleBorder.h"
 
 #include <string>
 
@@ -31,6 +33,7 @@ Widget* widget3 = nullptr;
 Label* lbl;
 IBitmap* bmp;
 MainCaption* caption;
+IBorder* topBorder;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -55,6 +58,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	caption->GetElementFont()->SetSizeInPixels(20);
 	caption->ShowWindow();
 	widget->SetHeaderWidget(caption);
+	topBorder = new AngleBorder(widget, IBorder::BorderType::TOP, 5, 10);
+	IBorder* rightBorder = new AngleBorder(widget, IBorder::BorderType::RIGHT, 5, 10);
+	widget->SetBorder(topBorder);
+	widget->SetBorder(rightBorder);
 	widget->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();

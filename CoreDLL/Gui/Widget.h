@@ -12,6 +12,8 @@ namespace Nk {
 
 	class ILayout;
 	class DefaultLayout;
+	class BasicWidgetStructure;
+	class IBorder;
 
 	using WindowDrawProc = void (PROC_CALL*)(Widget* widget, IPainter* painter);
 
@@ -22,7 +24,7 @@ namespace Nk {
 	CLASS_PARAMS class Widget: public Object {
 	public:
 		//Represents events, that user can override
-		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_ };
+		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, _LAST_ };
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -49,6 +51,15 @@ namespace Nk {
 
 		CLASS_METHOD Rect_t GetWidgetClientRect();
 
+		CLASS_METHOD Rect_t GetWidgetRect();
+
+		/*
+		* returns rect, that can be used by header
+		*/
+		CLASS_METHOD Rect_t ComputeHeaderRect();
+
+		CLASS_METHOD void SetBorder(IBorder* border);
+
 		/*
 		* All mouse events go throught this control
 		*/
@@ -62,8 +73,12 @@ namespace Nk {
 		* Set widget as header(offset vieport at the height value)
 		* virtual: some classes can restrict setting of header widgets and throw exception
 		*/
-		CLASS_METHOD virtual void SetHeaderWidget(Widget* headerWidget);
+		CLASS_METHOD void SetHeaderWidget(Widget* headerWidget);
 
+		/*
+		* Change flag to get parent notification (on resize, ...)
+		*/
+		CLASS_METHOD void SetParentNotification();
 
 
 		void SendRepaintEvent();
@@ -84,6 +99,8 @@ namespace Nk {
 
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
+		void NotifyChilds(CustomEvents eventType, BasicWidgetStructure* params);	//Call child callbacks if needed
+		static inline void CallUserCallback(Widget*, CustomEvents, void* params);
 
 		/*
 		* Basic options of drawing ()
@@ -105,10 +122,15 @@ namespace Nk {
 		WindowDrawProc m_userDrawProc;	//Draw proc, that can be replaces by user
 		volatile bool m_isBackBufferActive = false;	//Show, does this widget has back buffer
 		volatile bool m_isNeedTotalRedraw = false;	//Show, that all inner controls must be redrawed
+		bool m_isNeedParentEventsMessages = false;	//Does parent should callback child, when parent's state was changed
 
 		//Layout objects
 		Widget* m_headerWidget;	//Caption box, tool bar, menu (this element can't be included in calculetion of coords)
 		Point_t m_viewportPoint;
+		IBorder* m_topBorder = nullptr;
+		IBorder* m_bottomBorder = nullptr;
+		IBorder* m_leftBorder = nullptr;
+		IBorder* m_rightBorder = nullptr;
 
 		//Helper objects
 		DefaultLayout* m_defaultLayout = nullptr;

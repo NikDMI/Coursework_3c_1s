@@ -12,8 +12,26 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class IBorder : public Widget {
 	public:
-		
 
+		enum class BorderType { TOP, LEFT, BOTTOM, RIGHT };
+
+		IBorder(Widget* parent, BorderType borderType, float borderWidth);
+
+		float GetBorderWidth();
+
+		BorderType GetBorderType();
+
+		IBrush* GetBorderBrush();
+
+	protected:
+
+		float m_width;
+		BorderType m_borderType;
+		IBrush* m_borderBrush;
+
+		void SetBorderSize();
+
+		friend void PROC_CALL OnParentResize(void* params);
 	};
 
 }

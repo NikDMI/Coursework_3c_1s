@@ -8,21 +8,38 @@ namespace Nk {
 	void PROC_CALL OnMouseDown(void* params);
 	void PROC_CALL OnMouseUp(void* params);
 	void PROC_CALL OnMouseMove(void* params);
+	void PROC_CALL MainCaption_OnParentResize(void* params);
 
 	MainCaption::MainCaption(Widget* parent, const std::wstring& caption) : ICaption{parent, caption} {
 		m_parentWidget = GetParentWidget();
 		//Basic configs
-		int width = m_parentWidget == nullptr ? DEFAULT_CAPTION_WIDTH : m_parentWidget->GetWidgetClientRect().w;
-		this->SetWindowGeometry(0, 0, width, DEFAULT_CAPTION_HEIGHT);
+		if (m_parentWidget != nullptr) {
+			m_parentWidget->SetHeaderWidget(this);
+			auto computedHeaderRect = m_parentWidget->ComputeHeaderRect();
+			this->SetWindowGeometry(computedHeaderRect.x, computedHeaderRect.y, computedHeaderRect.w, DEFAULT_CAPTION_HEIGHT);
+		}
+		else {
+			int width = m_parentWidget == nullptr ? DEFAULT_CAPTION_WIDTH : m_parentWidget->GetWidgetClientRect().w;
+			this->SetWindowGeometry(0, 0, width, DEFAULT_CAPTION_HEIGHT);
+		}
 		m_elementFont->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 		this->SetWindowDrawProc(CaptionDrawProc);
 		//Events
 		SetCustomEvent(CustomEvents::ON_MOUSE_MOVE, OnMouseMove);
 		SetCustomEvent(CustomEvents::ON_MOUSE_LDOWN, OnMouseDown);
 		SetCustomEvent(CustomEvents::ON_MOUSE_LUP, OnMouseUp);
+		SetCustomEvent(CustomEvents::ON_PARENT_RESIZE, MainCaption_OnParentResize);
+		SetParentNotification();
 	}
 
 
+
+	void PROC_CALL MainCaption_OnParentResize(void* params) {
+		BasicWidgetStructure* bs = (BasicWidgetStructure*)params;
+		MainCaption* caption = (MainCaption*)bs->sender;
+		auto computedHeaderRect = caption->GetParentWidget()->ComputeHeaderRect();
+		caption->SetWindowGeometry(computedHeaderRect.x, computedHeaderRect.y, computedHeaderRect.w, caption->m_captionHeight);
+ 	}
 
 	void PROC_CALL OnMouseDown(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
@@ -60,11 +77,9 @@ namespace Nk {
 
 
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter) {
-		//Widget::BasicDrawProc(widget, painter);
 		MainCaption* caption = (MainCaption*)widget;
 		Rect_t capRect = caption->GetWidgetClientRect();
-		capRect.x = caption->m_xTextOffset;
-		//labelRect.y = caption->m_yTextOffset;
+		capRect.x += caption->m_xTextOffset;
 		painter->DrawText(capRect, caption->m_elementText);
 	}
 }

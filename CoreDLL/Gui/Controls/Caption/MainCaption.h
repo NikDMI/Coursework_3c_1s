@@ -15,8 +15,10 @@ namespace Nk {
 		~MainCaption() override {};
 
 	private:
-		const int DEFAULT_CAPTION_HEIGHT = 25;
-		const int DEFAULT_CAPTION_WIDTH = 200;
+		static const int DEFAULT_CAPTION_HEIGHT = 25;
+		static const int DEFAULT_CAPTION_WIDTH = 200;
+
+		float m_captionHeight = DEFAULT_CAPTION_HEIGHT;
 
 		Coord_t m_xTextOffset = 20;
 		Coord_t m_yTextOffset = 10;
@@ -29,6 +31,7 @@ namespace Nk {
 		friend void PROC_CALL OnMouseDown(void* params);
 		friend void PROC_CALL OnMouseMove(void* params);
 		friend void PROC_CALL OnMouseUp(void* params);
+		friend void PROC_CALL MainCaption_OnParentResize(void* params);
 	};
 
 }

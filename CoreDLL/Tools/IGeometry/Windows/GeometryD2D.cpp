@@ -20,12 +20,21 @@ namespace Nk {
 		if (m_isRecorded) {
 			throw Exception{ "This geometry is also recorded" };
 		}
+		if (Settings::GetD2D1Factory()->CreatePathGeometry(m_pathGeometry.ReleaseAndGetAddressOf()) != S_OK) {
+			throw Exception{ "Can't create geometry" };
+		}
+		HRESULT hr = m_pathGeometry->Open(m_geometrySink.ReleaseAndGetAddressOf());
+		if (hr != S_OK) {
+			throw Exception{ "Can't start recording" };
+		}
+		/*
 		if (m_geometrySink == nullptr) {
 			HRESULT hr = m_pathGeometry->Open(m_geometrySink.ReleaseAndGetAddressOf());
 			if (hr != S_OK) {
 				throw Exception{ "Can't start recording" };
 			}
 		}
+		*/
 		m_geometrySink->BeginFigure({ startPoint.x, startPoint.y }, D2D1_FIGURE_BEGIN_FILLED);
 		m_isRecorded = true;
 	}
