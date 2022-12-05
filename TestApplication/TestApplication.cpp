@@ -58,10 +58,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	caption->GetElementFont()->SetSizeInPixels(20);
 	caption->ShowWindow();
 	widget->SetHeaderWidget(caption);
-	topBorder = new AngleBorder(widget, IBorder::BorderType::TOP, 5, 10);
-	IBorder* rightBorder = new AngleBorder(widget, IBorder::BorderType::RIGHT, 5, 10);
-	widget->SetBorder(topBorder);
-	widget->SetBorder(rightBorder);
+	topBorder = new AngleBorder(widget, IBorder::BorderType::TOP, 5, 40);
+	IBorder* rightBorder = new AngleBorder(widget, IBorder::BorderType::RIGHT, 5, 40);
+	//IBorder* btmBorder = new AngleBorder(widget, IBorder::BorderType::BOTTOM, 5, 110);
+	//IBorder* leftBorder = new AngleBorder(widget, IBorder::BorderType::LEFT, 5, 110);
 	widget->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();

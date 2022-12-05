@@ -58,7 +58,7 @@ namespace Nk {
 		*/
 		CLASS_METHOD Rect_t ComputeHeaderRect();
 
-		CLASS_METHOD void SetBorder(IBorder* border);
+		void SetBorder(IBorder* border);
 
 		/*
 		* All mouse events go throught this control

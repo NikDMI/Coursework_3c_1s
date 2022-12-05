@@ -13,6 +13,7 @@ namespace Nk {
 		if (parent == nullptr) {
 			throw Exception{"Border can't be exists without parent control"};
 		}
+		parent->SetBorder(this);
 		SetBackgroundColor({ 0, 0, 0, 0 });
 		SetBorderSize();
 		m_borderBrush = GetPainter()->CreateBrushObject({ 0.5, 0.5, 0.5, 1 });
@@ -23,6 +24,26 @@ namespace Nk {
 
 	float IBorder::GetBorderWidth() {
 		return m_width;
+	}
+
+	/*
+	void IBorder::SetBorderWidth(float width) {
+		if (width < 0) {
+			throw Exception{"Invalid width"};
+		}
+		m_width = width;
+		this->Repaint();
+	}
+	*/
+
+
+	void IBorder::SetBorderOffset(float offset) {
+		m_offset = offset;
+	}
+
+
+	float IBorder::GetBorderOffset() {
+		return m_offset;
 	}
 
 

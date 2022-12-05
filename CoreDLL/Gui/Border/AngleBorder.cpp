@@ -23,14 +23,22 @@ namespace Nk {
 		switch (borderType) {
 		case IBorder::BorderType::TOP:
 			dx = m_width / tanf(m_andleOxRadians);
-			//dy = m_width * sinf(m_andleOxRadians);
-			m_borderGeometry->SetPolygone({ {m_width, m_width}, {m_width + dx, 0}, {borderRect.w - m_width + dx, 0}, {borderRect.w - m_width, m_width} });
+			m_borderGeometry->SetPolygone({ {m_offset, m_width}, {m_offset + dx, 0}, {borderRect.w - m_width + dx, 0}, {borderRect.w - m_width, m_width} });
+			break;
+
+		case IBorder::BorderType::BOTTOM:
+			dx = m_width / tanf(m_andleOxRadians);
+			m_borderGeometry->SetPolygone({ {m_offset, 0}, {m_offset + dx, m_width}, {borderRect.w - m_width + dx, m_width}, {borderRect.w - m_width, 0} });
 			break;
 
 		case IBorder::BorderType::RIGHT:
-			//dx = m_width * cosf(m_andleOxRadians);
 			dy = m_width * tanf(m_andleOxRadians);
-			m_borderGeometry->SetPolygone({ {0, m_width}, {m_width, m_width - dy}, {m_width, borderRect.h - m_width - dy}, {0, borderRect.h - m_width} });
+			m_borderGeometry->SetPolygone({ {0, m_width}, {m_width, m_width - dy}, {m_width, borderRect.h - m_offset - dy}, {0, borderRect.h - m_offset} });
+			break;
+
+		case IBorder::BorderType::LEFT:
+			dy = m_width * -tanf(m_andleOxRadians);
+			m_borderGeometry->SetPolygone({ {0, m_width - dy}, {m_width, m_width}, {m_width, borderRect.h - m_width}, {0, borderRect.h - m_width - dy} });
 			break;
 		}
 	}

@@ -21,13 +21,20 @@ namespace Nk {
 
 		BorderType GetBorderType();
 
-		IBrush* GetBorderBrush();
+		CLASS_METHOD IBrush* GetBorderBrush();
+
+		//CLASS_METHOD void SetBorderWidth(float width);
+
+		void SetBorderOffset(float offset);
+		float GetBorderOffset();
+
 
 	protected:
 
 		float m_width;
 		BorderType m_borderType;
 		IBrush* m_borderBrush;
+		float m_offset = 0; //Border offset from the start of the client rect
 
 		void SetBorderSize();
 

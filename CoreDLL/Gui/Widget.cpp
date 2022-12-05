@@ -246,14 +246,26 @@ namespace Nk {
 
 		case IBorder::BorderType::BOTTOM:
 			m_bottomBorder = border;
+			if (m_leftBorder) {
+				border->SetBorderOffset(m_leftBorder->GetBorderOffset());
+			}
 			break;
 
 		case IBorder::BorderType::TOP:
 			m_topBorder = border;
+			if (m_leftBorder) {
+				border->SetBorderOffset(m_leftBorder->GetBorderOffset());
+			}
 			break;
 
 		case IBorder::BorderType::LEFT:
 			m_leftBorder = border;
+			if (m_topBorder) {
+				m_topBorder->SetBorderOffset(border->GetBorderOffset());
+			}
+			if (m_bottomBorder) {
+				m_topBorder->SetBorderOffset(border->GetBorderOffset());
+			}
 			break;
 
 		case IBorder::BorderType::RIGHT:
@@ -376,6 +388,12 @@ namespace Nk {
 		if (widget->m_headerWidget != nullptr) {
 			Rect_t headerWidgetRect = widget->m_headerWidget->GetWidgetRect();
 			viewportPoint.y += headerWidgetRect.h;
+		}
+		if (widget->m_topBorder) {
+			viewportPoint.y += widget->m_topBorder->GetBorderWidth();
+		}
+		if (widget->m_leftBorder) {
+			viewportPoint.x += widget->m_leftBorder->GetBorderWidth();
 		}
 		painter->SetStartViewportPoint(viewportPoint);
 		widget->m_viewportPoint = viewportPoint;
