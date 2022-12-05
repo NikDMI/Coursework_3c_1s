@@ -15,6 +15,7 @@
 #include "../CoreDLL/Tools/IGeometry/IGeometry.h"
 #include "../CoreDLL/Gui/Border/IBorder.h"
 #include "../CoreDLL/Gui/Border/AngleBorder.h"
+#include "../CoreDLL/Gui/Controls/Window/MainWindow.h"
 
 #include <string>
 
@@ -63,6 +64,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	//IBorder* btmBorder = new AngleBorder(widget, IBorder::BorderType::BOTTOM, 5, 110);
 	//IBorder* leftBorder = new AngleBorder(widget, IBorder::BorderType::LEFT, 5, 110);
 	widget->ShowWindow();
+	MainWindow* mainWindow = new MainWindow(L"Hello, window");
+	mainWindow->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;

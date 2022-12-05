@@ -4,6 +4,10 @@
 
 namespace Nk {
 
+	const std::wstring MainCaption::DEFAULT_CAPTION_FONT_FAMILY = L"Arial";
+	const Color_t MainCaption::DEFAULT_CAPTION_COLOR = { 0.8, 0.8, 0.8, 1.0 };
+
+
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter);
 	void PROC_CALL OnMouseDown(void* params);
 	void PROC_CALL OnMouseUp(void* params);
@@ -23,6 +27,9 @@ namespace Nk {
 			this->SetWindowGeometry(0, 0, width, DEFAULT_CAPTION_HEIGHT);
 		}
 		m_elementFont->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
+		m_elementFont->SetFamily(DEFAULT_CAPTION_FONT_FAMILY);
+		m_elementFont->SetSizeInPixels(DEFAULT_CAPTION_FONT_WIDTH);
+		this->SetBackgroundColor(DEFAULT_CAPTION_COLOR);
 		this->SetWindowDrawProc(CaptionDrawProc);
 		//Events
 		SetCustomEvent(CustomEvents::ON_MOUSE_MOVE, OnMouseMove);

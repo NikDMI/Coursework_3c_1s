@@ -168,6 +168,8 @@
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
+    <ClCompile Include="Gui\Controls\Window\IWindowWidget.cpp" />
+    <ClCompile Include="Gui\Controls\Window\MainWindow.cpp" />
     <ClCompile Include="Gui\Layout\DefaultLayout.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
     <ClCompile Include="OsGui\IWindow.cpp" />
@@ -201,6 +203,8 @@
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />
+    <ClInclude Include="Gui\Controls\Window\IWindowWidget.h" />
+    <ClInclude Include="Gui\Controls\Window\MainWindow.h" />
     <ClInclude Include="Gui\EventStructures\BasicWidgetStructure.h" />
     <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
     <ClInclude Include="Gui\Layout\DefaultLayout.h" />

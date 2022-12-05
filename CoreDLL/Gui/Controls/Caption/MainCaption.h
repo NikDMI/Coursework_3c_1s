@@ -15,8 +15,12 @@ namespace Nk {
 		~MainCaption() override {};
 
 	private:
-		static const int DEFAULT_CAPTION_HEIGHT = 25;
+		static const int DEFAULT_CAPTION_HEIGHT = 30;
 		static const int DEFAULT_CAPTION_WIDTH = 200;
+		static const std::wstring DEFAULT_CAPTION_FONT_FAMILY;
+		static const int DEFAULT_CAPTION_FONT_WIDTH = 22;
+		static const Color_t DEFAULT_CAPTION_COLOR;
+
 
 		float m_captionHeight = DEFAULT_CAPTION_HEIGHT;
 
