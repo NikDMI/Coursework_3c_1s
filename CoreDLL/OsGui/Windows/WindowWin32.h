@@ -59,6 +59,7 @@ namespace Nk {
 
 		///////Window data//////////////
 		bool m_isVisible = false;
+		bool m_isMouseEnter = false;
 		Coord_t m_x = 0;
 		Coord_t m_y = 0;
 		Coord_t m_width = 0;
@@ -72,7 +73,7 @@ namespace Nk {
 		/*
 		* Balanced tree of hWnd-Widget* correspondence
 		*/
-		static std::map<HWND, Widget*> m_windowsDictionary;
+		static std::map<HWND, WindowWin32*> m_windowsDictionary;
 
 		friend LRESULT CALLBACK Win32WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};

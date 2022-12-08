@@ -66,6 +66,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	widget->ShowWindow();
 	MainWindow* mainWindow = new MainWindow(L"Hello, window");
 	mainWindow->ShowWindow();
+
+	ICursor* cursorCross = ICursor::CreateCursor();
+	cursorCross->SetSystemCursor(ICursor::SystemCursor::CROSS);
+	mainWindow->SetCursor(cursorCross);
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;

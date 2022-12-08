@@ -4,6 +4,7 @@
 #include "../Core/Object.h"
 #include "../Bean/Config.h"
 #include "../OsGui/IWindow.h"
+#include "../Tools/Cursor/ICursor.h"
 //#include "Layout/DefaultLayout.h"
 #include <vector>
 #include <list>
@@ -54,6 +55,12 @@ namespace Nk {
 		CLASS_METHOD Rect_t GetWidgetRect();
 
 		/*
+		* Set cursor to the widget
+		* Can get nullptr (cursor can't changed when user move to this control)
+		*/
+		CLASS_METHOD void SetCursor(ICursor* cursor);
+
+		/*
 		* returns rect, that can be used by header
 		*/
 		CLASS_METHOD Rect_t ComputeHeaderRect();
@@ -95,7 +102,7 @@ namespace Nk {
 		CLASS_METHOD void SetCustomEvent(CustomEvents eventType, EventHandlerProc callback);
 
 	private:
-		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, _LAST_ };
+		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, _LAST_ };
 
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
@@ -114,6 +121,8 @@ namespace Nk {
 		static void PROC_CALL WidgetOnMouseMove(void* params);
 		static void PROC_CALL WidgetOnLMouseDown(void* params);
 		static void PROC_CALL WidgetOnLMouseUp(void* params);
+		static void PROC_CALL WidgetOnMouseEnter(void* params);
+		static void PROC_CALL WidgetOnMouseLeave(void* params);
 
 		//Basic data
 		Widget* m_parentWidget;
@@ -136,6 +145,10 @@ namespace Nk {
 		DefaultLayout* m_defaultLayout = nullptr;
 		ILayout* m_widgetLayout = nullptr;
 		CRITICAL_SECTION m_drawLockObject;
+
+		//Config objects
+		ICursor* m_currentCursor = nullptr;	//Cursor that must be set when mouse move to the area
+		ICursor* m_leaveCursor = nullptr;	//Cursor that should be set, when leave the area (last cursor)
 
 		//Window data
 		volatile Coord_t m_x = 0;	//Coords according to parent window

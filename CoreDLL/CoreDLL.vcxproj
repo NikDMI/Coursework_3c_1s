@@ -183,6 +183,7 @@
     <ClCompile Include="Tools\Bitmap\IBitmap.cpp" />
     <ClCompile Include="Tools\Bitmap\Windows\WicBitmap.cpp" />
     <ClCompile Include="Tools\Cursor\ICursor.cpp" />
+    <ClCompile Include="Tools\Cursor\WindowsCursor.cpp" />
     <ClCompile Include="Tools\IGeometry\IGeometry.cpp" />
     <ClCompile Include="Tools\IGeometry\Windows\GeometryD2D.cpp" />
   </ItemGroup>
@@ -227,6 +228,7 @@
     <ClInclude Include="Tools\Bitmap\IBitmap.h" />
     <ClInclude Include="Tools\Bitmap\Windows\WicBitmap.h" />
     <ClInclude Include="Tools\Cursor\ICursor.h" />
+    <ClInclude Include="Tools\Cursor\WindowsCursor.h" />
     <ClInclude Include="Tools\IGeometry\IGeometry.h" />
     <ClInclude Include="Tools\IGeometry\Windows\GeometryD2D.h" />
   </ItemGroup>

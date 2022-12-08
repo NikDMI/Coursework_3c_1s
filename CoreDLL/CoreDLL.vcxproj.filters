@@ -297,6 +297,9 @@
     <ClCompile Include="Gui\Controls\Window\MainWindow.cpp">
       <Filter>Исходные файлы\Gui\Controls\Window</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\Cursor\WindowsCursor.cpp">
+      <Filter>Исходные файлы\Tools\Cursor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\Window\MainWindow.h">
       <Filter>Файлы заголовков\Gui\Controls\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Cursor\WindowsCursor.h">
+      <Filter>Файлы заголовков\Tools\Cursor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

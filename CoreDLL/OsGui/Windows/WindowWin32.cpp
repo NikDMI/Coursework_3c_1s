@@ -12,7 +12,7 @@ namespace Nk {
 
 	using namespace std;
 
-	map<HWND, Widget*> WindowWin32::m_windowsDictionary;
+	map<HWND, WindowWin32*> WindowWin32::m_windowsDictionary;
 	bool WindowWin32::m_isRegisterWindowClass = false;
 
 
@@ -48,7 +48,7 @@ namespace Nk {
 		}
 		::ShowWindow(m_hWnd, SW_HIDE);
 		//Add window to dictionaty
-		m_windowsDictionary.insert({ m_hWnd, widget });
+		m_windowsDictionary.insert({ m_hWnd, this });
 		//Choose painter
 		PainterD2D* parentPainter;
 		switch (painterType) {
@@ -194,7 +194,7 @@ namespace Nk {
 			wc.cbSize = sizeof(wc);
 			wc.lpfnWndProc = Win32WndProc;
 			wc.hInstance = GetModuleHandle(NULL);
-			wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+			wc.hCursor = NULL;
 			wc.lpszClassName = CLASS_NAME.c_str();
 			wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 			wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -215,12 +215,14 @@ namespace Nk {
 	LRESULT CALLBACK Win32WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		static HWND lastHwnd = 0;
 		static Widget* lastWidget = nullptr;
+		static WindowWin32* lastWindow = nullptr;
 		static IEventManager* eventManager = NkApplication::GetEventManager();
 		if (lastHwnd != hWnd || lastWidget == nullptr) {
 			lastHwnd = hWnd;
 			auto nkWidget = WindowWin32::m_windowsDictionary.find(hWnd);
 			if (nkWidget != WindowWin32::m_windowsDictionary.end()) {
-				lastWidget = (*nkWidget).second;
+				lastWindow = (*nkWidget).second;
+				lastWidget = lastWindow->m_correspondingWidget;
 			}
 		}
 
@@ -230,9 +232,30 @@ namespace Nk {
 		switch (uMsg) {
 
 		case WM_MOUSEMOVE:
+			if (!lastWindow->m_isMouseEnter) {
+				static MouseStructure enterMouseStructure;
+				enterMouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
+				eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_ENTER), &enterMouseStructure);
+				//Set track mouse event
+				TRACKMOUSEEVENT trackMouseEvent{sizeof(TRACKMOUSEEVENT)};
+				trackMouseEvent.dwFlags = TME_LEAVE;
+				trackMouseEvent.hwndTrack = hWnd;
+				TrackMouseEvent(&trackMouseEvent);
+				lastWindow->m_isMouseEnter = true;
+			}
 			mouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget};
 			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_MOVE), &mouseStructure);
 			//Get address of the static var (it's save, because my gui loop garantee, that after pushing event it wiil be processed)
+			break;
+
+
+		case WM_MOUSELEAVE:
+			if (lastWindow->m_isMouseEnter) {
+				static MouseStructure leaveMouseStructure;
+				lastWindow->m_isMouseEnter = false;
+				leaveMouseStructure = { LOWORD(lParam), HIWORD(lParam), lastWidget };
+				eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_MOUSE_LEAVE), &leaveMouseStructure);
+			}
 			break;
 
 		case WM_LBUTTONDOWN:

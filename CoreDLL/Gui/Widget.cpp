@@ -18,7 +18,7 @@ namespace Nk {
 
 	const ClassId Widget::m_classId = Object::RegisterNewClass("Gui::Widget");
 	const char* Widget::EventsNames[Events::_LAST_] = { "Core_Repaint_Window_Buffer", "Core_Draw_Window_Buffer",
-		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp" };
+		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp", "Core_OnMouseEnter", "Core_OnMouseLeave" };
 
 
 
@@ -38,6 +38,8 @@ namespace Nk {
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_MOVE], { WidgetOnMouseMove, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LDOWN], { WidgetOnLMouseDown, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LUP], { WidgetOnLMouseUp, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_ENTER], { WidgetOnMouseEnter, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LEAVE], { WidgetOnMouseLeave, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -49,6 +51,7 @@ namespace Nk {
 		m_windowOs = WindowFactory::CreateWindow(this, WindowType::OVERLAPPED_WINDOW, parentWindow);
 		m_defaultLayout = new DefaultLayout{};
 		m_widgetLayout = m_defaultLayout;
+		m_currentCursor = ICursor::GetDefaultCursor();
 	}
 
 	Widget::Widget(Widget* widget) :Widget{widget, { 0.7, 0.7, 0.7, 1.0 } } {
@@ -279,6 +282,14 @@ namespace Nk {
 		}
 	}
 
+
+	void Widget::SetCursor(ICursor* cursor) {
+		m_currentCursor = cursor;
+		if (m_leaveCursor != nullptr) {	//mouse in the area of widget
+			cursor->ChooseCursor();
+		}
+	}
+
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
 	void Widget::OnRepaintWindow(void* widget) {	//Event from the system (like WM_PAINT) - try redraw buffer
@@ -455,12 +466,6 @@ namespace Nk {
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_MOVE, params);
-		/*
-		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_MOVE];
-		if (userCallback) {
-			userCallback(params);
-		}
-		*/
 	}
 
 
@@ -469,12 +474,6 @@ namespace Nk {
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LDOWN, params);
-		/*
-		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LDOWN];
-		if (userCallback) {
-			userCallback(params);
-		}
-		*/
 	}
 
 
@@ -483,12 +482,24 @@ namespace Nk {
 		Widget* senderWidget = mouseStructure->sender;
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LUP, params);
-		/*
-		EventHandlerProc userCallback = senderWidget->m_userEventCallbacks[(int)CustomEvents::ON_MOUSE_LUP];
-		if (userCallback) {
-			userCallback(params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnMouseEnter(void* params) {
+		MouseStructure* mouseStructure = (MouseStructure*)params;
+		Widget* senderWidget = mouseStructure->sender;
+		if (senderWidget->m_currentCursor) {
+			senderWidget->m_leaveCursor = senderWidget->m_currentCursor->ChooseCursor();
 		}
-		*/
+	}
+
+
+	void PROC_CALL Widget::WidgetOnMouseLeave(void* params) {
+		MouseStructure* mouseStructure = (MouseStructure*)params;
+		Widget* senderWidget = mouseStructure->sender;
+		if (senderWidget->m_leaveCursor) {
+			senderWidget->m_leaveCursor->ChooseCursor();
+		}
 	}
 
 }
