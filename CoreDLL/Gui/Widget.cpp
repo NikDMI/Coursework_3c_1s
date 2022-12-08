@@ -510,7 +510,7 @@ namespace Nk {
 			else {
 				auto currentResizeType = m_resizeManager->GetResizeType(GetWidgetClientRect(), cursorPos);
 				if (currentResizeType != m_lastResizeType) {//Cahnge cursor
-					m_lastUserCursorAtResizingProcess = m_currentCursor;
+					auto lastUserCursorAtResizingProcess = m_currentCursor;
 					switch (currentResizeType) {
 					case IResizeManager::ResizeType::DOWN:
 						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
@@ -540,6 +540,7 @@ namespace Nk {
 						SetCursor(m_lastUserCursorAtResizingProcess);
 						break;
 					}
+					m_lastUserCursorAtResizingProcess = lastUserCursorAtResizingProcess;
 					m_lastResizeType = currentResizeType;
 				}
 			}
@@ -610,11 +611,12 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		if (senderWidget->m_leaveCursor) {
-			if (senderWidget->m_lastResizeType == IResizeManager::ResizeType::NONE) {	//Not resizing process
-				senderWidget->m_leaveCursor->ChooseCursor();
+			senderWidget->m_leaveCursor->ChooseCursor();
+			if (senderWidget->m_lastResizeType != IResizeManager::ResizeType::NONE) {	//resizing process
+				senderWidget->m_currentCursor = senderWidget->m_lastUserCursorAtResizingProcess;
 			}
 			else {
-				senderWidget->m_lastUserCursorAtResizingProcess->ChooseCursor();
+				//senderWidget->m_lastUserCursorAtResizingProcess->ChooseCursor();
 			}
 			senderWidget->m_leaveCursor = nullptr;
 		}
