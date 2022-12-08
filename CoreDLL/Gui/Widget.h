@@ -6,6 +6,7 @@
 #include "../OsGui/IWindow.h"
 #include "../Tools/Cursor/ICursor.h"
 //#include "Layout/DefaultLayout.h"
+#include "ResizeManager/IResizeManager.h"
 #include <vector>
 #include <list>
 
@@ -88,13 +89,14 @@ namespace Nk {
 		CLASS_METHOD void SetParentNotification();
 
 
+		/*
+		* Sets resize manager to this widget
+		* Can be nullptr
+		*/
+		CLASS_METHOD void SetResizeManager(IResizeManager* resizeManager);
+
+
 		void SendRepaintEvent();
-
-
-
-		//CLASS_METHOD void SetWindowDrawProc(WindowDrawProc);
-
-		//CLASS_METHOD EventHandler* GetEventHandler() override;
 
 		/*
 		* Set user's callback to specialized event 
@@ -107,6 +109,17 @@ namespace Nk {
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
 		void NotifyChilds(CustomEvents eventType, BasicWidgetStructure* params);	//Call child callbacks if needed
+
+		/*
+		* Computes coordinates without header widget and borders
+		*/
+		void ComputeCursorPointWithoutHelpWidgets(Point_t& inOutPoint);
+
+		/*
+		* Manage resizing states
+		*/
+		void CheckResizingOnMouseMove(Point_t cursorPos);
+
 		static inline void CallUserCallback(Widget*, CustomEvents, void* params);
 
 		/*
@@ -149,6 +162,13 @@ namespace Nk {
 		//Config objects
 		ICursor* m_currentCursor = nullptr;	//Cursor that must be set when mouse move to the area
 		ICursor* m_leaveCursor = nullptr;	//Cursor that should be set, when leave the area (last cursor)
+
+		//Resizing
+		IResizeManager* m_resizeManager = nullptr;
+		IResizeManager::ResizeType m_lastResizeType = IResizeManager::ResizeType::NONE;
+		bool m_isResizing = false;	//does widget resizing at the current time
+		Point_t m_lastResizingPosition;
+		ICursor* m_lastUserCursorAtResizingProcess;
 
 		//Window data
 		volatile Coord_t m_x = 0;	//Coords according to parent window

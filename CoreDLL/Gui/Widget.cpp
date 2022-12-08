@@ -59,7 +59,6 @@ namespace Nk {
 	}
 
 
-
 	Widget::~Widget() {
 		if (m_parentWidget != nullptr) {
 			m_parentWidget->RemoveChildWidget(this);
@@ -137,6 +136,16 @@ namespace Nk {
 		headerRect.w -= (m_leftBorder != nullptr) ? (m_leftBorder->GetBorderWidth()) : 0;
 		headerRect.w -= (m_rightBorder != nullptr) ? (m_rightBorder->GetBorderWidth()) : 0;
 		return headerRect;
+	}
+
+
+	void Widget::ComputeCursorPointWithoutHelpWidgets(Point_t& inOutPoint) {
+		if (m_headerWidget) {
+			inOutPoint.y -= m_headerWidget->GetWidgetRect().h;
+		}
+		if (m_leftBorder) {
+			inOutPoint.x -= m_leftBorder->GetBorderOffset();
+		}
 	}
 
 
@@ -288,6 +297,11 @@ namespace Nk {
 		if (m_leaveCursor != nullptr) {	//mouse in the area of widget
 			cursor->ChooseCursor();
 		}
+	}
+
+
+	void Widget::SetResizeManager(IResizeManager* resizeManager) {
+		m_resizeManager = resizeManager;
 	}
 
 	////////////////////////////////CUSTOM EVENT HANDLERS
@@ -459,11 +473,92 @@ namespace Nk {
 	}
 
 
+	void Widget::CheckResizingOnMouseMove(Point_t cursorPos) {
+		if (m_resizeManager) {
+			if (m_isResizing) {//User capture window and resize it
+				Point_t globalCursorCoord = ICursor::GetGlobalMouseCoord();
+				Coord_t dx = globalCursorCoord.x - m_lastResizingPosition.x;
+				Coord_t dy = globalCursorCoord.y - m_lastResizingPosition.y;
+				switch (m_lastResizeType) {
+				case IResizeManager::ResizeType::DOWN:
+					SetWindowGeometry(m_x, m_y, m_w, m_h + dy);
+					break;
+				case IResizeManager::ResizeType::UP:
+					SetWindowGeometry(m_x, m_y + dy, m_w, m_h - dy);
+					break;
+				case IResizeManager::ResizeType::LEFT:
+					SetWindowGeometry(m_x + dx, m_y, m_w - dx, m_h);
+					break;
+				case IResizeManager::ResizeType::RIGHT:
+					SetWindowGeometry(m_x, m_y, m_w + dx, m_h);
+					break;
+				case IResizeManager::ResizeType::DOWN_LEFT:
+					SetWindowGeometry(m_x + dx, m_y, m_w - dx, m_h + dy);
+					break;
+				case IResizeManager::ResizeType::DOWN_RIGHT:
+					SetWindowGeometry(m_x, m_y, m_w + dx, m_h + dy);
+					break;
+				case IResizeManager::ResizeType::UP_LEFT:
+					SetWindowGeometry(m_x + dx, m_y + dy, m_w - dx, m_h - dy);
+					break;
+				case IResizeManager::ResizeType::UP_RIGHT:
+					SetWindowGeometry(m_x, m_y + dy, m_w + dx, m_h - dy);
+					break;
+				}
+				m_lastResizingPosition = globalCursorCoord;
+			}
+			else {
+				auto currentResizeType = m_resizeManager->GetResizeType(GetWidgetClientRect(), cursorPos);
+				if (currentResizeType != m_lastResizeType) {//Cahnge cursor
+					m_lastUserCursorAtResizingProcess = m_currentCursor;
+					switch (currentResizeType) {
+					case IResizeManager::ResizeType::DOWN:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::UP:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::LEFT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::RIGHT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::DOWN_LEFT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::DOWN_RIGHT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::UP_LEFT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::UP_RIGHT:
+						SetCursor(ICursor::GetDefaultCursor(ICursor::SystemCursor::ARROW));
+						break;
+					case IResizeManager::ResizeType::NONE:
+						SetCursor(m_lastUserCursorAtResizingProcess);
+						break;
+					}
+					m_lastResizeType = currentResizeType;
+				}
+			}
+		}
+	}
+
+
 	////////////////////////////////////////////   BASIC EVENT HANDLERS
 
 	void PROC_CALL Widget::WidgetOnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
+		//Check resize state
+		if (senderWidget->m_resizeManager) {
+			Point_t cursorPoint{ mouseStructure->xCoord_Px, mouseStructure->yCoord_Px };
+			senderWidget->ComputeCursorPointWithoutHelpWidgets(cursorPoint);
+			senderWidget->CheckResizingOnMouseMove(cursorPoint);
+			senderWidget->Repaint();
+		}
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_MOVE, params);
 	}
@@ -472,6 +567,14 @@ namespace Nk {
 	void PROC_CALL Widget::WidgetOnLMouseDown(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
+		//Check resize state
+		if (senderWidget->m_resizeManager) {
+			if (senderWidget->m_lastResizeType != IResizeManager::ResizeType::NONE) {
+				senderWidget->m_isResizing = true;
+				senderWidget->m_lastResizingPosition = ICursor::GetGlobalMouseCoord();
+				senderWidget->SetMouseCapture();
+			}
+		}
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LDOWN, params);
 	}
@@ -480,6 +583,13 @@ namespace Nk {
 	void PROC_CALL Widget::WidgetOnLMouseUp(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
+		//Check resize state
+		if (senderWidget->m_resizeManager) {
+			if (senderWidget->m_isResizing) {
+				senderWidget->m_isResizing = false;
+				senderWidget->ReleaseMouseCapture();
+			}
+		}
 		//Call user callback function
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LUP, params);
 	}
@@ -491,6 +601,8 @@ namespace Nk {
 		if (senderWidget->m_currentCursor) {
 			senderWidget->m_leaveCursor = senderWidget->m_currentCursor->ChooseCursor();
 		}
+		senderWidget->m_lastResizeType = IResizeManager::ResizeType::NONE;
+		senderWidget->m_isResizing = false;
 	}
 
 
@@ -498,7 +610,13 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		if (senderWidget->m_leaveCursor) {
-			senderWidget->m_leaveCursor->ChooseCursor();
+			if (senderWidget->m_lastResizeType == IResizeManager::ResizeType::NONE) {	//Not resizing process
+				senderWidget->m_leaveCursor->ChooseCursor();
+			}
+			else {
+				senderWidget->m_lastUserCursorAtResizingProcess->ChooseCursor();
+			}
+			senderWidget->m_leaveCursor = nullptr;
 		}
 	}
 

@@ -8,7 +8,9 @@ namespace Nk {
 
 
 	ICursor* ICursor::currenGlobalCursor = nullptr;
-	ICursor* defaultCursorWin = new WindowsCursor{ ICursor::SystemCursor::ARROW };
+	//переделать реализацию этого безобразия .....
+	ICursor* defaultCursorWin[(int)ICursor::SystemCursor::CROSS + 1] = { new WindowsCursor{ ICursor::SystemCursor::ARROW },
+		new WindowsCursor{ ICursor::SystemCursor::CROSS } };
 
 
 	ICursor* ICursor::CreateCursor() {
@@ -66,10 +68,10 @@ namespace Nk {
 	}
 
 
-	ICursor* ICursor::GetDefaultCursor() {
+	ICursor* ICursor::GetDefaultCursor(SystemCursor systemCursor) {
 		switch (NkApplication::GetNkApplication()->GetOsType()) {
 		case OsType::Windows:
-			return defaultCursorWin;
+			return defaultCursorWin[(int)systemCursor];
 		default:
 			throw Exception{ "Can't support this type of OS" };
 		}

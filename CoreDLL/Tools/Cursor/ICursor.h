@@ -9,7 +9,7 @@ namespace Nk {
 
 	CLASS_PARAMS class ICursor {
 	public:
-		enum class SystemCursor {ARROW, CROSS};
+		enum class SystemCursor {ARROW, CROSS, _LAST_};
 
 
 		/*
@@ -36,7 +36,7 @@ namespace Nk {
 
 		CLASS_METHOD virtual void SetSystemCursor(SystemCursor systemCursor) = 0;
 
-		static ICursor* GetDefaultCursor();
+		static ICursor* GetDefaultCursor(SystemCursor systemCursor = SystemCursor::ARROW);
 
 		/*
 		* Load this cursor as current to the system

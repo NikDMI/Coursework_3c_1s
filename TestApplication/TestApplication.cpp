@@ -16,6 +16,7 @@
 #include "../CoreDLL/Gui/Border/IBorder.h"
 #include "../CoreDLL/Gui/Border/AngleBorder.h"
 #include "../CoreDLL/Gui/Controls/Window/MainWindow.h"
+#include "../CoreDLL/Gui/ResizeManager/RectangleResizer.h"
 
 #include <string>
 
@@ -70,6 +71,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	ICursor* cursorCross = ICursor::CreateCursor();
 	cursorCross->SetSystemCursor(ICursor::SystemCursor::CROSS);
 	mainWindow->SetCursor(cursorCross);
+	mainWindow->SetResizeManager(new RectangleResizer{15,15,15,15});
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
