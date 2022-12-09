@@ -4,21 +4,15 @@
 namespace Nk {
 
 	void Core_PushButtonDrawProc(Widget* widget, IPainter* painter);
+
 	void PROC_CALL PushButton_OnLMouseLeave(void* params);
 	void PROC_CALL PushButton_OnMouseMove(void* params);
 	void PROC_CALL PushButton_OnMouseLDown(void* params);
 	void PROC_CALL PushButton_OnLMouseLUp(void* params);
 
-	const Color_t PushButton::DEFAULT_COLOR = { 0.5, 0.6, 0.3, 1.0 };;
-	const Color_t PushButton::DEFAULT_HOVER_COLOR = { 0.6, 0.7, 0.3, 1.0 };;
-	const Color_t PushButton::DEFAULT_PUSH_COLOR = { 0.3, 0.4, 0.6, 1.0 };;
-
-	PushButton::PushButton(const std::wstring& buttonText, Widget* parent) : IButton{ parent }, ITextElement{ this, buttonText } {
-		SetBackgroundColor(DEFAULT_COLOR);
-		//Configs
-		SetButtonColor(IButton::ButtonState::HOVER, DEFAULT_HOVER_COLOR);
-		SetButtonColor(IButton::ButtonState::PUSH, DEFAULT_PUSH_COLOR);
-		SetButtonColor(IButton::ButtonState::STATIC, DEFAULT_COLOR);
+	PushButton::PushButton(const std::wstring& buttonText, Widget* parent) : IButton{ parent }, ITextElement{ this, buttonText },
+		IBorderElement{this}
+	{
 		m_elementFont->SetHorizontalAlignment(IFont::HorizontalAlignment::CENTER);
 		m_elementFont->SetVerticalAlignment(IFont::VerticalAlignment::CENTER);
 		this->SetWindowDrawProc(Core_PushButtonDrawProc);
@@ -37,35 +31,27 @@ namespace Nk {
 	void PROC_CALL PushButton_OnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		PushButton* btn = (PushButton*)mouseStructure->sender;
-		if (!btn->m_isMoved) {
-			btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::HOVER));
-			btn->m_isMoved = true;
-			btn->Repaint();
-		}
+		btn->Button_OnMouseMove(params);
 	}
 
 	void PROC_CALL PushButton_OnMouseLDown(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		PushButton* btn = (PushButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::PUSH));
-		btn->Repaint();
+		btn->Button_OnMouseLDown(params);
 	}
 
 
 	void PROC_CALL PushButton_OnLMouseLUp(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		PushButton* btn = (PushButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::HOVER));
-		btn->Repaint();
+		btn->Button_OnLMouseLUp(params);
 	}
 
 
 	void PROC_CALL PushButton_OnLMouseLeave(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		PushButton* btn = (PushButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::STATIC));
-		btn->m_isMoved = false;
-		btn->Repaint();
+		btn->Button_OnLMouseLeave(params);
 	}
 
 	void Core_PushButtonDrawProc(Widget* widget, IPainter* painter) {

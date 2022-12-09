@@ -18,6 +18,8 @@
 #include "../CoreDLL/Gui/Controls/Window/MainWindow.h"
 #include "../CoreDLL/Gui/ResizeManager/RectangleResizer.h"
 #include "../CoreDLL/Gui/Controls/Button/PushButton.h"
+#include "../CoreDLL/Gui/Controls/Button/ImageButton.h"
+
 
 #include <string>
 
@@ -77,8 +79,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	mainWindow->SetResizeManager(new RectangleResizer{15,15,15,15});
 	btn = new PushButton{ L"Hello", mainWindow};
 	btn->SetWindowGeometry(0, 0, 100, 50);
+	btn->SetNormalBorder({ 0.5, 0.5, 0.6, 1.0 });
 	btn->ShowWindow();
 	mainWindow->SetCustomEvent(Widget::CustomEvents::ON_MOUSE_LUP, OnMouseClick);
+	ImageButton* imgBtn = new ImageButton{IBitmap::GetSystemBitmap(IBitmap::SystemBitmaps::CLOSE_IMAGE), mainWindow};
+	imgBtn->SetWindowGeometry(100, 100, 100, 50);
+	imgBtn->SetNormalBorder({ 0.2, 0.5, 0.8, 1.0 });
+	imgBtn->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;

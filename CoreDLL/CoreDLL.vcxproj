@@ -164,9 +164,11 @@
     <ClCompile Include="Gui\Border\AngleBorder.cpp" />
     <ClCompile Include="Gui\Border\IBorder.cpp" />
     <ClCompile Include="Gui\Controls\Button\IButton.cpp" />
+    <ClCompile Include="Gui\Controls\Button\ImageButton.cpp" />
     <ClCompile Include="Gui\Controls\Button\PushButton.cpp" />
     <ClCompile Include="Gui\Controls\Caption\ICaption.cpp" />
     <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp" />
+    <ClCompile Include="Gui\Controls\IBorderElement.cpp" />
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
@@ -203,9 +205,11 @@
     <ClInclude Include="Gui\Border\AngleBorder.h" />
     <ClInclude Include="Gui\Border\IBorder.h" />
     <ClInclude Include="Gui\Controls\Button\IButton.h" />
+    <ClInclude Include="Gui\Controls\Button\ImageButton.h" />
     <ClInclude Include="Gui\Controls\Button\PushButton.h" />
     <ClInclude Include="Gui\Controls\Caption\ICaption.h" />
     <ClInclude Include="Gui\Controls\Caption\MainCaption.h" />
+    <ClInclude Include="Gui\Controls\IBorderElement.h" />
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />

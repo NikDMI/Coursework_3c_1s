@@ -321,6 +321,12 @@
     <ClCompile Include="Gui\Controls\Button\PushButton.cpp">
       <Filter>Исходные файлы\Gui\Controls\Button</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\IBorderElement.cpp">
+      <Filter>Исходные файлы\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Button\ImageButton.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -462,6 +468,12 @@
       <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
     </ClInclude>
     <ClInclude Include="Gui\Controls\Button\PushButton.h">
+      <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\IBorderElement.h">
+      <Filter>Файлы заголовков\Gui\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Button\ImageButton.h">
       <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
     </ClInclude>
   </ItemGroup>

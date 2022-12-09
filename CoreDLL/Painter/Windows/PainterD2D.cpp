@@ -320,17 +320,21 @@ namespace Nk {
 		ComPtr<ID2D1Bitmap> d2d1Bitmap = wicBitmap->GetID2D1Bitmap(m_compatibleBitmapRootRenderTarget);//???
 		//Center bitmap into the rectangle
 		auto bitmapSize = d2d1Bitmap->GetPixelSize();
-		auto bitmapRatio = bitmapSize.width / bitmapSize.height;
+		float bitmapRatio = (float)bitmapSize.width / (float)bitmapSize.height;
 		D2D1_RECT_F destRectD2D;
 		float computedWidth = destRect.w;
-		float computedHeight = bitmapRatio / computedWidth;
+		float computedHeight = computedWidth / bitmapRatio;
 		if (computedHeight > destRect.h) {//w less that rectangle bitmap
 			computedHeight = destRect.h;
 			computedWidth = bitmapRatio * computedHeight;
-			destRectD2D = { (destRect.w - computedWidth) / 2, 0, computedWidth, computedHeight };
+			float destX = destRect.x + (destRect.w - computedWidth) / 2;
+			float destY = destRect.y;
+			destRectD2D = { destX , destY, destX + computedWidth, destY + computedHeight };
 		}
 		else {// h less than rectangle
-			destRectD2D = { 0, (destRect.h - computedHeight) / 2, computedWidth, computedHeight };
+			float destX = destRect.x;
+			float destY = destRect.y + (destRect.h - computedHeight) / 2;
+			destRectD2D = { destX, destY, destX + computedWidth, destY + computedHeight };
 		}
 		m_compatibleBitmapRootRenderTarget->DrawBitmap(d2d1Bitmap.Get(), destRectD2D);
 	}
