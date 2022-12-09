@@ -118,12 +118,12 @@ namespace Nk {
 	}
 
 
-	void WindowWin32::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
+	void WindowWin32::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h, Point_t originPoint) {
 		if (w < 0 || h < 0) {
 			throw Exception{"Bad window geometry"};
 		}
 		m_x = x; m_y = y; m_width = w; m_height = h;
-		MoveWindow(m_hWnd, x, y, w, h, FALSE);
+		MoveWindow(m_hWnd, originPoint.x + x, originPoint.y + y, w, h, FALSE);
 		m_windowPainter->Resize(w, h);
 	}
 

@@ -17,7 +17,7 @@ namespace Nk {
 
 		IPainter* GetPainter() override;
 
-		void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) override;
+		void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h, Point_t originPoint = {0, 0}) override;
 		void ShowWindow() override;
 		void HideWindow() override;
 

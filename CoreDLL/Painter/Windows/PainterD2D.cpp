@@ -314,6 +314,27 @@ namespace Nk {
 		m_compatibleBitmapRootRenderTarget->DrawBitmap(d2d1Bitmap.Get(), destRectD2D);
 	}
 
+
+	void PainterD2D::DrawBitmapCentric(IBitmap* bitmap, Rect_t destRect) {
+		WicBitmap* wicBitmap = (WicBitmap*)bitmap;
+		ComPtr<ID2D1Bitmap> d2d1Bitmap = wicBitmap->GetID2D1Bitmap(m_compatibleBitmapRootRenderTarget);//???
+		//Center bitmap into the rectangle
+		auto bitmapSize = d2d1Bitmap->GetPixelSize();
+		auto bitmapRatio = bitmapSize.width / bitmapSize.height;
+		D2D1_RECT_F destRectD2D;
+		float computedWidth = destRect.w;
+		float computedHeight = bitmapRatio / computedWidth;
+		if (computedHeight > destRect.h) {//w less that rectangle bitmap
+			computedHeight = destRect.h;
+			computedWidth = bitmapRatio * computedHeight;
+			destRectD2D = { (destRect.w - computedWidth) / 2, 0, computedWidth, computedHeight };
+		}
+		else {// h less than rectangle
+			destRectD2D = { 0, (destRect.h - computedHeight) / 2, computedWidth, computedHeight };
+		}
+		m_compatibleBitmapRootRenderTarget->DrawBitmap(d2d1Bitmap.Get(), destRectD2D);
+	}
+
 	void PainterD2D::FillRectangle(Rect_t destRect) {
 		D2D1_RECT_F destRectD2D = { destRect.x, destRect.y, destRect.x + destRect.w, destRect.y + destRect.h };
 		m_compatibleBitmapRootRenderTarget->FillRectangle(destRectD2D, m_backgroundBrush->GetD2D1Brush().Get());

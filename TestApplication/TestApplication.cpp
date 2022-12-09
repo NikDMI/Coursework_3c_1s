@@ -17,6 +17,7 @@
 #include "../CoreDLL/Gui/Border/AngleBorder.h"
 #include "../CoreDLL/Gui/Controls/Window/MainWindow.h"
 #include "../CoreDLL/Gui/ResizeManager/RectangleResizer.h"
+#include "../CoreDLL/Gui/Controls/Button/PushButton.h"
 
 #include <string>
 
@@ -27,6 +28,7 @@ void PROC_CALL OnMouseMove2(void* params);
 using namespace Nk;
 
 void PROC_CALL OnMouseMove(void* params);
+void PROC_CALL OnMouseClick(void* params);
 
 DWORD WINAPI LogicThread(LPVOID);
 
@@ -36,6 +38,7 @@ Label* lbl;
 IBitmap* bmp;
 MainCaption* caption;
 IBorder* topBorder;
+PushButton* btn;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -72,6 +75,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	cursorCross->SetSystemCursor(ICursor::SystemCursor::CROSS);
 	mainWindow->SetCursor(cursorCross);
 	mainWindow->SetResizeManager(new RectangleResizer{15,15,15,15});
+	btn = new PushButton{ L"Hello", mainWindow};
+	btn->SetWindowGeometry(0, 0, 100, 50);
+	btn->ShowWindow();
+	mainWindow->SetCustomEvent(Widget::CustomEvents::ON_MOUSE_LUP, OnMouseClick);
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
@@ -124,6 +131,15 @@ void PROC_CALL OnMouseMove(void* params) {
 	lbl->SetText(L"Coords: x = " + std::to_wstring(ms->xCoord_Px) + L" y = " + std::to_wstring(ms->yCoord_Px));
 	lbl->Repaint();
 	widget3->Repaint();
+}
+
+
+void PROC_CALL OnMouseClick(void* params) {
+	MouseStructure* ms = (MouseStructure*)params;
+	x = ms->xCoord_Px;
+	y = ms->yCoord_Px;
+	btn->SetWindowGeometry(x, y, 100, 50);
+	btn->Repaint();
 }
 
 static Point_t lastGlobalCoord;

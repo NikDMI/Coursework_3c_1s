@@ -26,7 +26,7 @@ namespace Nk {
 	CLASS_PARAMS class Widget: public Object {
 	public:
 		//Represents events, that user can override
-		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, _LAST_ };
+		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, _LAST_ };
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -114,6 +114,7 @@ namespace Nk {
 		* Computes coordinates without header widget and borders
 		*/
 		void ComputeCursorPointWithoutHelpWidgets(Point_t& inOutPoint);
+		void ComputeOriginPointWithoutHelpWidgets(Point_t& inOutPoint);
 
 		/*
 		* Manage resizing states
@@ -201,6 +202,7 @@ namespace Nk {
 		CLASS_METHOD EventIndex GetEventIndex(Events eventType) const;
 
 		friend LRESULT CALLBACK Win32WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		friend void ChangeMouseStructCoord(void* param);
 	};
 }
 

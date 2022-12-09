@@ -71,9 +71,15 @@ namespace Nk {
 
 
 		/*
-		* Draws specialized bitmap in the rectangle
+		* Draws specialized bitmap in the rectangle (scaled)
 		*/
 		CLASS_METHOD virtual void DrawBitmap(IBitmap* bitmap, Rect_t destRect) = 0;
+
+
+		/*
+		* Draws specialized bitmap in the rectangle (save dimensions)
+		*/
+		CLASS_METHOD virtual void DrawBitmapCentric(IBitmap* bitmap, Rect_t destRect) = 0;
 
 
 		/*

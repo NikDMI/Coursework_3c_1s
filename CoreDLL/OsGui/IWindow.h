@@ -29,7 +29,7 @@ namespace Nk {
 		/*
 		* Set size and position of the window in px (1/96 inch)
 		*/
-		virtual void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) = 0;
+		virtual void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h, Point_t originPoint = {0, 0}) = 0;
 
 		virtual void ShowWindow() = 0;
 		virtual void HideWindow() = 0;
@@ -70,12 +70,12 @@ namespace Nk {
 
 		virtual void ReleaseMouseCapture() = 0;
 
+
 	protected:
 		WindowType m_windowType;
 		PainterType m_painterType;
 		Widget* m_correspondingWidget;
 		//IWindow* m_parentWindow;
-
 	};
 }
 

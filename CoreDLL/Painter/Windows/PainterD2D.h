@@ -27,6 +27,7 @@ namespace Nk {
 		void DrawText(Rect_t textRect, const std::wstring& text) override;
 
 		void DrawBitmap(IBitmap* bitmap, Rect_t destRect) override;
+		void DrawBitmapCentric(IBitmap* bitmap, Rect_t destRect) override;
 		void DrawGeometry(IGeometry* geometry) override;
 		void DrawRectangle(Rect_t destRect) override;
 		void FillRectangle(Rect_t destRect) override;

@@ -144,7 +144,23 @@ namespace Nk {
 			inOutPoint.y -= m_headerWidget->GetWidgetRect().h;
 		}
 		if (m_leftBorder) {
-			inOutPoint.x -= m_leftBorder->GetBorderOffset();
+			inOutPoint.x -= m_leftBorder->GetBorderWidth();
+		}
+		if (m_topBorder) {
+			inOutPoint.y -= m_topBorder->GetBorderWidth();
+		}
+	}
+
+
+	void Widget::ComputeOriginPointWithoutHelpWidgets(Point_t& inOutPoint) {
+		if (m_headerWidget) {
+			inOutPoint.y += m_headerWidget->GetWidgetRect().h;
+		}
+		if (m_leftBorder) {
+			inOutPoint.x += m_leftBorder->GetBorderWidth();
+		}
+		if (m_topBorder) {
+			inOutPoint.y += m_topBorder->GetBorderWidth();
 		}
 	}
 
@@ -201,7 +217,12 @@ namespace Nk {
 
 	void Widget::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
 		EnterCriticalSection(&m_drawLockObject);
-		m_windowOs->SetWindowGeometry(x, y, w, h);
+		Point_t originPoint = {0, 0};
+		if (m_parentWidget && this != m_parentWidget->m_headerWidget && this != m_parentWidget->m_bottomBorder && 
+			this != m_parentWidget->m_topBorder && this != m_parentWidget->m_leftBorder && this != m_parentWidget->m_rightBorder) {
+			m_parentWidget->ComputeOriginPointWithoutHelpWidgets(originPoint);
+		}
+		m_windowOs->SetWindowGeometry(x, y, w, h, originPoint);
 		m_x = x; m_y = y; m_w = w; m_h = h;
 		m_isBackBufferActive = false;
 		m_isNeedTotalRedraw = true;
@@ -550,17 +571,27 @@ namespace Nk {
 
 	////////////////////////////////////////////   BASIC EVENT HANDLERS
 
+	void ChangeMouseStructCoord(void* param) {
+		MouseStructure* mouseStructure = (MouseStructure*)param;
+		Widget* sender = mouseStructure->sender;
+		Point_t origin = { 0, 0 };
+		sender->ComputeOriginPointWithoutHelpWidgets(origin);
+		mouseStructure->xCoord_Px -= origin.x;
+		mouseStructure->yCoord_Px -= origin.y;
+	}
+
 	void PROC_CALL Widget::WidgetOnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		Widget* senderWidget = mouseStructure->sender;
 		//Check resize state
 		if (senderWidget->m_resizeManager) {
-			Point_t cursorPoint{ mouseStructure->xCoord_Px, mouseStructure->yCoord_Px };
+			Point_t cursorPoint	{ mouseStructure->xCoord_Px, mouseStructure->yCoord_Px };
 			senderWidget->ComputeCursorPointWithoutHelpWidgets(cursorPoint);
 			senderWidget->CheckResizingOnMouseMove(cursorPoint);
 			senderWidget->Repaint();
 		}
 		//Call user callback function
+		ChangeMouseStructCoord(params);
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_MOVE, params);
 	}
 
@@ -577,6 +608,7 @@ namespace Nk {
 			}
 		}
 		//Call user callback function
+		ChangeMouseStructCoord(params);
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LDOWN, params);
 	}
 
@@ -592,6 +624,7 @@ namespace Nk {
 			}
 		}
 		//Call user callback function
+		ChangeMouseStructCoord(params);
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LUP, params);
 	}
 
@@ -604,6 +637,8 @@ namespace Nk {
 		}
 		senderWidget->m_lastResizeType = IResizeManager::ResizeType::NONE;
 		senderWidget->m_isResizing = false;
+		ChangeMouseStructCoord(params);
+		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_ENTER, params);
 	}
 
 
@@ -620,6 +655,8 @@ namespace Nk {
 			}
 			senderWidget->m_leaveCursor = nullptr;
 		}
+		ChangeMouseStructCoord(params);
+		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LEAVE, params);
 	}
 
 }

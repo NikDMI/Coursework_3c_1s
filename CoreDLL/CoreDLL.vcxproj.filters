@@ -205,6 +205,12 @@
     <Filter Include="Исходные файлы\Gui\ResizeManager">
       <UniqueIdentifier>{002966db-88d7-4266-a002-7bdf57404bd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls\Button">
+      <UniqueIdentifier>{0416c08f-da05-483e-8b5c-50413ace7173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls\Button">
+      <UniqueIdentifier>{8f530ef6-6a33-48fa-85f6-e9751a704c3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -308,6 +314,12 @@
     </ClCompile>
     <ClCompile Include="Gui\ResizeManager\RectangleResizer.cpp">
       <Filter>Исходные файлы\Gui\ResizeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Button\IButton.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Button\PushButton.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +457,12 @@
     </ClInclude>
     <ClInclude Include="Gui\ResizeManager\RectangleResizer.h">
       <Filter>Файлы заголовков\Gui\ResizeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Button\IButton.h">
+      <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Button\PushButton.h">
+      <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
