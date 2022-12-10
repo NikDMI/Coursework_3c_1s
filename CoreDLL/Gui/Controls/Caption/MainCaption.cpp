@@ -44,9 +44,9 @@ namespace Nk {
 		m_closeButton = new ImageButton{IBitmap::GetSystemBitmap(IBitmap::SystemBitmaps::CLOSE_IMAGE), this};
 		auto rect = GetWidgetClientRect();
 		m_closeButton->SetWindowGeometry(rect.w - DEFAULT_BUTTON_WIDTH, 0, DEFAULT_BUTTON_WIDTH, rect.h);
-		m_closeButton->SetButtonColor(IButton::ButtonState::STATIC, DEFAULT_CAPTION_COLOR);
-		m_closeButton->SetButtonColor(IButton::ButtonState::HOVER, HOVER_BUTTON_COLOR);
-		m_closeButton->SetButtonColor(IButton::ButtonState::PUSH, PUSH_BUTTON_COLOR);
+		m_closeButton->SetButtonColor(IColorElement::ElementState::STATIC, DEFAULT_CAPTION_COLOR);
+		m_closeButton->SetButtonColor(IColorElement::ElementState::HOVER, HOVER_BUTTON_COLOR);
+		m_closeButton->SetButtonColor(IColorElement::ElementState::PUSH, PUSH_BUTTON_COLOR);
 		m_closeButton->SetBackgroundColor(DEFAULT_CAPTION_COLOR);
 		m_closeButton->ShowWindow();
 	}

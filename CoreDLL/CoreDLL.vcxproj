@@ -169,6 +169,7 @@
     <ClCompile Include="Gui\Controls\Caption\ICaption.cpp" />
     <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp" />
     <ClCompile Include="Gui\Controls\IBorderElement.cpp" />
+    <ClCompile Include="Gui\Controls\IColorElement.cpp" />
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
@@ -209,7 +210,9 @@
     <ClInclude Include="Gui\Controls\Button\PushButton.h" />
     <ClInclude Include="Gui\Controls\Caption\ICaption.h" />
     <ClInclude Include="Gui\Controls\Caption\MainCaption.h" />
+    <ClInclude Include="Gui\Controls\Edit\IEditBox.h" />
     <ClInclude Include="Gui\Controls\IBorderElement.h" />
+    <ClInclude Include="Gui\Controls\IColorElement.h" />
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />

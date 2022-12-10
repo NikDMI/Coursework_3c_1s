@@ -21,6 +21,7 @@ namespace Nk {
 		virtual IFont* SetFamily(std::wstring familyName) = 0;
 		virtual IFont* SetHorizontalAlignment(HorizontalAlignment alignment) = 0;
 		virtual IFont* SetVerticalAlignment(VerticalAlignment alignment) = 0;
+		virtual IFont* SetMultilineState(bool isMultiline) = 0;
 		
 
 		//virtual FLOAT GetTextMaxHeight(const std::wstring& text, FLOAT maxWidth) = 0;

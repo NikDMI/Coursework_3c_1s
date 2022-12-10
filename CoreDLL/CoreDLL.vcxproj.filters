@@ -211,6 +211,12 @@
     <Filter Include="Файлы заголовков\Gui\Controls\Button">
       <UniqueIdentifier>{8f530ef6-6a33-48fa-85f6-e9751a704c3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls\Edit">
+      <UniqueIdentifier>{3fab8d7b-8d3c-4de1-a72b-cbf2c0169c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls\Edit">
+      <UniqueIdentifier>{90300602-f5e6-4509-840a-e0adf33af019}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -326,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="Gui\Controls\Button\ImageButton.cpp">
       <Filter>Исходные файлы\Gui\Controls\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\IColorElement.cpp">
+      <Filter>Исходные файлы\Gui\Controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +484,12 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\Button\ImageButton.h">
       <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Edit\IEditBox.h">
+      <Filter>Файлы заголовков\Gui\Controls\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\IColorElement.h">
+      <Filter>Файлы заголовков\Gui\Controls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,55 +9,41 @@ namespace Nk {
 	const Color_t IButton::DEFAULT_PUSH_COLOR = { 0.3, 0.4, 0.6, 1.0 };
 
 
-	IButton::IButton(Widget* parent) :Widget{ parent } {
+	IButton::IButton(Widget* parent) :Widget{ parent }, IColorElement{this} {
 		SetBackgroundColor(DEFAULT_COLOR);
 		//Configs
-		SetButtonColor(IButton::ButtonState::HOVER, DEFAULT_HOVER_COLOR);
-		SetButtonColor(IButton::ButtonState::PUSH, DEFAULT_PUSH_COLOR);
-		SetButtonColor(IButton::ButtonState::STATIC, DEFAULT_COLOR);
-	}
-
-	void IButton::SetButtonColor(ButtonState buttonState, Color_t color) {
-		m_buttonColors[buttonState] = color;
-	}
-
-
-	Color_t IButton::GetButtonColor(ButtonState buttonState) {
-		return m_buttonColors[buttonState];
+		SetButtonColor(IColorElement::ElementState::HOVER, DEFAULT_HOVER_COLOR);
+		SetButtonColor(IColorElement::ElementState::PUSH, DEFAULT_PUSH_COLOR);
+		SetButtonColor(IColorElement::ElementState::STATIC, DEFAULT_COLOR);
 	}
 
 
 	void PROC_CALL IButton::Button_OnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
-		if (!btn->m_isMoved) {
-			btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::HOVER));
-			btn->m_isMoved = true;
-			btn->Repaint();
-		}
+		btn->ColorElement_OnMouseMove(params);
 	}
 
 	void PROC_CALL IButton::Button_OnMouseLDown(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::PUSH));
-		btn->Repaint();
+		btn->ColorElement_OnMouseLDown(params);
+
 	}
 
 
 	void PROC_CALL IButton::Button_OnLMouseLUp(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::HOVER));
-		btn->Repaint();
+		btn->ColorElement_OnLMouseLUp(params);
+
 	}
 
 
 	void PROC_CALL IButton::Button_OnLMouseLeave(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
-		btn->SetBackgroundColor(btn->GetButtonColor(IButton::ButtonState::STATIC));
-		btn->m_isMoved = false;
-		btn->Repaint();
+		btn->ColorElement_OnLMouseLeave(params);
+
 	}
 }

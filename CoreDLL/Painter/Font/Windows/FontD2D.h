@@ -23,6 +23,7 @@ namespace Nk {
 		IFont* SetFamily(std::wstring familyName) override;
 		IFont* SetHorizontalAlignment(HorizontalAlignment alignment) override;
 		IFont* SetVerticalAlignment(VerticalAlignment alignment) override;
+		IFont* SetMultilineState(bool isMultiline) override;
 
 		//FLOAT GetTextMaxHeight(const std::wstring& text, FLOAT maxWidth) override;
 
@@ -36,7 +37,7 @@ namespace Nk {
 		ComPtr<IDWriteTextFormat> m_textFormat; //Represent default text format
 
 		//Describes font stated, that can be changed
-		enum StateFontFlags : int64_t { fontSize = 0x1, fontFamily = 0x2 };
+		enum StateFontFlags : int64_t { fontSize = 0x1, fontFamily = 0x2, fontMultiline = 0x4 };
 		int64_t m_changedFontStates = ~(int64_t)0; //Show, that state of the text layout was chanded (add new config params)
 
 		void ChangeFontState();
@@ -53,6 +54,7 @@ namespace Nk {
 		//Text characteristics
 		DWRITE_TEXT_ALIGNMENT m_textAlignment = DWRITE_TEXT_ALIGNMENT_LEADING;
 		DWRITE_PARAGRAPH_ALIGNMENT m_textVerticalAlignment = DWRITE_PARAGRAPH_ALIGNMENT_NEAR;
+		DWRITE_WORD_WRAPPING m_wordWrappingMode = DWRITE_WORD_WRAPPING_NO_WRAP;
 	};
 }
 

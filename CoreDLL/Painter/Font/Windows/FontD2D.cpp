@@ -26,6 +26,7 @@ namespace Nk {
 		CreateNewTextFormat();
 	}
 
+
 	void FontD2D::CreateNewTextFormat() {
 		HRESULT hRes = m_pWriteFactory->CreateTextFormat(m_fontFamily.c_str(), m_fontCollection, m_fontWeight, m_fontStyle,
 			m_fontStretch, m_fontSize, m_fontLocalName.c_str(), m_textFormat.GetAddressOf());
@@ -33,7 +34,7 @@ namespace Nk {
 			DWORD errCode = GetLastError();
 			throw Exception{"Can't crete text format"};
 		}
-		m_textFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WHOLE_WORD); //Breaks big words
+		m_textFormat->SetWordWrapping(m_wordWrappingMode); //Breaks big words
 		m_textFormat->SetTextAlignment(m_textAlignment);
 		m_textFormat->SetParagraphAlignment(m_textVerticalAlignment);
 	}
@@ -105,6 +106,13 @@ namespace Nk {
 			m_textVerticalAlignment = userVerticalAlignment;
 			m_textFormat->SetParagraphAlignment(userVerticalAlignment);
 		}
+		return this;
+	}
+
+
+	IFont* FontD2D::SetMultilineState(bool isMultiline) {
+		m_wordWrappingMode = isMultiline ? DWRITE_WORD_WRAPPING_WHOLE_WORD : DWRITE_WORD_WRAPPING_NO_WRAP;
+		m_changedFontStates |= StateFontFlags::fontFamily;
 		return this;
 	}
 
