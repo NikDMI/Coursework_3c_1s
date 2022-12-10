@@ -2,6 +2,7 @@
 #define MAIN_CAPTION_GUI_DLL
 
 #include "ICaption.h"
+#include "../Button/IButton.h"
 
 namespace Nk {
 
@@ -20,6 +21,9 @@ namespace Nk {
 		static const std::wstring DEFAULT_CAPTION_FONT_FAMILY;
 		static const int DEFAULT_CAPTION_FONT_WIDTH = 22;
 		static const Color_t DEFAULT_CAPTION_COLOR;
+		static const Color_t HOVER_BUTTON_COLOR;
+		static const Color_t PUSH_BUTTON_COLOR;
+		static const int DEFAULT_BUTTON_WIDTH = 30;
 
 
 		float m_captionHeight = DEFAULT_CAPTION_HEIGHT;
@@ -27,6 +31,8 @@ namespace Nk {
 		Coord_t m_xTextOffset = 20;
 		Coord_t m_yTextOffset = 10;
 		Widget* m_parentWidget;
+
+		IButton* m_closeButton;
 
 		Point_t m_lastCursorPosition;
 		bool m_isCaptured = false;

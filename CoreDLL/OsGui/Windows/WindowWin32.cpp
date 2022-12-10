@@ -228,6 +228,7 @@ namespace Nk {
 
 		//Local vars
 		static MouseStructure mouseStructure;
+		static BasicWidgetStructure basicStructure;
 
 		switch (uMsg) {
 
@@ -271,6 +272,16 @@ namespace Nk {
 		case WM_PAINT:
 			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), lastWidget);
 			ValidateRect(hWnd, NULL);
+			break;
+
+		case WM_SETFOCUS:
+			basicStructure.sender = lastWidget;
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_GET_FOCUS), &basicStructure);
+			break;
+
+		case WM_KILLFOCUS:
+			basicStructure.sender = lastWidget;
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_LEAVE_FOCUS), &basicStructure);
 			break;
 
 		case WM_ERASEBKGND:

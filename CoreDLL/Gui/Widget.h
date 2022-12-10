@@ -26,7 +26,8 @@ namespace Nk {
 	CLASS_PARAMS class Widget: public Object {
 	public:
 		//Represents events, that user can override
-		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, _LAST_ };
+		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, ON_SET_FOCUS, ON_KILL_FOCUS,
+			_LAST_ };
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -104,7 +105,8 @@ namespace Nk {
 		CLASS_METHOD void SetCustomEvent(CustomEvents eventType, EventHandlerProc callback);
 
 	private:
-		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, _LAST_ };
+		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, ON_GET_FOCUS, ON_LEAVE_FOCUS,
+			_LAST_ };
 
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
@@ -137,6 +139,8 @@ namespace Nk {
 		static void PROC_CALL WidgetOnLMouseUp(void* params);
 		static void PROC_CALL WidgetOnMouseEnter(void* params);
 		static void PROC_CALL WidgetOnMouseLeave(void* params);
+		static void PROC_CALL WidgetOnSetFocus(void* params);
+		static void PROC_CALL WidgetOnKillFocus(void* params);
 
 		//Basic data
 		Widget* m_parentWidget;

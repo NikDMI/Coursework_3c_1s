@@ -18,7 +18,8 @@ namespace Nk {
 
 	const ClassId Widget::m_classId = Object::RegisterNewClass("Gui::Widget");
 	const char* Widget::EventsNames[Events::_LAST_] = { "Core_Repaint_Window_Buffer", "Core_Draw_Window_Buffer",
-		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp", "Core_OnMouseEnter", "Core_OnMouseLeave" };
+		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp", "Core_OnMouseEnter", "Core_OnMouseLeave",
+		"Core_OnFocus", "Core_OnKillFocus" };
 
 
 
@@ -40,6 +41,8 @@ namespace Nk {
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LUP], { WidgetOnLMouseUp, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_ENTER], { WidgetOnMouseEnter, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LEAVE], { WidgetOnMouseLeave, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_GET_FOCUS], { WidgetOnSetFocus, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_LEAVE_FOCUS], { WidgetOnKillFocus, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -657,6 +660,20 @@ namespace Nk {
 		}
 		ChangeMouseStructCoord(params);
 		CallUserCallback(senderWidget, CustomEvents::ON_MOUSE_LEAVE, params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnSetFocus(void* params) {
+		BasicWidgetStructure* basicStructure = (BasicWidgetStructure*)params;
+		Widget* senderWidget = basicStructure->sender;
+		CallUserCallback(senderWidget, CustomEvents::ON_SET_FOCUS, params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnKillFocus(void* params) {
+		BasicWidgetStructure* basicStructure = (BasicWidgetStructure*)params;
+		Widget* senderWidget = basicStructure->sender;
+		CallUserCallback(senderWidget, CustomEvents::ON_KILL_FOCUS, params);
 	}
 
 }

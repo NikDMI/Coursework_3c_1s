@@ -1,11 +1,14 @@
 #include "MainCaption.h"
 #include "../../EventStructures/MouseStructure.h"
 #include "../../../Tools/Cursor/ICursor.h"
+#include "../Button/ImageButton.h"
 
 namespace Nk {
 
 	const std::wstring MainCaption::DEFAULT_CAPTION_FONT_FAMILY = L"Arial";
 	const Color_t MainCaption::DEFAULT_CAPTION_COLOR = { 0.8, 0.8, 0.8, 1.0 };
+	const Color_t MainCaption::HOVER_BUTTON_COLOR = { 0.85, 0.85, 0.85, 1.0 };
+	const Color_t MainCaption::PUSH_BUTTON_COLOR = { 0.73, 0.73, 0.73, 1.0 };
 
 
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter);
@@ -37,6 +40,15 @@ namespace Nk {
 		SetCustomEvent(CustomEvents::ON_MOUSE_LUP, OnMouseUp);
 		SetCustomEvent(CustomEvents::ON_PARENT_RESIZE, MainCaption_OnParentResize);
 		SetParentNotification();
+		//Create buttons
+		m_closeButton = new ImageButton{IBitmap::GetSystemBitmap(IBitmap::SystemBitmaps::CLOSE_IMAGE), this};
+		auto rect = GetWidgetClientRect();
+		m_closeButton->SetWindowGeometry(rect.w - DEFAULT_BUTTON_WIDTH, 0, DEFAULT_BUTTON_WIDTH, rect.h);
+		m_closeButton->SetButtonColor(IButton::ButtonState::STATIC, DEFAULT_CAPTION_COLOR);
+		m_closeButton->SetButtonColor(IButton::ButtonState::HOVER, HOVER_BUTTON_COLOR);
+		m_closeButton->SetButtonColor(IButton::ButtonState::PUSH, PUSH_BUTTON_COLOR);
+		m_closeButton->SetBackgroundColor(DEFAULT_CAPTION_COLOR);
+		m_closeButton->ShowWindow();
 	}
 
 
@@ -46,6 +58,10 @@ namespace Nk {
 		MainCaption* caption = (MainCaption*)bs->sender;
 		auto computedHeaderRect = caption->GetParentWidget()->ComputeHeaderRect();
 		caption->SetWindowGeometry(computedHeaderRect.x, computedHeaderRect.y, computedHeaderRect.w, caption->m_captionHeight);
+		//Change button positions 
+		auto btnRect = caption->m_closeButton->GetWidgetRect();
+		caption->m_closeButton->SetWindowGeometry(computedHeaderRect.w - btnRect.w, btnRect.y, btnRect.w, btnRect.h);
+
  	}
 
 	void PROC_CALL OnMouseDown(void* params) {
