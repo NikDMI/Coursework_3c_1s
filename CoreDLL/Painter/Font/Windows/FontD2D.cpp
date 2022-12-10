@@ -112,7 +112,7 @@ namespace Nk {
 
 	IFont* FontD2D::SetMultilineState(bool isMultiline) {
 		m_wordWrappingMode = isMultiline ? DWRITE_WORD_WRAPPING_WHOLE_WORD : DWRITE_WORD_WRAPPING_NO_WRAP;
-		m_changedFontStates |= StateFontFlags::fontFamily;
+		m_changedFontStates |= StateFontFlags::fontMultiline;
 		return this;
 	}
 
@@ -120,7 +120,8 @@ namespace Nk {
 	void FontD2D::ChangeFontState() {
 		if (m_changedFontStates) {
 			bool isCriticalChanges = false; //This flag shows, do we need to create new textFormat object
-			if (m_changedFontStates & StateFontFlags::fontSize || m_changedFontStates & StateFontFlags::fontFamily) {
+			if (m_changedFontStates & StateFontFlags::fontSize || m_changedFontStates & StateFontFlags::fontFamily || 
+				m_changedFontStates & StateFontFlags::fontMultiline) {
 				isCriticalChanges = true;
 			}
 
@@ -142,6 +143,7 @@ namespace Nk {
 		if (hRes != S_OK)
 			throw Exception{};
 		return textLayout;
+		
 	}
 
 

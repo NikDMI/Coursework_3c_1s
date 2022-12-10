@@ -6,10 +6,11 @@
 #include <string>
 #include "../ITextElement.h"
 #include "../IBorderElement.h"
+#include "../IColorElement.h"
 
 namespace Nk {
 
-	CLASS_PARAMS class IEdit : public Widget, public ITextElement, public IBorderElement {
+	CLASS_PARAMS class IEdit : public Widget, public ITextElement, public IBorderElement, public IColorElement {
 	public:
 
 		virtual ~IEdit() {};
@@ -18,10 +19,10 @@ namespace Nk {
 		IEdit(Widget* parent);
 
 		//Basic button proc
-		void PROC_CALL Button_OnLMouseLeave(void* params);
-		void PROC_CALL Button_OnMouseMove(void* params);
-		void PROC_CALL Button_OnMouseLDown(void* params);
-		void PROC_CALL Button_OnLMouseLUp(void* params);
+		void PROC_CALL Edit_OnLMouseLeave(void* params);
+		void PROC_CALL Edit_OnMouseMove(void* params);
+		void PROC_CALL Edit_OnMouseLDown(void* params);
+		void PROC_CALL Edit_OnLMouseLUp(void* params);
 
 	private:
 		static const Color_t DEFAULT_COLOR;

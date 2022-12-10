@@ -8,6 +8,7 @@
 #include "../Application/NkApplication.h"
 #include "EventStructures/MouseStructure.h"
 #include "EventStructures/BasicWidgetStructure.h"
+#include "EventStructures/KeyBoard.h"
 #include "Border/IBorder.h"
 
 namespace Nk {
@@ -19,7 +20,7 @@ namespace Nk {
 	const ClassId Widget::m_classId = Object::RegisterNewClass("Gui::Widget");
 	const char* Widget::EventsNames[Events::_LAST_] = { "Core_Repaint_Window_Buffer", "Core_Draw_Window_Buffer",
 		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp", "Core_OnMouseEnter", "Core_OnMouseLeave",
-		"Core_OnFocus", "Core_OnKillFocus" };
+		"Core_OnFocus", "Core_OnKillFocus", "Core_OnChar", "Core_OnKeyDown" , "Core_OnKeyUp" };
 
 
 
@@ -43,6 +44,9 @@ namespace Nk {
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_MOUSE_LEAVE], { WidgetOnMouseLeave, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_GET_FOCUS], { WidgetOnSetFocus, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_LEAVE_FOCUS], { WidgetOnKillFocus, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_CHAR], { WidgetOnChar, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_KEY_DOWN], { WidgetOnKeyDown, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_KEY_UP], { WidgetOnKeyUp, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -326,6 +330,11 @@ namespace Nk {
 
 	void Widget::SetResizeManager(IResizeManager* resizeManager) {
 		m_resizeManager = resizeManager;
+	}
+
+
+	void Widget::SetFocus() {
+		m_windowOs->SetFocus();
 	}
 
 	////////////////////////////////CUSTOM EVENT HANDLERS
@@ -674,6 +683,27 @@ namespace Nk {
 		BasicWidgetStructure* basicStructure = (BasicWidgetStructure*)params;
 		Widget* senderWidget = basicStructure->sender;
 		CallUserCallback(senderWidget, CustomEvents::ON_KILL_FOCUS, params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnChar(void* params) {
+		KeyboardStructure* basicStructure = (KeyboardStructure*)params;
+		Widget* senderWidget = basicStructure->sender;
+		CallUserCallback(senderWidget, CustomEvents::ON_CHAR, params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnKeyUp(void* params) {
+		KeyboardStructure* basicStructure = (KeyboardStructure*)params;
+		Widget* senderWidget = basicStructure->sender;
+		CallUserCallback(senderWidget, CustomEvents::ON_KEY_UP, params);
+	}
+
+
+	void PROC_CALL Widget::WidgetOnKeyDown(void* params) {
+		KeyboardStructure* basicStructure = (KeyboardStructure*)params;
+		Widget* senderWidget = basicStructure->sender;
+		CallUserCallback(senderWidget, CustomEvents::ON_KEY_DOWN, params);
 	}
 
 }

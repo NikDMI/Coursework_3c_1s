@@ -20,6 +20,11 @@ namespace Nk {
 		CLASS_METHOD void SetText(const std::wstring&) noexcept;
 
 		/*
+		* Get reference to the text
+		*/
+		CLASS_METHOD std::wstring& GetTextReference() noexcept;
+
+		/*
 		* Returns font, that can be used, while drawing control
 		*/
 		CLASS_METHOD IFont* GetElementFont();

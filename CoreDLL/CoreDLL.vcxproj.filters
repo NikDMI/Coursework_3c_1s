@@ -336,6 +336,12 @@
     <ClCompile Include="Gui\Controls\IColorElement.cpp">
       <Filter>Исходные файлы\Gui\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\Edit\IEdit.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Edit\EditBox.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Edit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -485,11 +491,17 @@
     <ClInclude Include="Gui\Controls\Button\ImageButton.h">
       <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
     </ClInclude>
-    <ClInclude Include="Gui\Controls\Edit\IEditBox.h">
+    <ClInclude Include="Gui\Controls\Edit\IEdit.h">
       <Filter>Файлы заголовков\Gui\Controls\Edit</Filter>
     </ClInclude>
     <ClInclude Include="Gui\Controls\IColorElement.h">
       <Filter>Файлы заголовков\Gui\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Edit\EditBox.h">
+      <Filter>Файлы заголовков\Gui\Controls\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\EventStructures\KeyBoard.h">
+      <Filter>Файлы заголовков\Gui\EventStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

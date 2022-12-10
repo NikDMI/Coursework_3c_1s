@@ -19,6 +19,7 @@
 #include "../CoreDLL/Gui/ResizeManager/RectangleResizer.h"
 #include "../CoreDLL/Gui/Controls/Button/PushButton.h"
 #include "../CoreDLL/Gui/Controls/Button/ImageButton.h"
+#include "../CoreDLL/Gui/Controls/Edit/EditBox.h"
 
 
 #include <string>
@@ -86,6 +87,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	imgBtn->SetWindowGeometry(100, 100, 100, 50);
 	imgBtn->SetNormalBorder({ 0.2, 0.5, 0.8, 1.0 });
 	imgBtn->ShowWindow();
+	EditBox* editBox = new EditBox { L"Hello", mainWindow };
+	editBox->SetWindowGeometry(100, 200, 200, 300);
+	editBox->SetNormalBorder({ 0.8, 0.3, 0.4, 1.0 });
+	editBox->ShowWindow();
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;

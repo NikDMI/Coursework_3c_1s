@@ -28,7 +28,6 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
 		btn->ColorElement_OnMouseLDown(params);
-
 	}
 
 
@@ -36,7 +35,6 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
 		btn->ColorElement_OnLMouseLUp(params);
-
 	}
 
 
@@ -44,6 +42,5 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
 		btn->ColorElement_OnLMouseLeave(params);
-
 	}
 }

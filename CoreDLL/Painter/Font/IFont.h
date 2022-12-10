@@ -2,6 +2,7 @@
 #define IFONT_PAINTER_DLL
 
 #include <string>
+#include "../../Bean/Config.h"
 
 namespace Nk {
 
@@ -24,7 +25,7 @@ namespace Nk {
 		virtual IFont* SetMultilineState(bool isMultiline) = 0;
 		
 
-		//virtual FLOAT GetTextMaxHeight(const std::wstring& text, FLOAT maxWidth) = 0;
+		//virtual Rect_t GetTextMetrix(const std::wstring& text, FLOAT maxWidth) = 0;
 	};
 
 }

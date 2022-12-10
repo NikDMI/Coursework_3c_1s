@@ -7,6 +7,7 @@
 #include "../../Application/NkApplication.h"
 #include "../../Gui/Widget.h"
 #include "../../Gui/EventStructures/MouseStructure.h"
+#include "../../Gui/EventStructures/KeyBoard.h"
 
 namespace Nk {
 
@@ -187,6 +188,10 @@ namespace Nk {
 		ReleaseCapture();
 	}
 
+	void WindowWin32::SetFocus() {
+		::SetFocus(m_hWnd);
+	}
+
 
 	void WindowWin32::RegisterWindowClass() {
 		if (!m_isRegisterWindowClass) {
@@ -208,6 +213,7 @@ namespace Nk {
 		}
 	}
 
+	void TranslateVirtualKey(KeyboardStructure& keyboardstructure, WPARAM virtualKey);
 
 	/*
 	* Main window proc, that dispatch events to corresponding objects
@@ -228,6 +234,7 @@ namespace Nk {
 
 		//Local vars
 		static MouseStructure mouseStructure;
+		static KeyboardStructure keyboardStructure;
 		static BasicWidgetStructure basicStructure;
 
 		switch (uMsg) {
@@ -284,6 +291,26 @@ namespace Nk {
 			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_LEAVE_FOCUS), &basicStructure);
 			break;
 
+		case WM_CHAR:
+			keyboardStructure = { (wchar_t)wParam, KeyboardStructure::SystemKey::NONE_KEY, lastWidget };
+			if (wParam < 32) {//All system keys in ASCII
+				keyboardStructure.systemKey = KeyboardStructure::SystemKey::SYSTEM_KEY;
+			}
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_CHAR), &keyboardStructure);
+			break;
+
+		case WM_KEYDOWN:
+			keyboardStructure = { (wchar_t)wParam, KeyboardStructure::SystemKey::NONE_KEY, lastWidget };
+			TranslateVirtualKey(keyboardStructure, wParam);
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_KEY_DOWN), &keyboardStructure);
+			break;
+
+		case WM_KEYUP:
+			keyboardStructure = { (wchar_t)wParam, KeyboardStructure::SystemKey::NONE_KEY, lastWidget };
+			TranslateVirtualKey(keyboardStructure, wParam);
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_KEY_UP), &keyboardStructure);
+			break;
+
 		case WM_ERASEBKGND:
 			break;
 
@@ -291,5 +318,19 @@ namespace Nk {
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
 		return 0;
+	}
+
+
+	void TranslateVirtualKey(KeyboardStructure& keyboardstructure, WPARAM virtualKey) {
+		switch (virtualKey) {
+		case VK_BACK:
+			keyboardstructure.systemKey = KeyboardStructure::SystemKey::BACK_KEY;
+			break;
+		case VK_RETURN:
+			keyboardstructure.systemKey = KeyboardStructure::SystemKey::ENTER_KEY;
+			break;
+		default:
+			keyboardstructure.systemKey = KeyboardStructure::SystemKey::NONE_KEY;
+		}
 	}
 }

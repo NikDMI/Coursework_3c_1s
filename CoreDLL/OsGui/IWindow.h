@@ -70,6 +70,9 @@ namespace Nk {
 
 		virtual void ReleaseMouseCapture() = 0;
 
+		virtual void SetFocus() = 0;
+
+
 
 	protected:
 		WindowType m_windowType;

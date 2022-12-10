@@ -168,6 +168,8 @@
     <ClCompile Include="Gui\Controls\Button\PushButton.cpp" />
     <ClCompile Include="Gui\Controls\Caption\ICaption.cpp" />
     <ClCompile Include="Gui\Controls\Caption\MainCaption.cpp" />
+    <ClCompile Include="Gui\Controls\Edit\EditBox.cpp" />
+    <ClCompile Include="Gui\Controls\Edit\IEdit.cpp" />
     <ClCompile Include="Gui\Controls\IBorderElement.cpp" />
     <ClCompile Include="Gui\Controls\IColorElement.cpp" />
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
@@ -210,7 +212,8 @@
     <ClInclude Include="Gui\Controls\Button\PushButton.h" />
     <ClInclude Include="Gui\Controls\Caption\ICaption.h" />
     <ClInclude Include="Gui\Controls\Caption\MainCaption.h" />
-    <ClInclude Include="Gui\Controls\Edit\IEditBox.h" />
+    <ClInclude Include="Gui\Controls\Edit\EditBox.h" />
+    <ClInclude Include="Gui\Controls\Edit\IEdit.h" />
     <ClInclude Include="Gui\Controls\IBorderElement.h" />
     <ClInclude Include="Gui\Controls\IColorElement.h" />
     <ClInclude Include="Gui\Controls\ITextElement.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="Gui\Controls\Window\IWindowWidget.h" />
     <ClInclude Include="Gui\Controls\Window\MainWindow.h" />
     <ClInclude Include="Gui\EventStructures\BasicWidgetStructure.h" />
+    <ClInclude Include="Gui\EventStructures\KeyBoard.h" />
     <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
     <ClInclude Include="Gui\Layout\DefaultLayout.h" />
     <ClInclude Include="Gui\Layout\ILayout.h" />

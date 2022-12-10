@@ -50,6 +50,8 @@ namespace Nk {
 
 		void ReleaseMouseCapture() override;
 
+		void SetFocus() override;
+
 	private:
 		void RegisterWindowClass();
 
