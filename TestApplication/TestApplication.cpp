@@ -21,6 +21,8 @@
 #include "../CoreDLL/Gui/Controls/Button/ImageButton.h"
 #include "../CoreDLL/Gui/Controls/Edit/EditBox.h"
 #include "../CoreDLL/Gui/Controls/Window/PanelWindow.h"
+#include "../CoreDLL/Gui/Controls/Slider/ScrollBar.h"
+#include "../CoreDLL/Gui/EventStructures/ScrollStructure.h"
 
 
 #include <string>
@@ -33,6 +35,7 @@ using namespace Nk;
 
 void PROC_CALL OnMouseMove(void* params);
 void PROC_CALL OnMouseClick(void* params);
+void PROC_CALL OnScroll(void* params);
 
 DWORD WINAPI LogicThread(LPVOID);
 
@@ -92,14 +95,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	editBox->SetWindowGeometry(100, 200, 200, 300);
 	editBox->SetNormalBorder({ 0.8, 0.3, 0.4, 1.0 });
 	editBox->ShowWindow();
-	PanelWindow* panel = new PanelWindow{ editBox, 40,40,70,30 };
+	PanelWindow* panel = new PanelWindow{ editBox, 40,40,100,80 };
 	panel->ShowWindow();
+	ScrollBar* sc = new ScrollBar{ panel };
+	sc->SetWindowGeometry(15, 0, 15, 80);
+	sc->ShowWindow();
+	sc->SetCustomEvent(Widget::CustomEvents::ON_SCROLL, OnScroll);
 	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
 }
 
 void PROC_CALL UserWindowProc(Widget* widget, IPainter* painter);
+
+void PROC_CALL OnScroll(void* params) {
+	ScrollStructure* sc = (ScrollStructure*)params;
+	btn->SetText(std::to_wstring(sc->currentValue));
+	btn->Repaint();
+}
 
 DWORD WINAPI LogicThread(LPVOID param) {
 	Widget* w = (Widget*)param;

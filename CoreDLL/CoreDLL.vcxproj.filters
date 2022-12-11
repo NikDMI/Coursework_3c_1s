@@ -217,6 +217,12 @@
     <Filter Include="Исходные файлы\Gui\Controls\Edit">
       <UniqueIdentifier>{90300602-f5e6-4509-840a-e0adf33af019}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Gui\Controls\Slider">
+      <UniqueIdentifier>{a40775a4-ab5e-432f-9bae-33fdea79c3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Gui\Controls\Slider">
+      <UniqueIdentifier>{42a86091-ce8f-4b9d-bf2f-fe1bba538406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -344,6 +350,12 @@
     </ClCompile>
     <ClCompile Include="Gui\Controls\Window\PanelWindow.cpp">
       <Filter>Исходные файлы\Gui\Controls\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Slider\ISlider.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Slider</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Controls\Slider\ScrollBar.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Slider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -508,6 +520,15 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\Window\PanelWindow.h">
       <Filter>Файлы заголовков\Gui\Controls\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Slider\ISlider.h">
+      <Filter>Файлы заголовков\Gui\Controls\Slider</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\EventStructures\ScrollStructure.h">
+      <Filter>Файлы заголовков\Gui\EventStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Slider\ScrollBar.h">
+      <Filter>Файлы заголовков\Gui\Controls\Slider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

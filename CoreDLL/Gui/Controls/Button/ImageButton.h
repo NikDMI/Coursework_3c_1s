@@ -22,6 +22,11 @@ namespace Nk {
 		friend void PROC_CALL ImageButton_OnMouseLDown(void* params);
 		friend void PROC_CALL ImageButton_OnLMouseLUp(void* params);
 		friend void Core_ImageButtonDrawProc(Widget* widget, IPainter* painter);
+
+		//Scroll bar
+		friend void PROC_CALL OnMouseDownScrollElement(void* params);
+		friend void PROC_CALL OnMouseUpScrollElement(void* params);
+		friend void PROC_CALL OnMouseMoveScrollElement(void* params);
 	};
 
 }

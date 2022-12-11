@@ -175,6 +175,8 @@
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
+    <ClCompile Include="Gui\Controls\Slider\ISlider.cpp" />
+    <ClCompile Include="Gui\Controls\Slider\ScrollBar.cpp" />
     <ClCompile Include="Gui\Controls\Window\IWindowWidget.cpp" />
     <ClCompile Include="Gui\Controls\Window\MainWindow.cpp" />
     <ClCompile Include="Gui\Controls\Window\PanelWindow.cpp" />
@@ -220,12 +222,15 @@
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />
+    <ClInclude Include="Gui\Controls\Slider\ISlider.h" />
+    <ClInclude Include="Gui\Controls\Slider\ScrollBar.h" />
     <ClInclude Include="Gui\Controls\Window\IWindowWidget.h" />
     <ClInclude Include="Gui\Controls\Window\MainWindow.h" />
     <ClInclude Include="Gui\Controls\Window\PanelWindow.h" />
     <ClInclude Include="Gui\EventStructures\BasicWidgetStructure.h" />
     <ClInclude Include="Gui\EventStructures\KeyBoard.h" />
     <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
+    <ClInclude Include="Gui\EventStructures\ScrollStructure.h" />
     <ClInclude Include="Gui\Layout\DefaultLayout.h" />
     <ClInclude Include="Gui\Layout\ILayout.h" />
     <ClInclude Include="Gui\ResizeManager\IResizeManager.h" />

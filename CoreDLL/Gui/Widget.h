@@ -27,7 +27,7 @@ namespace Nk {
 	public:
 		//Represents events, that user can override
 		enum class CustomEvents : int { ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_PARENT_RESIZE, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, ON_SET_FOCUS, ON_KILL_FOCUS,
-			ON_CHAR, ON_KEY_DOWN, ON_KEY_UP, _LAST_ };
+			ON_CHAR, ON_KEY_DOWN, ON_KEY_UP, ON_SCROLL, _LAST_ };
 
 		CLASS_METHOD Widget(Widget* widget, Color_t backgroundColor);
 		CLASS_METHOD Widget(Widget* widget = nullptr);
@@ -110,7 +110,12 @@ namespace Nk {
 		*/
 		CLASS_METHOD void SetCustomEvent(CustomEvents eventType, EventHandlerProc callback);
 
+	protected:
+
+		static inline void CallUserCallback(Widget*, CustomEvents, void* params);
+
 	private:
+		//Events for OS
 		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, ON_GET_FOCUS, ON_LEAVE_FOCUS,
 			ON_CHAR, ON_KEY_DOWN, ON_KEY_UP, _LAST_ };
 
@@ -129,7 +134,6 @@ namespace Nk {
 		*/
 		void CheckResizingOnMouseMove(Point_t cursorPos);
 
-		static inline void CallUserCallback(Widget*, CustomEvents, void* params);
 
 		/*
 		* Basic options of drawing ()

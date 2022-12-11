@@ -54,13 +54,15 @@ namespace Nk {
 
 	void Core_ImageButtonDrawProc(Widget* widget, IPainter* painter) {
 		ImageButton* btn = (ImageButton*)widget;
-		auto clientRect = widget->GetWidgetClientRect();
-		float dx = clientRect.w * 0.05;
-		float dy = clientRect.h * 0.05;
-		clientRect.h -= dy * 2;
-		clientRect.w -= dx * 2;
-		clientRect.x = dx;
-		clientRect.y = dy;
-		painter->DrawBitmapCentric(btn->m_bitmap, clientRect);
+		if (btn->m_bitmap) {
+			auto clientRect = widget->GetWidgetClientRect();
+			float dx = clientRect.w * 0.05;
+			float dy = clientRect.h * 0.05;
+			clientRect.h -= dy * 2;
+			clientRect.w -= dx * 2;
+			clientRect.x = dx;
+			clientRect.y = dy;
+			painter->DrawBitmapCentric(btn->m_bitmap, clientRect);
+		}
 	}
 }
