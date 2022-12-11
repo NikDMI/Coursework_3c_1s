@@ -49,6 +49,7 @@ PushButton* btn;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
+	
 	widget = new Widget{ nullptr, {0.8, 0.8, 0.8, 0.1} };
 	widget->SetWindowGeometry(300, 300, 1000, 500);
 	//widget->ShowWindow();
@@ -75,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	//IBorder* btmBorder = new AngleBorder(widget, IBorder::BorderType::BOTTOM, 5, 110);
 	//IBorder* leftBorder = new AngleBorder(widget, IBorder::BorderType::LEFT, 5, 110);
 	widget->ShowWindow();
+	
 	MainWindow* mainWindow = new MainWindow(L"Hello, window");
 	mainWindow->ShowWindow();
 
@@ -82,8 +84,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	cursorCross->SetSystemCursor(ICursor::SystemCursor::CROSS);
 	mainWindow->SetCursor(cursorCross);
 	mainWindow->SetResizeManager(new RectangleResizer{15,15,15,15});
+	
 	btn = new PushButton{ L"Hello", mainWindow};
-	btn->SetWindowGeometry(0, 0, 100, 50);
+	btn->SetWindowGeometry(30, 30, 100, 50);
 	btn->SetNormalBorder({ 0.5, 0.5, 0.6, 1.0 });
 	btn->ShowWindow();
 	mainWindow->SetCustomEvent(Widget::CustomEvents::ON_MOUSE_LUP, OnMouseClick);
@@ -91,6 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	imgBtn->SetWindowGeometry(100, 100, 100, 50);
 	imgBtn->SetNormalBorder({ 0.2, 0.5, 0.8, 1.0 });
 	imgBtn->ShowWindow();
+	
 	EditBox* editBox = new EditBox { L"Hello", mainWindow };
 	editBox->SetWindowGeometry(100, 200, 200, 300);
 	editBox->SetNormalBorder({ 0.8, 0.3, 0.4, 1.0 });
@@ -101,7 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	sc->SetWindowGeometry(15, 0, 15, 80);
 	sc->ShowWindow();
 	sc->SetCustomEvent(Widget::CustomEvents::ON_SCROLL, OnScroll);
-	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
+	//CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
 }

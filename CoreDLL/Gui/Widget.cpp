@@ -362,7 +362,9 @@ namespace Nk {
 
 	void Widget::ResumeIfHeaderWidget(Widget* widget) {
 		Widget* parent = widget->m_parentWidget;
-		if (widget == parent->m_headerWidget) {
+		if (widget == parent->m_headerWidget || widget == parent->m_topBorder ||
+			widget == parent->m_bottomBorder || widget == parent->m_leftBorder || widget == parent->m_rightBorder) {
+
 			parent->GetPainter()->SetStartViewportPoint(parent->m_viewportPoint);
 		}
 	}

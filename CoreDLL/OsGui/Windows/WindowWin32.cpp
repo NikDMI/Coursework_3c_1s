@@ -154,7 +154,7 @@ namespace Nk {
 	void WindowWin32::DrawWindow() {
 		if (m_windowPainter->IsValidBackBuffer()) {
 			auto clientRect = this->GetRootClientRect();
-			auto bmpRect = this->GetParentClipRect(clientRect);
+			//auto bmpRect = this->GetParentClipRect(clientRect);
 			//m_windowPainter->DrawBufferBitmap(clientRect, bmpRect);
 			m_windowPainter->DrawBufferBitmap({ m_x, m_y, m_width, m_height });
 		}

@@ -272,14 +272,17 @@ namespace Nk {
 		if (m_bufferBitmap == nullptr) {
 			throw Exception{ "Back buffer is nullptr" };
 		}
-		auto hWndRenderTarget = this->GetRootParentRenderTarget();
-		bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
-		if (!isBeginDrawCalled) hWndRenderTarget->BeginDraw();
+		//auto hWndRenderTarget = this->GetRootParentRenderTarget();
+		//bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
+		//11.12
+		auto hWndRenderTarget = this->GetParentRenderTarget();
+		//bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
+		//if (!isBeginDrawCalled) hWndRenderTarget->BeginDraw();
 		//Draw buffer
 		D2D1_RECT_F destRect = { clientRect.x, clientRect.y, clientRect.x + clientRect.w, clientRect.y + clientRect.h };
 		D2D1_RECT_F bmpRect = { 0, 0, m_renderTargetSize.width, m_renderTargetSize.height };
 		hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
-		if (!isBeginDrawCalled) hWndRenderTarget->EndDraw();
+		//if (!isBeginDrawCalled) hWndRenderTarget->EndDraw();
 	}
 
 

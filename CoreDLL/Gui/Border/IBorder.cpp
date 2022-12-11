@@ -19,6 +19,7 @@ namespace Nk {
 		m_borderBrush = GetPainter()->CreateBrushObject({ 0.5, 0.5, 0.5, 1 });
 		SetCustomEvent(Widget::CustomEvents::ON_PARENT_RESIZE, OnParentResize);
 		this->SetParentNotification();
+		ShowWindow();
 	}
 
 
