@@ -342,6 +342,9 @@
     <ClCompile Include="Gui\Controls\Edit\EditBox.cpp">
       <Filter>Исходные файлы\Gui\Controls\Edit</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\Window\PanelWindow.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -502,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="Gui\EventStructures\KeyBoard.h">
       <Filter>Файлы заголовков\Gui\EventStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Window\PanelWindow.h">
+      <Filter>Файлы заголовков\Gui\Controls\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
