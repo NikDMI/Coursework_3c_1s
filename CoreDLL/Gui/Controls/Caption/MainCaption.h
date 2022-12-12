@@ -15,14 +15,15 @@ namespace Nk {
 
 		~MainCaption() override {};
 
+		CLASS_FIELDS static Color_t DEFAULT_CAPTION_COLOR;
+		CLASS_FIELDS static Color_t HOVER_BUTTON_COLOR;
+		CLASS_FIELDS static Color_t PUSH_BUTTON_COLOR;
+
 	private:
 		static const int DEFAULT_CAPTION_HEIGHT = 30;
 		static const int DEFAULT_CAPTION_WIDTH = 200;
 		static const std::wstring DEFAULT_CAPTION_FONT_FAMILY;
 		static const int DEFAULT_CAPTION_FONT_WIDTH = 22;
-		static const Color_t DEFAULT_CAPTION_COLOR;
-		static const Color_t HOVER_BUTTON_COLOR;
-		static const Color_t PUSH_BUTTON_COLOR;
 		static const int DEFAULT_BUTTON_WIDTH = 30;
 
 

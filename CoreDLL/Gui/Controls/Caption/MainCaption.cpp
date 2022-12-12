@@ -1,3 +1,5 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "MainCaption.h"
 #include "../../EventStructures/MouseStructure.h"
 #include "../../../Tools/Cursor/ICursor.h"
@@ -6,9 +8,9 @@
 namespace Nk {
 
 	const std::wstring MainCaption::DEFAULT_CAPTION_FONT_FAMILY = L"Arial";
-	const Color_t MainCaption::DEFAULT_CAPTION_COLOR = { 0.8, 0.8, 0.8, 1.0 };
-	const Color_t MainCaption::HOVER_BUTTON_COLOR = { 0.85, 0.85, 0.85, 1.0 };
-	const Color_t MainCaption::PUSH_BUTTON_COLOR = { 0.73, 0.73, 0.73, 1.0 };
+	Color_t MainCaption::DEFAULT_CAPTION_COLOR = { 0.8, 0.8, 0.8, 1.0 };
+	Color_t MainCaption::HOVER_BUTTON_COLOR = { 0.85, 0.85, 0.85, 1.0 };
+	Color_t MainCaption::PUSH_BUTTON_COLOR = { 0.73, 0.73, 0.73, 1.0 };
 
 
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter);

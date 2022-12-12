@@ -1,12 +1,14 @@
+#define DLL_EXPORT_SIGNATURE
+
 #include "IButton.h"
 #include "../../EventStructures/MouseStructure.h"
 
 
 namespace Nk {
 
-	const Color_t IButton::DEFAULT_COLOR = { 0.5, 0.6, 0.3, 1.0 };
-	const Color_t IButton::DEFAULT_HOVER_COLOR = { 0.6, 0.7, 0.3, 1.0 };
-	const Color_t IButton::DEFAULT_PUSH_COLOR = { 0.3, 0.4, 0.6, 1.0 };
+	Color_t IButton::DEFAULT_COLOR = { 0.5, 0.6, 0.3, 1.0 };
+	Color_t IButton::DEFAULT_HOVER_COLOR = { 0.6, 0.7, 0.3, 1.0 };
+	Color_t IButton::DEFAULT_PUSH_COLOR = { 0.3, 0.4, 0.6, 1.0 };
 
 
 	IButton::IButton(Widget* parent) :Widget{ parent }, IColorElement{this} {

@@ -22,6 +22,7 @@
 #include "../CoreDLL/Gui/Controls/Edit/EditBox.h"
 #include "../CoreDLL/Gui/Controls/Window/PanelWindow.h"
 #include "../CoreDLL/Gui/Controls/Slider/ScrollBar.h"
+#include "../CoreDLL/Gui/Controls/List/IList.h"
 #include "../CoreDLL/Gui/EventStructures/ScrollStructure.h"
 
 
@@ -46,6 +47,7 @@ IBitmap* bmp;
 MainCaption* caption;
 IBorder* topBorder;
 PushButton* btn;
+IList* list;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -105,6 +107,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	sc->SetWindowGeometry(15, 0, 15, 80);
 	sc->ShowWindow();
 	sc->SetCustomEvent(Widget::CustomEvents::ON_SCROLL, OnScroll);
+	list = new IList{ mainWindow };
+	list->SetWindowGeometry(300, 100, 150, 300);
+	for (int i = 0; i < 50; ++i) {
+		Label* listItem = new Label{ L"Hello" + std::to_wstring(i), list }; listItem->SetWindowGeometry(0, 0, 0, 20);
+		listItem->SetBackgroundColor({ (float)(0.4 + i*0.02), 0.3, 0.4, 1.0 });
+		list->AddListItem(listItem);
+	}
+	list->RecomputeListLayout();
+	list->ShowWindow();
 	//CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
@@ -116,6 +127,8 @@ void PROC_CALL OnScroll(void* params) {
 	ScrollStructure* sc = (ScrollStructure*)params;
 	btn->SetText(std::to_wstring(sc->currentValue));
 	btn->Repaint();
+	list->SetScrolling((float)sc->currentValue / (float)(sc->upperValue - sc->lowerValue));
+	list->Repaint();
 }
 
 DWORD WINAPI LogicThread(LPVOID param) {

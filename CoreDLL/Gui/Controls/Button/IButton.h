@@ -14,6 +14,11 @@ namespace Nk {
 
 		virtual ~IButton() {};
 
+		//Use can change this config colors 
+		CLASS_FIELDS static Color_t DEFAULT_COLOR;
+		CLASS_FIELDS static Color_t DEFAULT_HOVER_COLOR;
+		CLASS_FIELDS static Color_t DEFAULT_PUSH_COLOR;
+
 	protected:
 		IButton(Widget* parent);
 
@@ -24,9 +29,7 @@ namespace Nk {
 		void PROC_CALL Button_OnLMouseLUp(void* params);
 
 	private:
-		static const Color_t DEFAULT_COLOR;
-		static const Color_t DEFAULT_HOVER_COLOR;
-		static const Color_t DEFAULT_PUSH_COLOR;
+		
 
 	};
 

@@ -175,6 +175,7 @@
     <ClCompile Include="Gui\Controls\ITextElement.cpp" />
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
+    <ClCompile Include="Gui\Controls\List\IList.cpp" />
     <ClCompile Include="Gui\Controls\Slider\ISlider.cpp" />
     <ClCompile Include="Gui\Controls\Slider\ScrollBar.cpp" />
     <ClCompile Include="Gui\Controls\Window\IWindowWidget.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Tools\Cursor\WindowsCursor.cpp" />
     <ClCompile Include="Tools\IGeometry\IGeometry.cpp" />
     <ClCompile Include="Tools\IGeometry\Windows\GeometryD2D.cpp" />
+    <ClCompile Include="Tools\Palette\Palette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\NkApplication.h" />
@@ -222,6 +224,7 @@
     <ClInclude Include="Gui\Controls\ITextElement.h" />
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />
+    <ClInclude Include="Gui\Controls\List\IList.h" />
     <ClInclude Include="Gui\Controls\Slider\ISlider.h" />
     <ClInclude Include="Gui\Controls\Slider\ScrollBar.h" />
     <ClInclude Include="Gui\Controls\Window\IWindowWidget.h" />
@@ -256,6 +259,7 @@
     <ClInclude Include="Tools\Cursor\WindowsCursor.h" />
     <ClInclude Include="Tools\IGeometry\IGeometry.h" />
     <ClInclude Include="Tools\IGeometry\Windows\GeometryD2D.h" />
+    <ClInclude Include="Tools\Palette\Palette.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
