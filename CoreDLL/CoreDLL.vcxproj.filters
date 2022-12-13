@@ -375,6 +375,12 @@
     <ClCompile Include="Gui\Controls\List\IList.cpp">
       <Filter>Исходные файлы\Gui\Controls\List</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Layout\ILayout.cpp">
+      <Filter>Исходные файлы\Gui\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\Layout\StackLayout.cpp">
+      <Filter>Исходные файлы\Gui\Layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -553,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\List\IList.h">
       <Filter>Файлы заголовков\Gui\Controls\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Layout\StackLayout.h">
+      <Filter>Файлы заголовков\Gui\Layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

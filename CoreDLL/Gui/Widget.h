@@ -102,6 +102,12 @@ namespace Nk {
 		CLASS_METHOD void SetFocus();
 
 
+		/*
+		* Adds new layout to widget
+		*/
+		CLASS_METHOD void AddNewLayout(ILayout* layout, bool isDeleteLastLayout = false);
+
+
 
 		void SendRepaintEvent();
 

@@ -9,21 +9,23 @@ namespace Nk {
 	/*
 	* Itrerface of widgets layout
 	*/
-	class ILayout {
+	CLASS_PARAMS class ILayout {
 	public:
 		/*
 		* Add widget to the layout
 		*/
-		virtual void AddWidget(Widget* widget) = 0;
-		virtual void AddWidgets(const std::list<Widget*>& widgets) = 0;
+		CLASS_METHOD void AddWidget(Widget* widget);
 
-		virtual void RemoveWidget(Widget* widget) = 0;
+		CLASS_METHOD void AddWidgets(const std::list<Widget*>& widgets);
+
+		CLASS_METHOD void RemoveWidget(Widget* widget);
 
 
 		/*
 		* Erase all controlled widgets of layout
 		*/
-		virtual void ClearLayout() = 0;
+		CLASS_METHOD void ClearLayout();
+
 
 		/*
 		* Count positions and size of internal widgets
@@ -32,6 +34,11 @@ namespace Nk {
 
 
 		virtual ~ILayout() {};
+
+	protected:
+		ILayout();
+
+		std::list<Widget*> m_layoutWidgets;
 	};
 }
 

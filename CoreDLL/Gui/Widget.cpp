@@ -52,7 +52,7 @@ namespace Nk {
 			parent->AddChildWidget(this);
 		}
 		//Create default widget layout
-		m_widgetLayout = new DefaultLayout{};
+		//m_widgetLayout = new DefaultLayout{};
 		//Create window
 		IWindow* parentWindow = parent == nullptr ? nullptr : parent->m_windowOs;
 		m_windowOs = WindowFactory::CreateWindow(this, WindowType::OVERLAPPED_WINDOW, parentWindow);
@@ -71,7 +71,7 @@ namespace Nk {
 			m_parentWidget->RemoveChildWidget(this);
 		}
 		delete m_windowOs;
-		delete m_widgetLayout;
+		//delete m_widgetLayout;
 		delete m_defaultLayout;
 		DeleteCriticalSection(&m_drawLockObject);
 	}
@@ -82,9 +82,9 @@ namespace Nk {
 			throw Exception{"Can't register child window twice"};
 		}
 		m_childWidgetList.push_back(childWidget);
-		if (m_widgetLayout == m_defaultLayout) {
+		//if (m_widgetLayout == m_defaultLayout) {
 			m_widgetLayout->AddWidget(childWidget);
-		}
+		//}
 	}
 
 
@@ -94,9 +94,22 @@ namespace Nk {
 			throw Exception{ "No such child widget" };
 		}
 		m_childWidgetList.erase(childWidgetIter);
-		if (m_widgetLayout == m_defaultLayout) {
+		//if (m_widgetLayout == m_defaultLayout) {
 			m_widgetLayout->RemoveWidget(childWidget);
+		//}
+	}
+
+
+	void Widget::AddNewLayout(ILayout* layout, bool isDeleteLast) {
+		if (layout == nullptr) {
+			throw Exception{ "nullptr arg" };
 		}
+		if (layout == m_widgetLayout) return;
+		if (isDeleteLast && m_widgetLayout != m_defaultLayout) {
+			delete m_widgetLayout;
+		}
+		m_widgetLayout = layout;
+		layout->AddWidgets(m_childWidgetList);
 	}
 
 

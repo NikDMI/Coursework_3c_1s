@@ -11,18 +11,6 @@ namespace Nk {
 	*/
 	class DefaultLayout: public ILayout {
 	public:
-		/*
-		* Add widget to the layout
-		*/
-		void AddWidget(Widget* widget) override;
-		void AddWidgets(const std::list<Widget*>& widgets) override;
-
-		void RemoveWidget(Widget* widget) override;
-
-		/*
-		* Erase all controlled widgets of layout
-		*/
-		void ClearLayout() override;
 
 		/*
 		* Draw layout widgets
@@ -33,7 +21,6 @@ namespace Nk {
 		~DefaultLayout() override;
 
 	private:
-		std::list<Widget*> m_layoutWidgets;
 	};
 }
 

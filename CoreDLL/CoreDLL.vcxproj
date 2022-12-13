@@ -182,6 +182,8 @@
     <ClCompile Include="Gui\Controls\Window\MainWindow.cpp" />
     <ClCompile Include="Gui\Controls\Window\PanelWindow.cpp" />
     <ClCompile Include="Gui\Layout\DefaultLayout.cpp" />
+    <ClCompile Include="Gui\Layout\ILayout.cpp" />
+    <ClCompile Include="Gui\Layout\StackLayout.cpp" />
     <ClCompile Include="Gui\ResizeManager\RectangleResizer.cpp" />
     <ClCompile Include="Gui\Widget.cpp" />
     <ClCompile Include="OsGui\IWindow.cpp" />
@@ -236,6 +238,7 @@
     <ClInclude Include="Gui\EventStructures\ScrollStructure.h" />
     <ClInclude Include="Gui\Layout\DefaultLayout.h" />
     <ClInclude Include="Gui\Layout\ILayout.h" />
+    <ClInclude Include="Gui\Layout\StackLayout.h" />
     <ClInclude Include="Gui\ResizeManager\IResizeManager.h" />
     <ClInclude Include="Gui\ResizeManager\RectangleResizer.h" />
     <ClInclude Include="Gui\Widget.h" />
