@@ -30,7 +30,7 @@ namespace Nk {
 		/*
 		* Count positions and size of internal widgets
 		*/
-		virtual void ComputeWidgetsPositions() = 0;
+		CLASS_METHOD virtual void ComputeWidgetsPositions() = 0;
 
 
 		virtual ~ILayout() {};

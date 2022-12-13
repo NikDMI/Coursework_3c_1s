@@ -8,6 +8,7 @@
 #include "../Application/NkApplication.h"
 #include "EventStructures/MouseStructure.h"
 #include "EventStructures/BasicWidgetStructure.h"
+#include "EventStructures/ResizeWindowStructure.h"
 #include "EventStructures/KeyBoard.h"
 #include "Border/IBorder.h"
 
@@ -20,7 +21,7 @@ namespace Nk {
 	const ClassId Widget::m_classId = Object::RegisterNewClass("Gui::Widget");
 	const char* Widget::EventsNames[Events::_LAST_] = { "Core_Repaint_Window_Buffer", "Core_Draw_Window_Buffer",
 		"Core_OnMouseMove", "Core_OnMouseLDown", "Core_OnMouseLUp", "Core_OnMouseEnter", "Core_OnMouseLeave",
-		"Core_OnFocus", "Core_OnKillFocus", "Core_OnChar", "Core_OnKeyDown" , "Core_OnKeyUp" };
+		"Core_OnFocus", "Core_OnKillFocus", "Core_OnChar", "Core_OnKeyDown" , "Core_OnKeyUp" , "Core_OnWindowResize" };
 
 
 
@@ -47,6 +48,7 @@ namespace Nk {
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_CHAR], { WidgetOnChar, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_KEY_DOWN], { WidgetOnKeyDown, true });
 		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_KEY_UP], { WidgetOnKeyUp, true });
+		widgetEventHandler->AddEventHandler(m_correspondingEventIndexes[Events::ON_WINDOW_RESIZE], { WidgetOnWindowResize, true });
 		//Add widget to parent list
 		if (parent != nullptr) {
 			parent->AddChildWidget(this);
@@ -109,7 +111,11 @@ namespace Nk {
 			delete m_widgetLayout;
 		}
 		m_widgetLayout = layout;
-		layout->AddWidgets(m_childWidgetList);
+		for (Widget* child : m_childWidgetList) {
+			if (child != m_headerWidget && child != m_leftBorder && child != m_topBorder && child != m_rightBorder && child != m_bottomBorder) {
+				layout->AddWidget(child);
+			}
+		}
 	}
 
 
@@ -242,6 +248,7 @@ namespace Nk {
 			this != m_parentWidget->m_topBorder && this != m_parentWidget->m_leftBorder && this != m_parentWidget->m_rightBorder) {
 			m_parentWidget->ComputeOriginPointWithoutHelpWidgets(originPoint);
 		}
+		++m_customResizeCount;
 		m_windowOs->SetWindowGeometry(x, y, w, h, originPoint);
 		m_x = x; m_y = y; m_w = w; m_h = h;
 		m_isBackBufferActive = false;
@@ -350,12 +357,22 @@ namespace Nk {
 		m_windowOs->SetFocus();
 	}
 
+
+	void Widget::SetResizingSystemMode(bool canResize) {
+		m_canResizeBySystem = canResize;
+	}
+
+
+	bool Widget::GetResizingSystemMode() {
+		return m_canResizeBySystem;
+	}
+
 	////////////////////////////////CUSTOM EVENT HANDLERS
 
 	void Widget::OnRepaintWindow(void* widget) {	//Event from the system (like WM_PAINT) - try redraw buffer
 		Widget* senderWidget = (Widget*)widget;
 		EnterCriticalSection(&senderWidget->m_drawLockObject);
-		if (senderWidget->m_parentWidget == nullptr) { //Repaint only root elements
+		if (senderWidget->m_parentWidget == nullptr && senderWidget->m_isBackBufferActive) { //Repaint only root elements
 			senderWidget->m_windowOs->GetPainter()->ClearTarget({ 0,0,0,0 });
 			senderWidget->m_windowOs->DrawWindow();
 		}
@@ -719,6 +736,14 @@ namespace Nk {
 		KeyboardStructure* basicStructure = (KeyboardStructure*)params;
 		Widget* senderWidget = basicStructure->sender;
 		CallUserCallback(senderWidget, CustomEvents::ON_KEY_DOWN, params);
+	}
+
+	
+	void PROC_CALL Widget::WidgetOnWindowResize(void* params) {
+		ResizeWindowStructure* resizeStructure = (ResizeWindowStructure*)params;
+		Widget* senderWidget = resizeStructure->sender;
+		senderWidget->SetWindowGeometry(resizeStructure->xCoord_Px, resizeStructure->yCoord_Px, resizeStructure->wCoord_Px, resizeStructure->hCoord_Px);
+		senderWidget->Repaint();
 	}
 
 }

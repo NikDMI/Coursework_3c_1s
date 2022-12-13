@@ -15,7 +15,7 @@ namespace Nk {
 		/*
 		* Draw layout widgets
 		*/
-		void ComputeWidgetsPositions() override;
+		CLASS_METHOD void ComputeWidgetsPositions() override;
 
 
 		~DefaultLayout() override;

@@ -139,7 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CustomLayout.cpp" />
     <ClCompile Include="GuiFormsApp.cpp" />
+    <ClCompile Include="MainControlPanel.cpp" />
+    <ClCompile Include="MainPanelLayout.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ICustomLayout.h" />
+    <ClInclude Include="MainControlPanel.h" />
+    <ClInclude Include="MainPanelLayout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

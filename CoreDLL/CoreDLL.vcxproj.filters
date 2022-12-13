@@ -563,5 +563,8 @@
     <ClInclude Include="Gui\Layout\StackLayout.h">
       <Filter>Файлы заголовков\Gui\Layout</Filter>
     </ClInclude>
+    <ClInclude Include="Gui\EventStructures\ResizeWindowStructure.h">
+      <Filter>Файлы заголовков\Gui\EventStructures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

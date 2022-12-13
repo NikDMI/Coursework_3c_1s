@@ -235,6 +235,7 @@
     <ClInclude Include="Gui\EventStructures\BasicWidgetStructure.h" />
     <ClInclude Include="Gui\EventStructures\KeyBoard.h" />
     <ClInclude Include="Gui\EventStructures\MouseStructure.h" />
+    <ClInclude Include="Gui\EventStructures\ResizeWindowStructure.h" />
     <ClInclude Include="Gui\EventStructures\ScrollStructure.h" />
     <ClInclude Include="Gui\Layout\DefaultLayout.h" />
     <ClInclude Include="Gui\Layout\ILayout.h" />

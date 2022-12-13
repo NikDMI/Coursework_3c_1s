@@ -11,6 +11,7 @@ namespace Nk {
 		m_caption = new MainCaption{ this, windowName };
 		this->SetHeaderWidget(m_caption);
 		this->SetBackgroundColor(DEFAULT_COLOR);
+		this->SetResizingSystemMode(true);
 	}
 
 

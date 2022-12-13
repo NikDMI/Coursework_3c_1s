@@ -8,6 +8,11 @@
 #include "../../Gui/Widget.h"
 #include "../../Gui/EventStructures/MouseStructure.h"
 #include "../../Gui/EventStructures/KeyBoard.h"
+#include "../../Gui/EventStructures/ResizeWindowStructure.h"
+#include <windowsx.h>
+#include <Dwmapi.h>
+
+#pragma comment(lib, "Dwmapi.lib")
 
 namespace Nk {
 
@@ -214,6 +219,7 @@ namespace Nk {
 	}
 
 	void TranslateVirtualKey(KeyboardStructure& keyboardstructure, WPARAM virtualKey);
+	LRESULT GetWindowBorderCode(DWORD xPos, DWORD yPos, HWND hWnd);
 
 	/*
 	* Main window proc, that dispatch events to corresponding objects
@@ -223,6 +229,7 @@ namespace Nk {
 		static Widget* lastWidget = nullptr;
 		static WindowWin32* lastWindow = nullptr;
 		static IEventManager* eventManager = NkApplication::GetEventManager();
+		//static bool isWindowCreated = false;
 		if (lastHwnd != hWnd || lastWidget == nullptr) {
 			lastHwnd = hWnd;
 			auto nkWidget = WindowWin32::m_windowsDictionary.find(hWnd);
@@ -236,8 +243,70 @@ namespace Nk {
 		static MouseStructure mouseStructure;
 		static KeyboardStructure keyboardStructure;
 		static BasicWidgetStructure basicStructure;
+		static ResizeWindowStructure resizeWindowStructure;
+		static bool isResizing = false;
+		RECT windowRect;
+		static RECT border_thickness;
+
 
 		switch (uMsg) {
+
+			
+		case WM_CREATE:
+		{
+			/*
+			//find border thickness
+			SetRectEmpty(&border_thickness);
+			if (GetWindowLongPtr(hWnd, GWL_STYLE) & WS_THICKFRAME)
+			{
+				AdjustWindowRectEx(&border_thickness, GetWindowLongPtr(hWnd, GWL_STYLE) & ~WS_CAPTION, FALSE, NULL);
+				border_thickness.left *= -1;
+				border_thickness.top *= -1;
+			}
+			else if (GetWindowLongPtr(hWnd, GWL_STYLE) & WS_BORDER)
+			{
+				SetRect(&border_thickness, 1, 1, 1, 1);
+			}
+
+			MARGINS margins = { 10, 10, 10, 10 };
+			DwmExtendFrameIntoClientArea(hWnd, &margins);
+			SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+			*/
+		}
+			break;
+
+		case WM_ENTERSIZEMOVE:
+			isResizing = true;
+			break;
+
+		case WM_EXITSIZEMOVE:
+			isResizing = false;
+			GetWindowRect(hWnd, &windowRect);
+			resizeWindowStructure = { windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, lastWidget };
+			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_WINDOW_RESIZE), &resizeWindowStructure);
+			break;
+
+		case WM_WINDOWPOSCHANGED:
+			break;
+			
+			
+			/*
+		case WM_NCACTIVATE:
+			return 0;
+
+		case WM_NCCALCSIZE:
+			if (wParam)
+			{
+				NCCALCSIZE_PARAMS* sz = (NCCALCSIZE_PARAMS*)lParam;
+				sz->rgrc[0].left += 10;
+				sz->rgrc[0].top += 10;
+				if (sz->rgrc[0].left <= sz->rgrc[0].right - 10) sz->rgrc[0].right -= 10;
+				if (sz->rgrc[0].top <= sz->rgrc[0].bottom - 10) sz->rgrc[0].bottom -= 10;
+				return 0;
+			}
+			break;
+			*/
+
 
 		case WM_MOUSEMOVE:
 			if (!lastWindow->m_isMouseEnter) {
@@ -277,13 +346,22 @@ namespace Nk {
 			break;
 
 		case WM_PAINT:
-			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), lastWidget);
+			if (!isResizing) {
+				eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_REPAINT), lastWidget);
+			}
+			else {
+				GetWindowRect(hWnd, &windowRect);
+				lastWidget->SetWindowGeometry(windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top);
+				lastWidget->Repaint();
+			}
 			ValidateRect(hWnd, NULL);
 			break;
 
 		case WM_SETFOCUS:
-			basicStructure.sender = lastWidget;
-			eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_GET_FOCUS), &basicStructure);
+			if (lastWidget != nullptr) {
+				basicStructure.sender = lastWidget;
+				eventManager->PushEvent(lastWidget, lastWidget->GetEventIndex(Widget::Events::ON_GET_FOCUS), &basicStructure);
+			}
 			break;
 
 		case WM_KILLFOCUS:
@@ -314,6 +392,18 @@ namespace Nk {
 		case WM_ERASEBKGND:
 			break;
 
+
+		case WM_NCHITTEST://Set virtual border
+			
+			if (lastWidget->GetResizingSystemMode()) {	// can be resized by system
+				DWORD xPos = GET_X_LPARAM(lParam);
+				DWORD yPos = GET_Y_LPARAM(lParam);
+				return GetWindowBorderCode(xPos, yPos, hWnd);
+			}
+			else {
+				return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			}
+
 		default:
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
@@ -332,5 +422,71 @@ namespace Nk {
 		default:
 			keyboardstructure.systemKey = KeyboardStructure::SystemKey::NONE_KEY;
 		}
+	}
+
+
+	LRESULT GetWindowBorderCode(DWORD xPos, DWORD yPos, HWND hWnd) {
+		static const int BORDER_HALF_WIDTH = 5;
+		RECT windowRect;
+		POINT cursorPoint = { xPos, yPos };
+		GetWindowRect(hWnd, &windowRect);
+		RECT currentRect = windowRect;
+		DWORD rectW = windowRect.right - windowRect.left;
+		DWORD rectH = windowRect.bottom - windowRect.top;
+		//up rect
+		currentRect.left += BORDER_HALF_WIDTH;
+		currentRect.right -= BORDER_HALF_WIDTH;
+		currentRect.top -= BORDER_HALF_WIDTH;
+		currentRect.bottom = currentRect.top + 2 * BORDER_HALF_WIDTH;
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTTOP;
+		}
+		//Bottom
+		OffsetRect(&currentRect, 0, rectH);
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTBOTTOM;
+		}
+		//left
+		currentRect = windowRect;
+		currentRect.left -= BORDER_HALF_WIDTH;
+		currentRect.right = currentRect.left + 2 * BORDER_HALF_WIDTH;
+		currentRect.top += BORDER_HALF_WIDTH;
+		currentRect.bottom -= BORDER_HALF_WIDTH;
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTLEFT;
+		}
+		//Right
+		OffsetRect(&currentRect, rectW, 0);
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTRIGHT;
+		}
+		//left - top
+		currentRect = windowRect;
+		currentRect.left -= BORDER_HALF_WIDTH;
+		currentRect.right = currentRect.left + 2 * BORDER_HALF_WIDTH;
+		currentRect.top -= BORDER_HALF_WIDTH;
+		currentRect.bottom -= currentRect.top + 2 * BORDER_HALF_WIDTH;
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTTOPLEFT;
+		}
+		//right-top
+		OffsetRect(&currentRect, rectW, 0);
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTTOPRIGHT;
+		}
+		//right-btn
+		OffsetRect(&currentRect, 0, rectH);
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTBOTTOMRIGHT;
+		}
+		//ltft-btn
+		OffsetRect(&currentRect, 0 - rectW, 0);
+		if (PtInRect(&currentRect, cursorPoint)) {
+			return HTBOTTOMLEFT;
+		}
+		if (PtInRect(&windowRect, cursorPoint)) {
+			return HTCLIENT;
+		}
+		return HTNOWHERE;
 	}
 }

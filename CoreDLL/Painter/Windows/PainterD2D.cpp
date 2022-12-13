@@ -162,7 +162,12 @@ namespace Nk {
 
 
 	ComPtr<ID2D1RenderTarget> PainterD2D::GetParentRenderTarget() {
-		return m_parentPainter->m_compatibleBitmapRootRenderTarget;
+		if (m_parentPainter) {
+			return m_parentPainter->m_compatibleBitmapRootRenderTarget;
+		}
+		else {
+			return m_hWndRenderTarget;
+		}
 	}
 
 
@@ -276,12 +281,18 @@ namespace Nk {
 		//bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
 		//11.12
 		auto hWndRenderTarget = this->GetParentRenderTarget();
+		if (hWndRenderTarget == m_hWndRenderTarget) {//most top render target
+			hWndRenderTarget->BeginDraw();
+		}
 		//bool isBeginDrawCalled = this->IsRootBeginDrawCalled();
 		//if (!isBeginDrawCalled) hWndRenderTarget->BeginDraw();
 		//Draw buffer
 		D2D1_RECT_F destRect = { clientRect.x, clientRect.y, clientRect.x + clientRect.w, clientRect.y + clientRect.h };
 		D2D1_RECT_F bmpRect = { 0, 0, m_renderTargetSize.width, m_renderTargetSize.height };
 		hWndRenderTarget->DrawBitmap(m_bufferBitmap.Get(), destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, bmpRect);
+		if (hWndRenderTarget == m_hWndRenderTarget) {//most top render target
+			hWndRenderTarget->EndDraw();
+		}
 		//if (!isBeginDrawCalled) hWndRenderTarget->EndDraw();
 	}
 

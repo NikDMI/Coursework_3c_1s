@@ -108,6 +108,10 @@ namespace Nk {
 		CLASS_METHOD void AddNewLayout(ILayout* layout, bool isDeleteLastLayout = false);
 
 
+		CLASS_METHOD void SetResizingSystemMode(bool canResize);
+
+		CLASS_METHOD bool GetResizingSystemMode();
+
 
 		void SendRepaintEvent();
 
@@ -123,7 +127,7 @@ namespace Nk {
 	private:
 		//Events for OS
 		enum Events : int { ON_REPAINT, ON_DRAW, ON_MOUSE_MOVE, ON_MOUSE_LDOWN, ON_MOUSE_LUP, ON_MOUSE_ENTER, ON_MOUSE_LEAVE, ON_GET_FOCUS, ON_LEAVE_FOCUS,
-			ON_CHAR, ON_KEY_DOWN, ON_KEY_UP, _LAST_ };
+			ON_CHAR, ON_KEY_DOWN, ON_KEY_UP, ON_WINDOW_RESIZE, _LAST_ };
 
 		void AddChildWidget(Widget* childWidget);
 		void RemoveChildWidget(Widget* childWidget);
@@ -160,6 +164,7 @@ namespace Nk {
 		static void PROC_CALL WidgetOnChar(void* params);
 		static void PROC_CALL WidgetOnKeyUp(void* params);
 		static void PROC_CALL WidgetOnKeyDown(void* params);
+		static void PROC_CALL WidgetOnWindowResize(void* params);
 
 		//Basic data
 		Widget* m_parentWidget;
@@ -200,6 +205,8 @@ namespace Nk {
 		volatile Coord_t m_w = 0;
 		volatile Coord_t m_h = 0;
 		bool m_isVisible = false;
+		bool m_canResizeBySystem = false;	//Can window can be resized
+		volatile int m_customResizeCount = 0; //How mush user call custom resizing
 		Color_t m_backgroundColor;
 
 		//Event handlers

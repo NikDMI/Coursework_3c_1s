@@ -12,14 +12,15 @@ namespace Nk {
 	public:
 		enum class StackType {VERTICAL, HORIZONTAL};
 		enum class StackAlignment { CENTER, NORMAL, REVERSE, ALL_SPACE };
+		enum class StackSpace { NO_SPACE_BETWEEN, SEMI_SPACE_AROUND };
 
 
-		CLASS_METHOD StackLayout(StackType stackType, StackAlignment stackAlignment = StackAlignment::NORMAL);
+		CLASS_METHOD StackLayout(StackType stackType, StackAlignment stackAlignment = StackAlignment::NORMAL, StackSpace stackSpace = StackSpace::NO_SPACE_BETWEEN);
 
 		/*
 		* Draw layout widgets
 		*/
-		void ComputeWidgetsPositions() override;
+		CLASS_METHOD void ComputeWidgetsPositions() override;
 
 
 		CLASS_METHOD ~StackLayout() override;
@@ -28,6 +29,7 @@ namespace Nk {
 
 		StackType m_stackType;
 		StackAlignment m_stackAlignment;
+		StackSpace m_stackSpace;
 		float m_spaceBetweenWidgets = 0;
 	};
 }
