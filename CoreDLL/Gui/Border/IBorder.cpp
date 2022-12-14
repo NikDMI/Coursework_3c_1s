@@ -6,6 +6,7 @@ namespace Nk {
 
 
 	void PROC_CALL OnParentResize(void* params);
+	void PROC_CALL BorderDrawProc(Widget* widget, IPainter* painter);
 
 	IBorder::IBorder(Widget* parent, BorderType borderType, float borderWidth) : Widget{parent},
 		m_width{ borderWidth }, m_borderType{ borderType } 
@@ -19,7 +20,9 @@ namespace Nk {
 		m_borderBrush = GetPainter()->CreateBrushObject({ 0.5, 0.5, 0.5, 1 });
 		SetCustomEvent(Widget::CustomEvents::ON_PARENT_RESIZE, OnParentResize);
 		this->SetParentNotification();
-		ShowWindow();
+		//Creates border geometry
+		m_borderGeometry = IGeometry::CreateGeometry();
+		this->SetWindowDrawProc(BorderDrawProc);
 	}
 
 
@@ -83,5 +86,13 @@ namespace Nk {
 		BasicWidgetStructure* bs = (BasicWidgetStructure*)params;
 		IBorder* border = (IBorder*)bs->sender;
 		border->SetBorderSize();
+	}
+
+
+	void PROC_CALL BorderDrawProc(Widget* widget, IPainter* painter) {
+		IBorder* border = dynamic_cast<IBorder*>(widget);
+		border->InitBorderGeometry();
+		painter->SetBackgroundBrush(border->GetBorderBrush());
+		painter->DrawGeometry(border->m_borderGeometry);
 	}
 }

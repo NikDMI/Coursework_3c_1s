@@ -566,5 +566,8 @@
     <ClInclude Include="Gui\EventStructures\ResizeWindowStructure.h">
       <Filter>Файлы заголовков\Gui\EventStructures</Filter>
     </ClInclude>
+    <ClInclude Include="Gui\Border\NormalBorder.h">
+      <Filter>Файлы заголовков\Gui\Border</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

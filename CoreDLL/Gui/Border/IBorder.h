@@ -3,6 +3,7 @@
 
 #include "../Widget.h"
 #include "../../Bean/Config.h"
+#include "../../Tools/IGeometry/IGeometry.h"
 #include <string>
 
 namespace Nk {
@@ -26,19 +27,26 @@ namespace Nk {
 		//CLASS_METHOD void SetBorderWidth(float width);
 
 		void SetBorderOffset(float offset);
+
 		float GetBorderOffset();
 
 
 	protected:
+		/*
+		* Set border geometry
+		*/
+		virtual void InitBorderGeometry() = 0;
 
 		float m_width;
 		BorderType m_borderType;
 		IBrush* m_borderBrush;
 		float m_offset = 0; //Border offset from the start of the client rect
+		IGeometry* m_borderGeometry;
 
 		void SetBorderSize();
 
 		friend void PROC_CALL OnParentResize(void* params);
+		friend void PROC_CALL BorderDrawProc(Widget* widget, IPainter* painter);
 	};
 
 }

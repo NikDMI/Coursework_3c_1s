@@ -64,7 +64,7 @@ const wstring DEFAULT_FONT_FAMILY = L"Times New Roman";
 */
 void CreateGuiWindows() {
 	ProgramWindows programWindows;
-	programWindows.mainWindow = new MainWindow(L"Nk Forms", 100, 100, 800, 600);
+	programWindows.mainWindow = new MainWindow(L"Nk Forms", 100, 100, 1300, 600);
 	programWindows.mainWindow->SetBackgroundColor(MAIN_WINDOW_COLOR);
 	programWindows.mainWindow->AddNewLayout(new CustomLayout());
 	//Menu panel

@@ -214,6 +214,7 @@
     <ClInclude Include="Core\Object.h" />
     <ClInclude Include="Gui\Border\AngleBorder.h" />
     <ClInclude Include="Gui\Border\IBorder.h" />
+    <ClInclude Include="Gui\Border\NormalBorder.h" />
     <ClInclude Include="Gui\Controls\Button\IButton.h" />
     <ClInclude Include="Gui\Controls\Button\ImageButton.h" />
     <ClInclude Include="Gui\Controls\Button\PushButton.h" />

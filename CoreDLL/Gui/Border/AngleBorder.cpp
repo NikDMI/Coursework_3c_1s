@@ -6,13 +6,13 @@ constexpr float M_PI = 3.1415;
 
 namespace Nk {
 
-	void PROC_CALL AngleDrawProc(Widget* widget, IPainter* painter);
+	//void PROC_CALL AngleDrawProc(Widget* widget, IPainter* painter);
 
 	AngleBorder::AngleBorder(Widget* parent, BorderType borderType, float borderWidth, float angleOxInDeegre) : IBorder{ parent, borderType, borderWidth }
 	{
 		m_andleOxRadians = (M_PI / 180.0) * angleOxInDeegre;
-		m_borderGeometry = IGeometry::CreateGeometry();
-		this->SetWindowDrawProc(AngleDrawProc);
+		ShowWindow();
+		//this->SetWindowDrawProc(AngleDrawProc);
 	}
 
 
@@ -44,10 +44,12 @@ namespace Nk {
 	}
 
 
+	/*
 	void PROC_CALL AngleDrawProc(Widget* widget, IPainter* painter) {
 		AngleBorder* border = (AngleBorder*)widget;
 		border->InitBorderGeometry();
 		painter->SetBackgroundBrush(border->GetBorderBrush());
 		painter->DrawGeometry(border->m_borderGeometry);
 	}
+	*/
 }

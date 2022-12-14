@@ -17,10 +17,9 @@ namespace Nk {
 		CLASS_METHOD AngleBorder(Widget* parent, BorderType borderType, float borderWidth, float angleOxInDeegre);
 
 		//днаюбхрэ янашрхе мю хглемемхе пюглепнб пдхрекэяйнцн нймю, врнаш оепеявхрюрэ йннмдхмюрш ценлерпхх
-	private:
-		void InitBorderGeometry();
+	protected:
+		void InitBorderGeometry() override;
 
-		IGeometry* m_borderGeometry;
 		float m_andleOxRadians;
 
 		friend void PROC_CALL AngleDrawProc(Widget* widget, IPainter* painter);
