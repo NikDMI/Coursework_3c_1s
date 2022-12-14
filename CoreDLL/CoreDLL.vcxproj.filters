@@ -381,6 +381,9 @@
     <ClCompile Include="Gui\Layout\StackLayout.cpp">
       <Filter>Исходные файлы\Gui\Layout</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Border\NormalBorder.cpp">
+      <Filter>Исходные файлы\Gui\Border</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">

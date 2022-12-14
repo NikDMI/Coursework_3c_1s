@@ -28,6 +28,8 @@ namespace Nk {
 		Widget* m_widget;
 		IBorder* m_topBorder = nullptr;
 		IBorder* m_rightBorder = nullptr;
+		IBorder* m_leftBorder = nullptr;
+		IBorder* m_bottomBorder = nullptr;
 	};
 
 }

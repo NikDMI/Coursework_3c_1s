@@ -163,6 +163,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Gui\Border\AngleBorder.cpp" />
     <ClCompile Include="Gui\Border\IBorder.cpp" />
+    <ClCompile Include="Gui\Border\NormalBorder.cpp" />
     <ClCompile Include="Gui\Controls\Button\IButton.cpp" />
     <ClCompile Include="Gui\Controls\Button\ImageButton.cpp" />
     <ClCompile Include="Gui\Controls\Button\PushButton.cpp" />

@@ -19,11 +19,6 @@ namespace Nk {
 
 	private:
 		void InitBorderGeometry();
-
-		IGeometry* m_borderGeometry;
-		float m_andleOxRadians;
-
-		friend void PROC_CALL AngleDrawProc(Widget* widget, IPainter* painter);
 	};
 
 }
