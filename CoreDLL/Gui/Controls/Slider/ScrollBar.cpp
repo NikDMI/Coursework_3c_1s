@@ -13,6 +13,7 @@ namespace Nk {
 	ScrollBar::ScrollBar(Widget* parent, int32_t lowerValue, int32_t upperValue) : ISlider{ parent, lowerValue, upperValue } {
 		SetBackgroundColor(DEFAULT_COLOR);
 		m_scrollElement = new ImageButton{ nullptr, this };
+		m_scrollElement->SetWindowGeometry(0, 0, 100, 30);
 		m_scrollElement->SetCustomEvent(CustomEvents::ON_MOUSE_LDOWN, OnMouseDownScrollElement);
 		m_scrollElement->SetCustomEvent(CustomEvents::ON_MOUSE_LUP, OnMouseUpScrollElement);
 		m_scrollElement->SetCustomEvent(CustomEvents::ON_MOUSE_MOVE, OnMouseMoveScrollElement);
@@ -42,7 +43,10 @@ namespace Nk {
 		ImageButton* btn = (ImageButton*)mouseStructure->sender;
 		ScrollBar* scroll = (ScrollBar*)btn->GetParentWidget();
 		Rect_t scrollArea = scroll->GetWidgetClientRect();
-		btn->SetWindowGeometry(0, 0, scrollArea.w, 30);
+		Coord_t scrollElementHeight = btn->GetWidgetRect().h;
+		int32_t distance = (scroll->m_upperValue - scroll->m_lowerValue) + 1;
+		Coord_t scrollY = ((float)(scroll->m_currentValue - scroll->m_lowerValue) / (float)distance) * (scrollArea.h - scrollElementHeight);
+		btn->SetWindowGeometry(0, scrollY, scrollArea.w, scrollElementHeight);
 	}
 
 

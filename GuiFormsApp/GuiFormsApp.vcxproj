@@ -139,12 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Controls\ControlsPanel.cpp" />
+    <ClCompile Include="Controls\FromPanel.cpp" />
+    <ClCompile Include="Controls\PropertiesPanel.cpp" />
     <ClCompile Include="CustomLayout.cpp" />
     <ClCompile Include="GuiFormsApp.cpp" />
     <ClCompile Include="MainControlPanel.cpp" />
     <ClCompile Include="MainPanelLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controls\ControlsPanel.h" />
+    <ClInclude Include="Controls\FormPanel.h" />
+    <ClInclude Include="Controls\PropertiesPanel.h" />
     <ClInclude Include="ICustomLayout.h" />
     <ClInclude Include="MainControlPanel.h" />
     <ClInclude Include="MainPanelLayout.h" />

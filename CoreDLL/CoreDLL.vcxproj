@@ -177,6 +177,7 @@
     <ClCompile Include="Gui\Controls\Label\ILabel.cpp" />
     <ClCompile Include="Gui\Controls\Label\Label.cpp" />
     <ClCompile Include="Gui\Controls\List\IList.cpp" />
+    <ClCompile Include="Gui\Controls\List\ScrolledList.cpp" />
     <ClCompile Include="Gui\Controls\Slider\ISlider.cpp" />
     <ClCompile Include="Gui\Controls\Slider\ScrollBar.cpp" />
     <ClCompile Include="Gui\Controls\Window\IWindowWidget.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Gui\Controls\Label\ILabel.h" />
     <ClInclude Include="Gui\Controls\Label\Label.h" />
     <ClInclude Include="Gui\Controls\List\IList.h" />
+    <ClInclude Include="Gui\Controls\List\ScrolledList.h" />
     <ClInclude Include="Gui\Controls\Slider\ISlider.h" />
     <ClInclude Include="Gui\Controls\Slider\ScrollBar.h" />
     <ClInclude Include="Gui\Controls\Window\IWindowWidget.h" />

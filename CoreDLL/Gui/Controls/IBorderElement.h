@@ -13,9 +13,9 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class IBorderElement {
 	public:
-		IBorderElement(Widget* thisWidget);
+		CLASS_METHOD IBorderElement(Widget* thisWidget);
 
-		virtual ~IBorderElement() {}
+		CLASS_METHOD virtual ~IBorderElement() {}
 
 		//CLASS_METHOD void DeleteBorders();
 

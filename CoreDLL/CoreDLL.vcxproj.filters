@@ -384,6 +384,9 @@
     <ClCompile Include="Gui\Border\NormalBorder.cpp">
       <Filter>Исходные файлы\Gui\Border</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\List\ScrolledList.cpp">
+      <Filter>Исходные файлы\Gui\Controls\List</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -571,6 +574,9 @@
     </ClInclude>
     <ClInclude Include="Gui\Border\NormalBorder.h">
       <Filter>Файлы заголовков\Gui\Border</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\List\ScrolledList.h">
+      <Filter>Файлы заголовков\Gui\Controls\List</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
