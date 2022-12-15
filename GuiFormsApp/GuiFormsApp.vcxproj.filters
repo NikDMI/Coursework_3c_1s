@@ -62,5 +62,8 @@
     <ClInclude Include="Controls\PropertiesPanel.h">
       <Filter>Файлы заголовков\Controls</Filter>
     </ClInclude>
+    <ClInclude Include="GuiConfigs.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class ILayout {
 	public:
+
 		/*
 		* Add widget to the layout
 		*/
@@ -33,10 +34,10 @@ namespace Nk {
 		CLASS_METHOD virtual void ComputeWidgetsPositions() = 0;
 
 
-		virtual ~ILayout() {};
+		CLASS_METHOD virtual ~ILayout() {};
 
 	protected:
-		ILayout();
+		CLASS_METHOD ILayout();
 
 		std::list<Widget*> m_layoutWidgets;
 	};

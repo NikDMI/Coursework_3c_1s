@@ -9,7 +9,7 @@ namespace Nk {
 	/*
 	* Itrerface of widgets layout
 	*/
-	class DefaultLayout: public ILayout {
+	CLASS_PARAMS class DefaultLayout: public ILayout {
 	public:
 
 		/*
@@ -18,7 +18,7 @@ namespace Nk {
 		CLASS_METHOD void ComputeWidgetsPositions() override;
 
 
-		~DefaultLayout() override;
+		CLASS_METHOD ~DefaultLayout() override;
 
 	private:
 	};

@@ -139,7 +139,18 @@ namespace Nk {
 		if (m_headerWidget != nullptr) {
 			auto headerRect = m_headerWidget->GetWidgetRect();
 			clientRect.h -= headerRect.h;
-			clientRect.y += headerRect.y;
+		}
+		if (m_topBorder != nullptr) {
+			clientRect.h -= m_topBorder->GetBorderWidth();
+		}
+		if (m_leftBorder != nullptr) {
+			clientRect.w -= m_leftBorder->GetBorderWidth();
+		}
+		if (m_rightBorder != nullptr) {
+			clientRect.w -= m_rightBorder->GetBorderWidth();
+		}
+		if (m_bottomBorder != nullptr) {
+			clientRect.h -= m_bottomBorder->GetBorderWidth();
 		}
 		return clientRect;
 	}
