@@ -54,6 +54,9 @@
     <ClCompile Include="Controls\Form.cpp">
       <Filter>Исходные файлы\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\ControlElement.cpp">
+      <Filter>Исходные файлы\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICustomLayout.h">
@@ -81,6 +84,9 @@
       <Filter>Файлы заголовков\Bean</Filter>
     </ClInclude>
     <ClInclude Include="Controls\Form.h">
+      <Filter>Файлы заголовков\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\ControlElement.h">
       <Filter>Файлы заголовков\Controls</Filter>
     </ClInclude>
   </ItemGroup>

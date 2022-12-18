@@ -3,11 +3,12 @@
 #include "../../CoreDLL/Gui/Layout/DefaultLayout.h"
 #include "../GuiConfigs.h"
 #include "../Bean/UserControls.h"
+#include "Form.h"
 
 const Color_t INNER_PANEL_COLOR = { 0.6, 0.6 , 0.6, 1.0 };
 const Color_t INNER_PANEL_BORDER_COLOR = { 0.5, 0.5 , 0.5, 1.0 };
 
-void CustomListItem(LabelImageButton* lblImage);
+void CustomListItem(LabelImageButton* lblImage, ScrolledList* scrolledList);
 
 class ControlsPanelLayout : public DefaultLayout {
 public:
@@ -61,20 +62,18 @@ ControlsPanel::ControlsPanel(Widget* widget) : PanelWindow (widget), IBorderElem
 	//Add list items
 
 	UserControl* labelControl = new UserControl(L"Images/1.jpg", L"Label", m_widgetsList->GetIList());
-	CustomListItem(labelControl->labelImageButton);
-	m_widgetsList->GetIList()->AddListItem(labelControl->labelImageButton);
+	CustomListItem(labelControl->labelImageButton, m_widgetsList);
+	labelControl->labelImageButton->SetClickCallback([](void* params) 
+		{gl_allWindows.formWindow->AddNewControl(Form::Controls::LABEL); });
 
 	UserControl* btnControl = new UserControl(L"Images/1.jpg", L"Button", m_widgetsList->GetIList());
-	CustomListItem(btnControl->labelImageButton);
-	m_widgetsList->GetIList()->AddListItem(btnControl->labelImageButton);
+	CustomListItem(btnControl->labelImageButton, m_widgetsList);
 
 	UserControl* editBoxControl = new UserControl(L"Images/1.jpg", L"EditBox", m_widgetsList->GetIList());
-	CustomListItem(editBoxControl->labelImageButton);
-	m_widgetsList->GetIList()->AddListItem(editBoxControl->labelImageButton);
+	CustomListItem(editBoxControl->labelImageButton, m_widgetsList);
 
 	UserControl* scrollBarControl = new UserControl(L"Images/1.jpg", L"ScrollBar", m_widgetsList->GetIList());
-	CustomListItem(scrollBarControl->labelImageButton);
-	m_widgetsList->GetIList()->AddListItem(scrollBarControl->labelImageButton);
+	CustomListItem(scrollBarControl->labelImageButton, m_widgetsList);
 
 	m_widgetsList->GetIList()->SetWindowGeometry(0, 0, 300, 300);
 	m_widgetsList->GetIList()->RecomputeListLayout();
@@ -89,11 +88,13 @@ const Color_t ITEM_LIST_BORDER_COLOR = { 0.4, 0.4 , 0.4, 1.0 };
 
 
 
-void CustomListItem(LabelImageButton* lblImage) {
+void CustomListItem(LabelImageButton* lblImage, ScrolledList* scrolledList) {
 	//lblImage->SetNormalBorder(ITEM_LIST_BORDER_COLOR);
 	lblImage->SetButtonColor(IColorElement::ElementState::STATIC, ITEM_LIST_STATIC_COLOR);
 	lblImage->SetButtonColor(IColorElement::ElementState::HOVER, ITEM_LIST_MOVE_COLOR);
 	lblImage->SetButtonColor(IColorElement::ElementState::PUSH, ITEM_LIST_PUSH_COLOR);
 	lblImage->SetBackgroundColor(ITEM_LIST_STATIC_COLOR);
 	SetDefaultFont(lblImage->GetElementFont());
+	scrolledList->GetIList()->AddListItem(lblImage);
+
 }

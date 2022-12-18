@@ -6,7 +6,11 @@ using namespace Nk;
 
 class Form : public PanelWindow, public IBorderElement {
 public:
+	enum class Controls {LABEL, EDIT};
+
 	Form(Widget* widget);
+
+	void AddNewControl(Controls control);
 
 private:
 

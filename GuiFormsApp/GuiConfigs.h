@@ -7,6 +7,15 @@
 using namespace std;
 using namespace Nk;
 
+class Form;
+
+struct ProgramWindows {//Represent all main windows in the programm
+	Form* formWindow;
+};
+
+
+extern ProgramWindows gl_allWindows;
+
 
 const wstring defaultFontFamily = L"Times New Roman";
 const int fontSizeInPx = 25;

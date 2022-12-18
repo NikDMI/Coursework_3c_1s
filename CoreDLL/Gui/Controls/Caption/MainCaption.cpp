@@ -37,9 +37,6 @@ namespace Nk {
 		this->SetBackgroundColor(DEFAULT_CAPTION_COLOR);
 		this->SetWindowDrawProc(CaptionDrawProc);
 		//Events
-		SetCustomEvent(CustomEvents::ON_MOUSE_MOVE, OnMouseMove);
-		SetCustomEvent(CustomEvents::ON_MOUSE_LDOWN, OnMouseDown);
-		SetCustomEvent(CustomEvents::ON_MOUSE_LUP, OnMouseUp);
 		SetCustomEvent(CustomEvents::ON_PARENT_RESIZE, MainCaption_OnParentResize);
 		SetParentNotification();
 		//Create buttons
@@ -66,39 +63,7 @@ namespace Nk {
 
  	}
 
-	void PROC_CALL OnMouseDown(void* params) {
-		MouseStructure* mouseStructure = (MouseStructure*)params;
-		MainCaption* caption = (MainCaption*)mouseStructure->sender;
-		caption->SetMouseCapture();
-		caption->m_isCaptured = true;
-		caption->m_lastCursorPosition = ICursor::GetGlobalMouseCoord();
-	}
-
-
-	void PROC_CALL OnMouseUp(void* params) {
-		MouseStructure* mouseStructure = (MouseStructure*)params;
-		MainCaption* caption = (MainCaption*)mouseStructure->sender;
-		caption->ReleaseMouseCapture();
-		caption->m_isCaptured = false;
-	}
-
-
-	void PROC_CALL OnMouseMove(void* params) {
-		MouseStructure* mouseStructure = (MouseStructure*)params;
-		MainCaption* caption = (MainCaption*)mouseStructure->sender;
-		if (caption->m_isCaptured) {
-			Point_t currentCursorPos = ICursor::GetGlobalMouseCoord();
-			Coord_t dx = currentCursorPos.x - caption->m_lastCursorPosition.x;
-			Coord_t dy = currentCursorPos.y - caption->m_lastCursorPosition.y;
-			if (caption->m_parentWidget != nullptr) {
-				caption->m_parentWidget->OffsetWindow(dx, dy);
-			}
-			else {
-				caption->OffsetWindow(dx, dy);
-			}
-			caption->m_lastCursorPosition = currentCursorPos;
-		}
-	}
+	
 
 
 	void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter) {

@@ -207,8 +207,10 @@ namespace Nk {
 			return { m_x, m_y };
 		}
 		else {
+			Point_t clientOffset{};
+			m_parentWidget->ComputeOriginPointWithoutHelpWidgets(clientOffset);
 			Point_t parentPoint = m_parentWidget->GetScreenCoordsLeftTop();
-			return { parentPoint.x + m_x, parentPoint.y + m_y };
+			return { parentPoint.x + clientOffset.x + m_x, parentPoint.y + clientOffset.y + m_y };
 		}
 	}
 

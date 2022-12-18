@@ -35,13 +35,10 @@ namespace Nk {
 
 		IButton* m_closeButton;
 
-		Point_t m_lastCursorPosition;
-		bool m_isCaptured = false;
+		//Point_t m_lastCursorPosition;
+		//bool m_isCaptured = false;
 
 		friend void PROC_CALL CaptionDrawProc(Widget* widget, IPainter* painter);
-		friend void PROC_CALL OnMouseDown(void* params);
-		friend void PROC_CALL OnMouseMove(void* params);
-		friend void PROC_CALL OnMouseUp(void* params);
 		friend void PROC_CALL MainCaption_OnParentResize(void* params);
 	};
 

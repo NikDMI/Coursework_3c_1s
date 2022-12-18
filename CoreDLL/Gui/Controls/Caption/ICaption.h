@@ -13,9 +13,17 @@ namespace Nk {
 	*/
 	CLASS_PARAMS class ICaption : public Widget, public ITextElement{
 	public:
-		ICaption(Widget* parent, const std::wstring& text);
+		CLASS_METHOD ICaption(Widget* parent, const std::wstring& text);
 
-		virtual ~ICaption() {};
+		CLASS_METHOD virtual ~ICaption() {};
+
+	private:
+		Point_t m_lastCursorPosition;
+		bool m_isCaptured = false;
+
+		friend void PROC_CALL OnMouseDown(void* params);
+		friend void PROC_CALL OnMouseMove(void* params);
+		friend void PROC_CALL OnMouseUp(void* params);
 
 	};
 

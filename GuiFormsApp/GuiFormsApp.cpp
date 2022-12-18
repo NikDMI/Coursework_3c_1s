@@ -28,6 +28,8 @@
 
 #include "ICustomLayout.h"
 #include "MainControlPanel.h"
+#include "Controls/Form.h"
+#include "GuiConfigs.h"
 
 #include <string>
 
@@ -38,11 +40,7 @@ using namespace std;
 
 void CreateGuiWindows();
 
-struct ProgramWindows {//Represent all main windows in the programm
-	MainWindow* mainWindow;
-	PanelWindow* mainMenuPanel;
-	PanelWindow* mainContentPanel;
-};
+ProgramWindows gl_allWindows;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow) {
 	Nk::NkApplication* app = new Nk::NkApplication{};
@@ -63,14 +61,13 @@ const wstring DEFAULT_FONT_FAMILY = L"Times New Roman";
 * Creates all windows in this app
 */
 void CreateGuiWindows() {
-	ProgramWindows programWindows;
-	programWindows.mainWindow = new MainWindow(L"Nk Forms", 100, 100, 1300, 600);
-	programWindows.mainWindow->SetBackgroundColor(MAIN_WINDOW_COLOR);
-	programWindows.mainWindow->AddNewLayout(new CustomLayout());
+	auto mainWindow = new MainWindow(L"Nk Forms", 100, 100, 1300, 600);
+	mainWindow->SetBackgroundColor(MAIN_WINDOW_COLOR);
+	mainWindow->AddNewLayout(new CustomLayout());
 	//Menu panel
-	programWindows.mainMenuPanel = new PanelWindow(programWindows.mainWindow, 0, 0, 0, MAIN_MENU_PANEL_H);
-	programWindows.mainMenuPanel->SetBackgroundColor(MAIN_MENU_COLOR);
+	auto mainMenuPanel = new PanelWindow(mainWindow, 0, 0, 0, MAIN_MENU_PANEL_H);
+	mainMenuPanel->SetBackgroundColor(MAIN_MENU_COLOR);
 	//Content panel
-	programWindows.mainContentPanel = new MainControlPanel(programWindows.mainWindow);
-	programWindows.mainWindow->ShowWindow();
+	auto mainContentPanel = new MainControlPanel(mainWindow);
+	mainWindow->ShowWindow();
 }

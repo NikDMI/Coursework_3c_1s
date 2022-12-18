@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bean\UserControls.cpp" />
+    <ClCompile Include="Controls\ControlElement.cpp" />
     <ClCompile Include="Controls\ControlsPanel.cpp" />
     <ClCompile Include="Controls\Form.cpp" />
     <ClCompile Include="Controls\FromPanel.cpp" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\UserControls.h" />
+    <ClInclude Include="Controls\ControlElement.h" />
     <ClInclude Include="Controls\ControlsPanel.h" />
     <ClInclude Include="Controls\Form.h" />
     <ClInclude Include="Controls\FormPanel.h" />

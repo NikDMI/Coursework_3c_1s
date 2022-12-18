@@ -20,6 +20,11 @@ namespace Nk {
 	}
 
 
+	void IButton::SetClickCallback(EventHandlerProc callback) {
+		m_userClickCallback = callback;
+	}
+
+
 	void PROC_CALL IButton::Button_OnMouseMove(void* params) {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
@@ -37,6 +42,9 @@ namespace Nk {
 		MouseStructure* mouseStructure = (MouseStructure*)params;
 		IButton* btn = (IButton*)mouseStructure->sender;
 		btn->ColorElement_OnLMouseLUp(params);
+		if (btn->m_userClickCallback) {
+			btn->m_userClickCallback(params);
+		}
 	}
 
 

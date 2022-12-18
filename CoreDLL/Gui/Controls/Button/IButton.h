@@ -19,6 +19,8 @@ namespace Nk {
 		CLASS_FIELDS static Color_t DEFAULT_HOVER_COLOR;
 		CLASS_FIELDS static Color_t DEFAULT_PUSH_COLOR;
 
+		CLASS_METHOD void SetClickCallback(EventHandlerProc callback);
+
 	protected:
 		IButton(Widget* parent);
 
@@ -27,6 +29,8 @@ namespace Nk {
 		void PROC_CALL Button_OnMouseMove(void* params);
 		void PROC_CALL Button_OnMouseLDown(void* params);
 		void PROC_CALL Button_OnLMouseLUp(void* params);
+
+		EventHandlerProc m_userClickCallback = nullptr;
 
 	private:
 		
