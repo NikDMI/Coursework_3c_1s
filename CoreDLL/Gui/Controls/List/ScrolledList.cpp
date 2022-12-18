@@ -13,6 +13,7 @@ namespace Nk {
 			Coord_t verticalsScrollBarX = clientRect.w - ScrolledList::SCROLL_BAR_WIDTH;
 			verticalScroll->SetWindowGeometry(verticalsScrollBarX, 0, ScrolledList::SCROLL_BAR_WIDTH, clientRect.h);
 			list->SetWindowGeometry(0, 0, verticalsScrollBarX, clientRect.h);
+			//list->RecomputeListLayout();
 		}
 	};
 
@@ -20,7 +21,8 @@ namespace Nk {
 	ScrolledList::ScrolledList(Widget* parent) : Widget{parent} {
 		m_listControl = new IList(this);
 		m_verticalScrollBar = new ScrollBar(this, 0, SCROLL_CAPACITY - 1);
-		AddNewLayout(new ScrollListLayout());
+		m_currentLayout = new ScrollListLayout();
+		AddNewLayout(m_currentLayout);
 	}
 
 
@@ -36,6 +38,12 @@ namespace Nk {
 
 	IList* ScrolledList::GetIList() {
 		return m_listControl;
+	}
+
+
+	void ScrolledList::SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h) {
+		Widget::SetWindowGeometry(x, y, w, h);
+		m_currentLayout->ComputeWidgetsPositions();
 	}
 
 }

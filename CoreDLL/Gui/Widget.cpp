@@ -202,6 +202,17 @@ namespace Nk {
 	}
 
 
+	Point_t Widget::GetScreenCoordsLeftTop() {
+		if (m_parentWidget == nullptr) {
+			return { m_x, m_y };
+		}
+		else {
+			Point_t parentPoint = m_parentWidget->GetScreenCoordsLeftTop();
+			return { parentPoint.x + m_x, parentPoint.y + m_y };
+		}
+	}
+
+
 	void Widget::SetMouseCapture() {
 		if (m_captureWidget == nullptr) {
 			m_captureWidget = this;

@@ -77,4 +77,9 @@ namespace Nk {
 		}
 	}
 
+
+	void ICursor::SetGlobalMouseCoord(Point_t point) {
+		::SetCursorPos(point.x, point.y);
+	}
+
 }

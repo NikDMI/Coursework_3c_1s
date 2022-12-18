@@ -387,6 +387,9 @@
     <ClCompile Include="Gui\Controls\List\ScrolledList.cpp">
       <Filter>Исходные файлы\Gui\Controls\List</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\Controls\Button\LabelImageButton.cpp">
+      <Filter>Исходные файлы\Gui\Controls\Button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bean\Config.h">
@@ -577,6 +580,9 @@
     </ClInclude>
     <ClInclude Include="Gui\Controls\List\ScrolledList.h">
       <Filter>Файлы заголовков\Gui\Controls\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\Controls\Button\LabelImageButton.h">
+      <Filter>Файлы заголовков\Gui\Controls\Button</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

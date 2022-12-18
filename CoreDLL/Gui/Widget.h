@@ -36,7 +36,7 @@ namespace Nk {
 		/*
 		* Set size and position of the window
 		*/
-		CLASS_METHOD void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h);
+		CLASS_METHOD virtual void SetWindowGeometry(Coord_t x, Coord_t y, Coord_t w, Coord_t h);
 
 		CLASS_METHOD void OffsetWindow(Coord_t dx, Coord_t dy);
 
@@ -61,6 +61,13 @@ namespace Nk {
 		* Can get nullptr (cursor can't changed when user move to this control)
 		*/
 		CLASS_METHOD void SetCursor(ICursor* cursor);
+
+
+		/*
+		* Returns point in screen coords, where widget is located
+		*/
+		CLASS_METHOD Point_t GetScreenCoordsLeftTop();
+
 
 		/*
 		* returns rect, that can be used by header

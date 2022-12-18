@@ -19,6 +19,12 @@
     <Filter Include="Исходные файлы\Controls">
       <UniqueIdentifier>{ede605d2-1f39-44c4-b309-e34260908d13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы заголовков\Bean">
+      <UniqueIdentifier>{1436c49f-08ee-4a22-adf5-e0060eadd179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Bean">
+      <UniqueIdentifier>{1ba6bf6f-9804-4e01-a607-d99c33c70958}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GuiFormsApp.cpp">
@@ -40,6 +46,12 @@
       <Filter>Исходные файлы\Controls</Filter>
     </ClCompile>
     <ClCompile Include="Controls\PropertiesPanel.cpp">
+      <Filter>Исходные файлы\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="Bean\UserControls.cpp">
+      <Filter>Исходные файлы\Bean</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Form.cpp">
       <Filter>Исходные файлы\Controls</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="GuiConfigs.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Bean\UserControls.h">
+      <Filter>Файлы заголовков\Bean</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls\Form.h">
+      <Filter>Файлы заголовков\Controls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

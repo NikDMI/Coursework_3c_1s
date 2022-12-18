@@ -22,6 +22,7 @@ namespace Nk {
 		if (widget->GetParentWidget() != this) {
 			throw Exception{"Invalid parent"};
 		}
+		
 		ListItemInfo listItem{ widget, widget->GetWidgetRect().h };
 		if (m_listElements.size()) {
 			ListItemInfo& lastItem = m_listElements.back();

@@ -46,6 +46,9 @@ namespace Nk {
 
 		CLASS_METHOD static Point_t GetGlobalMouseCoord();
 
+		CLASS_METHOD static void SetGlobalMouseCoord(Point_t point);
+
+
 	protected:
 		ICursor() {};
 

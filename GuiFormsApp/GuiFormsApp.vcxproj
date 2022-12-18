@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bean\UserControls.cpp" />
     <ClCompile Include="Controls\ControlsPanel.cpp" />
+    <ClCompile Include="Controls\Form.cpp" />
     <ClCompile Include="Controls\FromPanel.cpp" />
     <ClCompile Include="Controls\PropertiesPanel.cpp" />
     <ClCompile Include="CustomLayout.cpp" />
@@ -148,7 +150,9 @@
     <ClCompile Include="MainPanelLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bean\UserControls.h" />
     <ClInclude Include="Controls\ControlsPanel.h" />
+    <ClInclude Include="Controls\Form.h" />
     <ClInclude Include="Controls\FormPanel.h" />
     <ClInclude Include="Controls\PropertiesPanel.h" />
     <ClInclude Include="GuiConfigs.h" />

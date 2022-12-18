@@ -119,7 +119,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine, int nCmdShow
 	list->ShowWindow();
 	mainWindow->AddNewLayout(new StackLayout{ StackLayout::StackType::VERTICAL, StackLayout::StackAlignment::ALL_SPACE });
 	mainWindow->Repaint();
-	//CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
+	CreateThread(NULL, 0, LogicThread, widget3, 0, NULL);
 	app->StartLoop();
 	return 0;
 }

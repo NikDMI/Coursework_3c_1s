@@ -1,6 +1,7 @@
 #include "MainControlPanel.h"
 #include "MainPanelLayout.h"
 #include "../CoreDLL/Gui/ResizeManager/RectangleResizer.h"
+#include "Bean/UserControls.h"
 
 const Color_t INNER_PANEL_COLOR = { 0.6, 0.6 , 0.6, 1.0 };
 const Color_t INNER_PANEL_BORDER_COLOR = { 0.5, 0.5 , 0.5, 1.0 };

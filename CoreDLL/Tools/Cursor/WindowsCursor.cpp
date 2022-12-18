@@ -50,11 +50,11 @@ namespace Nk {
 	ICursor* WindowsCursor::ChooseCursor() {
 		if (!IsGlobalCursorSet()) {
 			ICursor* lastCursor = currentICursorInTheSystem;
-			if (currentCursorInTheSystem != m_currentCursor) {
+			//if (currentCursorInTheSystem != m_currentCursor) {
 				::SetCursor(m_currentCursor);
 				currentCursorInTheSystem = m_currentCursor;
 				currentICursorInTheSystem = this;
-			}
+			//}
 			return lastCursor;
 		}
 		else {
